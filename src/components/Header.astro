@@ -1,0 +1,98 @@
+---
+import YetiMark from "./YetiMark.astro";
+import { NAV_LINKS, SITE } from "../lib/site";
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? pathname === "/" : pathname.startsWith(href);
+---
+
+<header class="sticky top-0 z-50 border-b border-hairline bg-canvas/90 backdrop-blur">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <a href="/" class="flex items-center gap-2 text-ink">
+      <YetiMark size={26} class="text-primary" />
+      <span class="font-serif text-xl font-medium tracking-tight">{SITE.name}</span>
+    </a>
+
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Primary">
+      {
+        NAV_LINKS.map((link) => (
+          <a
+            href={link.href}
+            aria-current={isActive(link.href) ? "page" : undefined}
+            class:list={[
+              "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              isActive(link.href)
+                ? "text-ink"
+                : "text-muted hover:text-ink",
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href="/blog"
+        class="btn btn-primary hidden sm:inline-flex"
+      >
+        Read the stories
+      </a>
+      <button
+        type="button"
+        id="menu-toggle"
+        class="btn btn-secondary size-10 !p-0 md:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-menu"
+    hidden
+    class="fixed inset-0 top-16 z-40 bg-canvas px-6 py-8 md:hidden"
+  >
+    <nav class="flex flex-col gap-1" aria-label="Mobile">
+      {
+        NAV_LINKS.map((link) => (
+          <a
+            href={link.href}
+            class="rounded-md px-3 py-3 text-lg font-medium text-ink hover:bg-surface-soft"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a href="/blog" class="btn btn-primary mt-4 self-start">Read the stories</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  let open = false;
+
+  function setOpen(next: boolean) {
+    if (!toggle || !menu) return;
+    open = next;
+    menu.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+
+  toggle?.addEventListener("click", () => setOpen(!open));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+</script>

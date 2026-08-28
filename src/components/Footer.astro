@@ -1,0 +1,50 @@
+---
+import YetiMark from "./YetiMark.astro";
+import { SITE, FOOTER_LINKS } from "../lib/site";
+
+const year = new Date().getFullYear();
+const external = (href: string) => href.startsWith("http");
+---
+
+<footer class="bg-surface-dark text-on-dark-soft">
+  <div class="mx-auto max-w-6xl px-6 py-16">
+    <div class="grid gap-10 md:grid-cols-[1.5fr_repeat(4,1fr)]">
+      <div>
+        <a href="/" class="flex items-center gap-2 text-on-dark">
+          <YetiMark size={24} />
+          <span class="font-serif text-lg font-medium">{SITE.name}</span>
+        </a>
+        <p class="mt-4 max-w-xs text-sm">{SITE.motto}</p>
+      </div>
+
+      {
+        FOOTER_LINKS.map((column) => (
+          <div>
+            <h2 class="font-sans text-xs font-medium uppercase tracking-[0.12em] text-on-dark-soft">
+              {column.heading}
+            </h2>
+            <ul class="mt-4 space-y-2 text-sm">
+              {column.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="hover:text-on-dark"
+                    {...external(link.href)
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {}}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-14 border-t border-surface-dark-elevated pt-6 text-sm">
+      <p>&copy; {year} {SITE.name}. Big hearts. Thick fur. Good vibes.</p>
+    </div>
+  </div>
+</footer>

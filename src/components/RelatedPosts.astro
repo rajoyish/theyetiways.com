@@ -1,0 +1,21 @@
+---
+import PostGrid from "./PostGrid.astro";
+import type { Post } from "../lib/posts";
+
+interface Props {
+  posts: Post[];
+  heading?: string;
+}
+const { posts, heading = "More warm ways" } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class="border-t border-hairline">
+      <div class="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+        <h2 class="mb-8 text-display-sm">{heading}</h2>
+        <PostGrid posts={posts} headingLevel="h3" />
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,78 @@
+---
+import { Image } from "astro:assets";
+import Badge from "./Badge.astro";
+import AuthorBadge from "./AuthorBadge.astro";
+import FormattedDate from "./FormattedDate.astro";
+import { resolveAuthors, type Post } from "../lib/posts";
+import { youTubeThumb } from "../lib/youtube";
+import { SITE, categorySlug } from "../lib/site";
+
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const authors = await resolveAuthors(post);
+const href = `/blog/${post.id}`;
+---
+
+<section class="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:py-24 lg:grid-cols-2 lg:items-center">
+  <div>
+    <p class="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-muted">
+      <span class="inline-block size-1.5 rounded-full bg-primary"></span>
+      The Yeti Ways
+    </p>
+    <h1 class="mt-5 text-display-lg text-ink sm:text-display-xl">
+      {SITE.tagline}
+    </h1>
+    <p class="mt-6 max-w-xl text-lg text-body-strong">{SITE.motto}</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="/blog" class="btn btn-primary">Read the stories</a>
+      <a href="/authors" class="btn btn-secondary">Meet the family</a>
+    </div>
+  </div>
+
+  <article class="overflow-hidden rounded-xl bg-surface-card">
+    <a href={href} class="relative block aspect-video overflow-hidden bg-surface-dark">
+      {
+        post.data.cover ? (
+          <Image
+            src={post.data.cover}
+            alt=""
+            width={960}
+            height={540}
+            class="size-full object-cover"
+          />
+        ) : (
+          <img
+            src={youTubeThumb(post.data.youtube, "hqdefault")}
+            alt=""
+            decoding="async"
+            class="size-full object-cover"
+          />
+        )
+      }
+      <span class="absolute left-4 top-4 flex size-11 items-center justify-center rounded-full bg-primary text-on-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.79-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
+        </svg>
+      </span>
+    </a>
+    <div class="flex flex-col gap-3 p-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <Badge variant="coral">Featured story</Badge>
+        <Badge variant="pill" href={`/categories/${categorySlug(post.data.category)}`}>
+          {post.data.category}
+        </Badge>
+      </div>
+      <h2 class="text-display-sm">
+        <a href={href} class="hover:text-primary">{post.data.title}</a>
+      </h2>
+      <p class="text-body">{post.data.description}</p>
+      <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-2">
+        <AuthorBadge authors={authors} size={32} />
+        <span class="text-muted-soft" aria-hidden="true">·</span>
+        <FormattedDate date={post.data.pubDate} class="text-sm text-muted" />
+      </div>
+    </div>
+  </article>
+</section>

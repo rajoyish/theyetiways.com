@@ -1,0 +1,27 @@
+---
+/**
+ * badge-pill / badge-coral from DESIGN.md.
+ * `pill`  — soft cream pill for category tags.
+ * `coral` — coral fill, uppercase, for "NEW" / featured flags.
+ */
+interface Props {
+  variant?: "pill" | "coral";
+  href?: string;
+  class?: string;
+}
+const { variant = "pill", href, class: className } = Astro.props;
+
+const base =
+  "inline-flex items-center rounded-full font-medium whitespace-nowrap";
+const styles = {
+  pill: "bg-surface-card text-ink text-[0.8125rem] px-3 py-1",
+  coral:
+    "bg-primary text-on-primary text-xs uppercase tracking-[0.09em] px-3 py-1",
+};
+const cls = [base, styles[variant], className].filter(Boolean).join(" ");
+const Tag = href ? "a" : "span";
+---
+
+<Tag class={cls} href={href}>
+  <slot />
+</Tag>

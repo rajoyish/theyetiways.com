@@ -1,0 +1,35 @@
+---
+import PostCard from "./PostCard.astro";
+import type { Post } from "../lib/posts";
+
+interface Props {
+  posts: Post[];
+  /** Column count at the largest breakpoint (2 or 3). */
+  columns?: 2 | 3;
+  headingLevel?: "h2" | "h3";
+  emptyMessage?: string;
+}
+const {
+  posts,
+  columns = 3,
+  headingLevel = "h2",
+  emptyMessage = "No stories here yet — check back soon. ❄️",
+} = Astro.props;
+---
+
+{
+  posts.length === 0 ? (
+    <p class="rounded-lg bg-surface-card p-8 text-body">{emptyMessage}</p>
+  ) : (
+    <div
+      class:list={[
+        "grid gap-6 sm:grid-cols-2",
+        columns === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2",
+      ]}
+    >
+      {posts.map((post) => (
+        <PostCard post={post} headingLevel={headingLevel} />
+      ))}
+    </div>
+  )
+}

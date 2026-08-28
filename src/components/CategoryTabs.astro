@@ -1,0 +1,42 @@
+---
+import { CATEGORIES, categorySlug } from "../lib/site";
+
+/** Link-based filter row — category-tab / category-tab-active from DESIGN.md. */
+interface Props {
+  active?: string;
+  class?: string;
+}
+const { active, class: className } = Astro.props;
+
+const tabs = [
+  { label: "All", href: "/blog", key: "all" },
+  ...CATEGORIES.map((c) => ({
+    label: c,
+    href: `/categories/${categorySlug(c)}`,
+    key: c,
+  })),
+];
+const activeKey = active ?? "all";
+---
+
+<nav class:list={["flex flex-wrap gap-1", className]} aria-label="Story categories">
+  {
+    tabs.map((tab) => {
+      const isActive = tab.key === activeKey;
+      return (
+        <a
+          href={tab.href}
+          aria-current={isActive ? "page" : undefined}
+          class:list={[
+            "rounded-md px-3.5 py-2 text-sm font-medium transition-colors",
+            isActive
+              ? "bg-surface-card text-ink"
+              : "text-muted hover:bg-surface-soft hover:text-ink",
+          ]}
+        >
+          {tab.label}
+        </a>
+      );
+    })
+  }
+</nav>

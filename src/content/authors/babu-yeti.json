@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../.astro/collections/authors.schema.json",
+  "name": "Babu Yeti",
+  "role": "Babu Yeti",
+  "nepaliNote": "Babu means son in Nepali.",
+  "tagline": "New kid, again. Getting good at it.",
+  "bio": "Babu Yeti is the older kid. He writes about the stuff nobody warns you about — first days, making friends from scratch, and what it feels like to be the new Yeti in the room.",
+  "avatar": "./babu-yeti.svg",
+  "accent": "amber",
+  "order": 3
+}

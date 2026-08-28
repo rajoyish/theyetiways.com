@@ -1,0 +1,96 @@
+---
+import { Image } from "astro:assets";
+import Badge from "./Badge.astro";
+import AuthorBadge from "./AuthorBadge.astro";
+import FormattedDate from "./FormattedDate.astro";
+import { resolveAuthors, type Post } from "../lib/posts";
+import { youTubeThumb } from "../lib/youtube";
+import { categorySlug } from "../lib/site";
+
+interface Props {
+  post: Post;
+  /** `feature` is the standard cream card; `wide` is the horizontal hero variant. */
+  variant?: "feature" | "wide";
+  headingLevel?: "h2" | "h3";
+}
+const { post, variant = "feature", headingLevel = "h2" } = Astro.props;
+const { data } = post;
+const authors = await resolveAuthors(post);
+const Heading = headingLevel;
+const href = `/blog/${post.id}`;
+---
+
+<article
+  class:list={[
+    "group flex flex-col overflow-hidden rounded-lg bg-surface-card",
+    variant === "wide" && "md:flex-row",
+  ]}
+>
+  <a
+    href={href}
+    class:list={[
+      "relative block aspect-video overflow-hidden bg-surface-dark",
+      variant === "wide" && "md:aspect-auto md:w-1/2",
+    ]}
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    {
+      data.cover ? (
+        <Image
+          src={data.cover}
+          alt=""
+          width={800}
+          height={450}
+          class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        />
+      ) : (
+        <img
+          src={youTubeThumb(data.youtube, "hqdefault")}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        />
+      )
+    }
+    <span
+      class="absolute left-3 top-3 flex size-9 items-center justify-center rounded-full bg-primary/95 text-on-primary"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.79-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
+      </svg>
+    </span>
+  </a>
+
+  <div
+    class:list={[
+      "flex flex-1 flex-col gap-4 p-8",
+      variant === "wide" && "md:w-1/2 md:justify-center",
+    ]}
+  >
+    <div class="flex flex-wrap items-center gap-2">
+      <Badge variant="pill" href={`/categories/${categorySlug(data.category)}`}>
+        {data.category}
+      </Badge>
+      {data.featured && <Badge variant="coral">Featured</Badge>}
+    </div>
+
+    <Heading
+      class:list={[
+        "text-ink",
+        variant === "wide" ? "text-display-sm" : "text-2xl",
+      ]}
+    >
+      <a href={href} class="hover:text-primary">{data.title}</a>
+    </Heading>
+
+    <p class="text-body">{data.description}</p>
+
+    <div class="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 pt-2">
+      <AuthorBadge authors={authors} size={32} />
+      <span class="text-muted-soft" aria-hidden="true">·</span>
+      <FormattedDate date={data.pubDate} class="text-sm text-muted" />
+    </div>
+  </div>
+</article>

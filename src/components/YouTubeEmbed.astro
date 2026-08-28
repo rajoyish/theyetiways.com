@@ -1,0 +1,105 @@
+---
+import { youTubeThumb, youTubeEmbedUrl, youTubeWatchUrl } from "../lib/youtube";
+
+/**
+ * Lightweight YouTube facade (DESIGN.md: dark product-surface card).
+ * Renders only a thumbnail + play button — no YouTube script or iframe, and
+ * therefore no network request to youtube.com, until the visitor clicks play.
+ * On click the inline script swaps in a privacy-friendly `youtube-nocookie`
+ * iframe. Progressive enhancement: without JS the play button is a plain link
+ * to watch on YouTube.
+ */
+interface Props {
+  id: string;
+  title: string;
+  /** Optional custom poster URL; defaults to the YouTube thumbnail. */
+  poster?: string;
+  class?: string;
+}
+const { id, title, poster, class: className } = Astro.props;
+
+const posterSrc = poster ?? youTubeThumb(id, "maxresdefault");
+const posterFallback = youTubeThumb(id, "hqdefault");
+const embedUrl = youTubeEmbedUrl(id);
+const watchUrl = youTubeWatchUrl(id);
+---
+
+<div
+  class:list={[
+    "yt-facade group relative aspect-video overflow-hidden rounded-lg bg-surface-dark",
+    className,
+  ]}
+  data-embed-url={embedUrl}
+  data-title={title}
+>
+  <img
+    src={posterSrc}
+    data-fallback={posterFallback}
+    alt=""
+    loading="lazy"
+    decoding="async"
+    class="absolute inset-0 size-full object-cover"
+  />
+  <div class="absolute inset-0 bg-surface-dark/25 transition-colors group-hover:bg-surface-dark/10"></div>
+
+  <a
+    class="yt-play absolute inset-0 flex items-center justify-center"
+    href={watchUrl}
+    aria-label={`Play video: ${title}`}
+  >
+    <span
+      class="flex size-16 items-center justify-center rounded-full bg-primary text-on-primary shadow-sm transition-transform group-hover:scale-105 sm:size-20"
+    >
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.79-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
+      </svg>
+    </span>
+  </a>
+</div>
+
+<script>
+  class YetiYouTube {
+    constructor(root: HTMLElement) {
+      const play = root.querySelector<HTMLAnchorElement>(".yt-play");
+      const img = root.querySelector<HTMLImageElement>("img[data-fallback]");
+
+      if (img) {
+        img.addEventListener(
+          "error",
+          () => {
+            const fallback = img.dataset.fallback;
+            if (fallback && img.src !== fallback) img.src = fallback;
+          },
+          { once: true },
+        );
+      }
+
+      play?.addEventListener("click", (event) => {
+        event.preventDefault();
+        this.activate(root);
+      });
+    }
+
+    activate(root: HTMLElement) {
+      const src = root.dataset.embedUrl;
+      const title = root.dataset.title ?? "YouTube video";
+      if (!src) return;
+
+      const iframe = document.createElement("iframe");
+      iframe.src = src;
+      iframe.title = title;
+      iframe.loading = "lazy";
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.setAttribute("allowfullscreen", "");
+      iframe.className = "absolute inset-0 size-full border-0";
+
+      root.replaceChildren(iframe);
+      iframe.focus();
+    }
+  }
+
+  document
+    .querySelectorAll<HTMLElement>(".yt-facade")
+    .forEach((el) => new YetiYouTube(el));
+</script>

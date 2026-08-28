@@ -1,0 +1,41 @@
+---
+import { SOCIAL_CHANNELS } from "../lib/site";
+
+/**
+ * Pre-footer coral callout (callout-card-coral / cta-band-coral).
+ * Coral IS the voltage here; the CTA inside uses the inverted cream button.
+ */
+interface Props {
+  heading?: string;
+  text?: string;
+  class?: string;
+}
+const {
+  heading = "Follow the Yetis",
+  text = "New stories land on our channels first. Come say hello — we save you a warm seat by the fire.",
+  class: className,
+} = Astro.props;
+---
+
+<section class:list={["px-6", className]}>
+  <div
+    class="mx-auto flex max-w-5xl flex-col items-start gap-6 rounded-lg bg-primary px-8 py-12 text-on-primary sm:px-12 sm:py-16"
+  >
+    <h2 class="max-w-2xl text-display-sm text-on-primary">{heading}</h2>
+    <p class="max-w-2xl text-on-primary/90">{text}</p>
+    <div class="flex flex-wrap gap-3">
+      {
+        SOCIAL_CHANNELS.map((channel) => (
+          <a
+            href={channel.href}
+            class="btn btn-invert"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {channel.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

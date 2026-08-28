@@ -1,0 +1,16 @@
+---
+/** Wrapper for rendered Markdown, scoped and tuned to the design tokens. */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "prose prose-yeti max-w-none prose-headings:font-serif prose-headings:font-medium prose-a:font-medium prose-a:underline-offset-2 prose-img:rounded-lg",
+    className,
+  ]}
+>
+  <slot />
+</div>

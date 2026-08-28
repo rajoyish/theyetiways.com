@@ -1,0 +1,13 @@
+{
+  "$schema": "../../../.astro/collections/authors.schema.json",
+  "name": "Papa Yeti",
+  "role": "Papa Yeti",
+  "tagline": "Keeper of the map, loser of the map.",
+  "bio": "Papa Yeti does the planning, the driving, and most of the worrying. He writes about the slow lessons — patience, showing up, and admitting when he got it wrong in front of the kids.",
+  "avatar": "./papa-yeti.svg",
+  "accent": "coral",
+  "order": 1,
+  "socials": [
+    { "label": "YouTube", "href": "https://www.youtube.com/@theyetiways" }
+  ]
+}

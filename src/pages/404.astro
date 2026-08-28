@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page not found" description="This trail went cold.">
+  <section class="mx-auto flex max-w-2xl flex-col items-center px-6 py-32 text-center">
+    <p class="text-5xl">❄️</p>
+    <h1 class="mt-6 text-display-md text-ink">This trail went cold</h1>
+    <p class="mt-4 text-lg text-body">
+      We couldn't find that page. The footprints stop here — but there's a warm
+      fire back at home.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/" class="btn btn-primary">Back home</a>
+      <a href="/blog" class="btn btn-secondary">Read the stories</a>
+    </div>
+  </section>
+</BaseLayout>
