@@ -1,12 +1,15 @@
 ---
 version: alpha
-name: Claude-design-analysis
-description: A warm-canvas editorial interface for Anthropic's Claude product. The system anchors on a tinted cream canvas with serif display headlines, warm coral CTAs, and dark navy product surfaces (code editor mockups, model showcase cards). Brand voltage comes from the cream/coral pairing — deliberately warm and humanist where most AI brands use cool blue + slate. Type voice runs a slab-serif display ("Copernicus" / Tiempos Headline) for h1/h2 and a humanist sans for body. The signature Anthropic black-radial-spike mark anchors the wordmark.
+name: the-yeti-ways-design
+description: A warm-canvas editorial interface for The Yeti Ways family blog. The system anchors on a tinted cream canvas with serif display headlines and dark navy surfaces for the pacing rhythm. Brand voltage comes from the three Yeti family colors — Vibrant Blue (Papa), Bubblegum Pink (Mama), and Mint Green (Babu) — set against the cream. Blue is the primary CTA; pink and mint are companion accents. Type voice runs a slab-serif display ("Cormorant Garamond") for h1/h2 and a humanist sans (Inter) for body. A 6-spoke snowflake mark anchors the wordmark.
 
 colors:
-  primary: "#cc785c"
-  primary-active: "#a9583e"
-  primary-disabled: "#e6dfd8"
+  primary: "#1f7ac9"
+  primary-active: "#1a67ab"
+  primary-disabled: "#cfe2f4"
+  blue: "#2a84d3"
+  accent-pink: "#f06baa"
+  accent-mint: "#6bcdb2"
   ink: "#141413"
   body: "#3d3d3a"
   body-strong: "#252523"
@@ -24,8 +27,8 @@ colors:
   on-primary: "#ffffff"
   on-dark: "#faf9f5"
   on-dark-soft: "#a09d96"
-  accent-teal: "#5db8a6"
-  accent-amber: "#e8a55a"
+  accent-teal: "#6bcdb2"
+  accent-amber: "#f06baa"
   success: "#5db872"
   warning: "#d4a017"
   error: "#c64545"
@@ -300,35 +303,36 @@ components:
 
 ## Overview
 
-Claude.com is the warmest, most editorial interface in the AI-product category. The base atmosphere is a **tinted cream canvas** (`{colors.canvas}` — #faf9f5) — distinctly warm, deliberately not the cool gray-white that every other AI brand uses. Headlines run a **slab-serif display** ("Copernicus" / Tiempos Headline) at weight 400 with negative letter-spacing, paired with **StyreneB / Inter** body sans. The combination feels like a literary publication, not a SaaS marketing page.
+The Yeti Ways is a warm, editorial family blog. The base atmosphere is a **tinted cream canvas** (`{colors.canvas}` — #faf9f5) — distinctly warm, deliberately not cool gray-white. Headlines run a **slab-serif display** ("Cormorant Garamond") at weight 500 with negative letter-spacing, paired with **Inter** body sans. The combination feels like a literary publication, not a SaaS marketing page.
 
-Brand voltage comes from the **cream + coral pairing** — coral (`{colors.primary}` — #cc785c) is the signature Anthropic accent, used on every primary CTA, on the brand wordmark, and on full-bleed callout cards. The coral is warm, slightly muted, never cyan/blue — a deliberate counter-positioning against OpenAI's cool slate, Google's saturated blue, and Microsoft's corporate cyan.
+Brand voltage comes from the **three Yeti family colors** set against the cream: **Vibrant Blue** (`{colors.blue}` — #2A84D3, Papa Yeti), **Bubblegum Pink** (`{colors.accent-pink}` — #F06BAA, Mama Yeti), and **Mint Green** (`{colors.accent-mint}` — #6BCDB2, Babu Yeti). Blue drives every primary CTA and the brand wordmark (deepened to `{colors.primary}` — #1F7AC9 so white button text clears AA); pink and mint are companion accents on badges, author dots, and card edges. One family, three footprints in the snow.
 
 The system has three surface modes that alternate page-by-page:
 1. **Cream canvas** (`{colors.canvas}`) — default body floor
 2. **Light cream cards** (`{colors.surface-card}`) — feature card backgrounds
 3. **Dark navy product surfaces** (`{colors.surface-dark}`) — code editor mockups, model showcase cards, pre-footer CTAs, footer itself
 
-The dark surfaces are where Claude shows its product chrome — code blocks, terminal output, model comparison tables, agentic-flow diagrams. The cream-to-dark contrast is the page's pacing rhythm.
+The dark navy surfaces (`{colors.surface-dark}`) carry the "Find your trail" category grid, the pre-footer, and the footer. The cream-to-dark contrast is the page's pacing rhythm.
 
 **Key Characteristics:**
-- Warm cream canvas (`{colors.canvas}` — #faf9f5) with dark warm-ink text (`{colors.ink}` — #141413). The brand's defining color choice.
-- Coral primary CTA (`{colors.primary}` — #cc785c). Used scarcely on individual buttons, generously on full-bleed coral callout cards.
-- Slab-serif display headlines via Copernicus / Tiempos Headline at weight 400 with negative letter-spacing. Pairs with humanist sans body for a literary editorial voice.
-- Dark navy product mockup cards (`{colors.surface-dark}` — #181715) carrying code blocks, terminal panels, model comparison data — the brand shows the product chrome at scale rather than abstract marketing illustrations.
-- Light cream feature cards (`{colors.surface-card}` — #efe9de) — slightly darker than canvas, used for content-driven feature explanations.
-- Anthropic radial-spike mark — a small black asterisk-like glyph (4-spoke radial) — appears as the brand wordmark prefix and as a content marker.
-- Border radius is hierarchical: `{rounded.md}` (8px) for buttons + inputs, `{rounded.lg}` (12px) for content + product cards, `{rounded.xl}` (16px) for the hero illustration container, `{rounded.pill}` for badges.
+- Warm cream canvas (`{colors.canvas}` — #faf9f5) with dark warm-ink text (`{colors.ink}` — #141413).
+- Blue primary CTA (`{colors.primary}` — #1F7AC9). Used scarcely on individual buttons, generously on the full-bleed blue callout band.
+- Pink + mint accents rotate through author dots, "Featured" badges, and the accent hairline on the left edge of cards.
+- Slab-serif display headlines via Cormorant Garamond at weight 500 with negative letter-spacing. Pairs with Inter body for a literary editorial voice.
+- Light cream feature cards (`{colors.surface-card}` — #efe9de) — slightly darker than canvas, used for story cards and family cards.
+- 6-spoke snowflake mark — inherits `currentColor`, tinted blue in the header.
+- Border radius is hierarchical: `{rounded.md}` (8px) for buttons + inputs, `{rounded.lg}` (12px) for content cards, `{rounded.xl}` (16px) for the hero + CTA band, `{rounded.pill}` for badges.
 - Section rhythm `{spacing.section}` (96px) — modern-SaaS standard. Internal card padding stays generous at `{spacing.xl}` (32px).
 
 ## Colors
 
 ### Brand & Accent
-- **Coral / Primary** (`{colors.primary}` — #cc785c): The signature Anthropic warm coral. Used on every primary CTA background, on full-bleed coral callout cards, on the brand wordmark accent. The most-recognized Anthropic color outside of the spike-mark logo.
-- **Coral Active** (`{colors.primary-active}` — #a9583e): The press / hover-darker variant.
-- **Coral Disabled** (`{colors.primary-disabled}` — #e6dfd8): A desaturated cream-tinted disabled state.
-- **Accent Teal** (`{colors.accent-teal}` — #5db8a6): Used sparingly on secondary product surfaces (terminal status indicators, "active connection" dots in connectors page).
-- **Accent Amber** (`{colors.accent-amber}` — #e8a55a): A small companion warm-tone used on category badges and inline highlights.
+- **Vibrant Blue** (`{colors.blue}` — #2A84D3): Papa Yeti's color and the brand blue. Exact hex used for decorative fills — author dots, the header snowflake, character illustrations, card accent edges.
+- **Primary** (`{colors.primary}` — #1F7AC9): The brand blue deepened just enough to clear AA (4.5:1) for white button text. Every primary CTA background and the pre-footer callout band.
+- **Primary Active** (`{colors.primary-active}` — #1A67AB): The press / darker variant.
+- **Primary Disabled** (`{colors.primary-disabled}` — #cfe2f4): A pale-blue disabled state.
+- **Bubblegum Pink** (`{colors.accent-pink}` — #F06BAA): Mama Yeti's color. "Featured" badges (with ink text), her author dot, pink card edges. Always paired with `{colors.ink}` text — white fails on it.
+- **Mint Green** (`{colors.accent-mint}` — #6BCDB2): Babu Yeti's color. His author dot, mint card edges, occasional badge. Also paired with `{colors.ink}` text.
 
 ### Surface
 - **Canvas** (`{colors.canvas}` — #faf9f5): The default page floor. Tinted cream — warm, deliberately not pure white.

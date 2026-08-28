@@ -8,7 +8,7 @@ export const SITE = {
     "We might be Yetis, but our ways are warm. ❄️❤️ Big hearts. Thick fur. Good vibes.",
   tagline: "Warm life lessons from a family of Yetis.",
   description:
-    "The Yeti Ways is a family blog co-authored by Papa, Mama, Babu, and Nanu Yeti — warm, honest stories about family, relationships, parenting, and growing up, each one built around a video from our channels.",
+    "The Yeti Ways is a family blog co-authored by Papa, Mama, and Babu Yeti — warm, honest stories about family, relationships, parenting, and growing up, each one built around a video from our channels.",
 } as const;
 
 export const NAV_LINKS = [
@@ -62,7 +62,6 @@ export const FOOTER_LINKS = [
       { label: "Papa Yeti", href: "/authors/papa-yeti" },
       { label: "Mama Yeti", href: "/authors/mama-yeti" },
       { label: "Babu Yeti", href: "/authors/babu-yeti" },
-      { label: "Nanu Yeti", href: "/authors/nanu-yeti" },
     ],
   },
   {

@@ -35,11 +35,16 @@ const family = await getFamily();
   <section class="mx-auto max-w-6xl px-6 py-16 sm:py-24">
     <h2 class="text-display-sm">Meet the family</h2>
     <p class="mt-3 max-w-2xl text-body">
-      Every story here is told twice — once by the grown-ups, once by the kids.
-      Same fireplace, two sets of footprints in the snow.
+      Every story here has more than one teller — the grown-ups and the kid who
+      lived the same day from a different height. Same fireplace, different
+      footprints in the snow.
     </p>
-    <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-      {family.map((author) => <AuthorBadge authors={[author]} variant="stacked" size={96} />)}
+    <div class="mt-10 grid gap-8 sm:grid-cols-3">
+      {family.map((author) => (
+        <div class="card-lift rounded-xl bg-surface-card p-8">
+          <AuthorBadge authors={[author]} variant="stacked" size={96} />
+        </div>
+      ))}
     </div>
   </section>
 
@@ -51,13 +56,14 @@ const family = await getFamily();
       </p>
       <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {
-          CATEGORIES.map((category) => (
+          CATEGORIES.map((category, i) => (
             <a
               href={`/categories/${categorySlug(category)}`}
-              class="flex items-center justify-between rounded-lg bg-surface-dark-elevated px-6 py-5 text-on-dark transition-colors hover:bg-surface-dark-soft"
+              class="accent-edge group flex items-center justify-between rounded-lg bg-surface-dark-elevated px-6 py-5 pl-7 text-on-dark transition-colors hover:bg-surface-dark-soft"
+              style={`--accent-edge-color:${["#2a84d3", "#f06baa", "#6bcdb2"][i % 3]}`}
             >
               <span class="font-serif text-xl">{category}</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <svg class="transition-transform group-hover:translate-x-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </a>

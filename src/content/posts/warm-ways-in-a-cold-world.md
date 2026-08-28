@@ -36,9 +36,8 @@ Here's what that looks like for Papa and me:
 
 ## The kids are watching the thermostat
 
-Babu and Nanu don't remember what we say. They remember the temperature of the
-room. If the grown-ups are warm to each other, the kids build their whole idea
-of love on top of that. If we're cold, they learn that love is something you
-survive.
+Babu doesn't remember what we say. He remembers the temperature of the room. If
+the grown-ups are warm to each other, a kid builds his whole idea of love on top
+of that. If we're cold, he learns that love is something you survive.
 
 So we practice. Cold world, warm ways. On purpose, every day.

@@ -13,15 +13,15 @@ const authors = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
-      role: z.enum(["Papa Yeti", "Mama Yeti", "Babu Yeti", "Nanu Yeti"]),
+      role: z.enum(["Papa Yeti", "Mama Yeti", "Babu Yeti"]),
       // e.g. "Babu means son in Nepali"
       nepaliNote: z.string().optional(),
       tagline: z.string(),
       bio: z.string(),
       avatar: image(),
-      // Per-author accent dot — stays inside the DESIGN.md palette.
-      accent: z.enum(["coral", "teal", "amber"]).default("coral"),
-      // Family sort order (Papa 1, Mama 2, Babu 3, Nanu 4).
+      // Per-author accent — one of the three Yeti family colors.
+      accent: z.enum(["blue", "pink", "mint"]).default("blue"),
+      // Family sort order (Papa 1, Mama 2, Babu 3).
       order: z.number(),
       socials: z
         .array(z.object({ label: z.string(), href: z.url() }))

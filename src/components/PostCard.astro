@@ -22,7 +22,7 @@ const href = `/blog/${post.id}`;
 
 <article
   class:list={[
-    "group flex flex-col overflow-hidden rounded-lg bg-surface-card",
+    "card-lift group flex flex-col overflow-hidden rounded-lg bg-surface-card",
     variant === "wide" && "md:flex-row",
   ]}
 >
@@ -73,7 +73,7 @@ const href = `/blog/${post.id}`;
       <Badge variant="pill" href={`/categories/${categorySlug(data.category)}`}>
         {data.category}
       </Badge>
-      {data.featured && <Badge variant="coral">Featured</Badge>}
+      {data.featured && <Badge variant="pink">Featured</Badge>}
     </div>
 
     <Heading

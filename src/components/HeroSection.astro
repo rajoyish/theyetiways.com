@@ -31,7 +31,7 @@ const href = `/blog/${post.id}`;
     </div>
   </div>
 
-  <article class="overflow-hidden rounded-xl bg-surface-card">
+  <article class="overflow-hidden rounded-xl bg-surface-card shadow-[0_20px_50px_-24px_rgba(20,20,19,0.28)] ring-1 ring-hairline">
     <a href={href} class="relative block aspect-video overflow-hidden bg-surface-dark">
       {
         post.data.cover ? (
@@ -59,7 +59,7 @@ const href = `/blog/${post.id}`;
     </a>
     <div class="flex flex-col gap-3 p-8">
       <div class="flex flex-wrap items-center gap-2">
-        <Badge variant="coral">Featured story</Badge>
+        <Badge variant="pink">Featured story</Badge>
         <Badge variant="pill" href={`/categories/${categorySlug(post.data.category)}`}>
           {post.data.category}
         </Badge>

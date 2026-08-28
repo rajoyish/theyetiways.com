@@ -16,9 +16,9 @@ interface Props {
 const { authors, variant = "inline", size = 36, class: className } = Astro.props;
 
 const accentDot: Record<string, string> = {
-  coral: "bg-primary",
-  teal: "bg-accent-teal",
-  amber: "bg-accent-amber",
+  blue: "bg-blue",
+  pink: "bg-accent-pink",
+  mint: "bg-accent-mint",
 };
 ---
 
@@ -66,7 +66,7 @@ const accentDot: Record<string, string> = {
           <span
             class:list={[
               "inline-block size-1.5 rounded-full",
-              accentDot[authors[0].data.accent] ?? "bg-primary",
+              accentDot[authors[0].data.accent] ?? "bg-blue",
             ]}
           />
           <a

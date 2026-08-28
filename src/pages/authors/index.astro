@@ -13,21 +13,27 @@ const members = await Promise.all(
 );
 
 const accentDot: Record<string, string> = {
-  coral: "bg-primary",
-  teal: "bg-accent-teal",
-  amber: "bg-accent-amber",
+  blue: "bg-blue",
+  pink: "bg-accent-pink",
+  mint: "bg-accent-mint",
+};
+
+const accentEdge: Record<string, string> = {
+  blue: "#2a84d3",
+  pink: "#f06baa",
+  mint: "#6bcdb2",
 };
 ---
 
 <BaseLayout
   title="The Yeti Family"
-  description="Papa, Mama, Babu, and Nanu Yeti — the four voices behind The Yeti Ways."
+  description="Papa, Mama, and Babu Yeti — the three voices behind The Yeti Ways."
 >
   <div class="mx-auto max-w-5xl px-6 py-16 sm:py-20">
     <header class="max-w-2xl">
       <h1 class="text-display-md text-ink sm:text-display-lg">The Yeti Family</h1>
       <p class="mt-4 text-lg text-body-strong">
-        Four of us. One cave. We write about the same days from different
+        Three of us. One cave. We write about the same days from different
         heights — because a lesson learned by the whole family is the one that
         actually sticks.
       </p>
@@ -36,13 +42,16 @@ const accentDot: Record<string, string> = {
     <div class="mt-14 space-y-6">
       {
         members.map(({ author, count }) => (
-          <article class="flex flex-col gap-6 rounded-lg bg-surface-card p-8 sm:flex-row sm:items-start">
+          <article
+            class="accent-edge flex flex-col gap-6 rounded-lg bg-surface-card p-8 pl-9 sm:flex-row sm:items-start"
+            style={`--accent-edge-color:${accentEdge[author.data.accent] ?? "#2a84d3"}`}
+          >
             <Image
               src={author.data.avatar}
               alt={author.data.name}
               width={112}
               height={112}
-              class="size-28 shrink-0 rounded-full object-cover"
+              class="size-28 shrink-0 rounded-full object-cover ring-4 ring-canvas"
             />
             <div>
               <div class="flex flex-wrap items-center gap-2">

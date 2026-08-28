@@ -27,12 +27,12 @@ we each got there on our own clock.
 - Mama knew it before the truck even showed up: *a home is the people, not the
   place.* She's said it for years. This time I finally believed her.
 - Babu figured it out around box number thirty, when he stopped asking "why do
-  we have to go" and started asking "can I pick my room."
-- Nanu got there last, at bedtime, when she realized her ceiling was a different
-  ceiling and cried about it for ten minutes and then fell asleep fine.
+  we have to go" and started asking "can I pick my room." It landed for real
+  that first night, when he noticed the ceiling was a different ceiling — a few
+  quiet minutes about that, and then he slept fine.
 
-I got there somewhere on the highway, watching the old mountain shrink in the
-mirror.
+I got there last, somewhere on the highway, watching the old mountain shrink in
+the mirror.
 
 ## What I'd tell past me
 

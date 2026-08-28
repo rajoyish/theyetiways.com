@@ -3,17 +3,31 @@
 
 /* ---------------------------------------------------------------------------
    The Yeti Ways — design tokens
-   Values are lifted verbatim from DESIGN.md (Anthropic Claude.com system):
-   tinted cream canvas + warm coral + dark-navy surfaces, serif display,
-   humanist sans body, 96px section rhythm, color-block-first elevation.
+   Tinted cream canvas + dark-navy surfaces carry the neutrals; the family
+   palette supplies the voltage:
+     Vibrant Blue   #2A84D3  — Papa Yeti  (primary CTA / brand)
+     Bubblegum Pink #F06BAA  — Mama Yeti  (accent)
+     Mint Green     #6BCDB2  — Babu Yeti  (accent)
+   Serif display, humanist sans body, 96px section rhythm, color-block-first
+   elevation.
    --------------------------------------------------------------------------- */
 @theme {
-  /* Brand & accent */
-  --color-primary: #cc785c;
-  --color-primary-active: #a9583e;
-  --color-primary-disabled: #e6dfd8;
-  --color-accent-teal: #5db8a6;
-  --color-accent-amber: #e8a55a;
+  /* Brand & accent — the Yeti family colors.
+     --color-primary is the brand blue deepened just enough to clear AA
+     (4.5:1) for white button text; --color-blue keeps the exact brand hex
+     for decorative fills, dots, and illustrations. */
+  --color-primary: #1f7ac9;
+  --color-primary-active: #1a67ab;
+  --color-primary-disabled: #cfe2f4;
+  --color-blue: #2a84d3;
+  --color-blue-active: #1f6cb0;
+  --color-accent-pink: #f06baa;
+  --color-accent-pink-active: #d94f90;
+  --color-accent-mint: #6bcdb2;
+  --color-accent-mint-active: #4fb89b;
+  /* Back-compat aliases (kept so stray class names don't 404) */
+  --color-accent-teal: #6bcdb2;
+  --color-accent-amber: #f06baa;
 
   /* Text */
   --color-ink: #141413;
@@ -141,15 +155,28 @@
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease,
+      border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  .btn:active {
+    transform: translateY(0);
   }
 
   .btn-primary {
     background-color: var(--color-primary);
     color: var(--color-on-primary);
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--color-blue) 30%, transparent);
+  }
+  .btn-primary:hover {
+    background-color: var(--color-blue);
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--color-blue) 32%, transparent);
   }
   .btn-primary:active {
     background-color: var(--color-primary-active);
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--color-blue) 30%, transparent);
   }
 
   .btn-secondary {
@@ -157,17 +184,52 @@
     color: var(--color-ink);
     border: 1px solid var(--color-hairline);
   }
+  .btn-secondary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
   .btn-secondary:active {
     border-color: var(--color-primary);
   }
 
-  /* Cream button used on coral / dark bands */
+  /* Cream button used on the blue / dark bands */
   .btn-invert {
     background-color: var(--color-canvas);
     color: var(--color-ink);
   }
+  .btn-invert:hover {
+    background-color: #ffffff;
+    box-shadow: 0 6px 16px rgba(20, 20, 19, 0.16);
+  }
   .btn-invert:active {
     background-color: var(--color-surface-cream-strong);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Small shared polish utilities.
+   --------------------------------------------------------------------------- */
+@layer components {
+  /* Gentle lift for linked cards (story cards, family cards, trail tiles). */
+  .card-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px -12px rgba(20, 20, 19, 0.22);
+  }
+
+  /* Accent hairline that rides the left edge of a card. */
+  .accent-edge {
+    position: relative;
+    overflow: hidden;
+  }
+  .accent-edge::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: var(--accent-edge-color, var(--color-primary));
   }
 }
 
