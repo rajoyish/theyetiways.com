@@ -4,6 +4,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PostGrid from "../../components/PostGrid.astro";
 import CtaBand from "../../components/CtaBand.astro";
 import { getFamily, getPostsByAuthor } from "../../lib/posts";
+import { SITE } from "../../lib/site";
+import { profilePageSchema } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const family = await getFamily();
@@ -16,6 +18,14 @@ export async function getStaticPaths() {
 const { author } = Astro.props;
 const posts = await getPostsByAuthor(author.id);
 
+const site = Astro.site ?? new URL(SITE.url);
+const profileSchema = profilePageSchema({
+  name: author.data.name,
+  description: author.data.bio,
+  url: new URL(`/authors/${author.id}/`, site),
+  sameAs: (author.data.socials ?? []).map((social) => social.href),
+});
+
 const accentDot: Record<string, string> = {
   coral: "bg-primary",
   teal: "bg-accent-teal",
@@ -26,6 +36,7 @@ const accentDot: Record<string, string> = {
 <BaseLayout
   title={author.data.name}
   description={`${author.data.name} on The Yeti Ways — ${author.data.tagline}`}
+  jsonLd={[profileSchema]}
 >
   <section class="border-b border-hairline">
     <div class="mx-auto flex max-w-4xl flex-col gap-8 px-6 py-16 sm:flex-row sm:items-center sm:py-20">

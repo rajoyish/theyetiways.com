@@ -8,8 +8,9 @@ import Prose from "../components/Prose.astro";
 import RelatedPosts from "../components/RelatedPosts.astro";
 import CtaBand from "../components/CtaBand.astro";
 import { resolveAuthors, getRelatedPosts, type Post } from "../lib/posts";
-import { youTubeWatchUrl } from "../lib/youtube";
-import { categorySlug } from "../lib/site";
+import { youTubeWatchUrl, youTubeThumb } from "../lib/youtube";
+import { categorySlug, SITE } from "../lib/site";
+import { blogPostingSchema, breadcrumbSchema } from "../lib/seo";
 
 interface Props {
   post: Post;
@@ -19,12 +20,58 @@ const { data } = post;
 
 const authors = await resolveAuthors(post);
 const related = await getRelatedPosts(post, 3);
+
+const site = Astro.site ?? new URL(SITE.url);
+const postUrl = new URL(`/blog/${post.id}/`, site);
+const ogImage = data.cover
+  ? new URL(data.cover.src, site).href
+  : youTubeThumb(data.youtube, "maxresdefault");
+const authorMeta = authors.map((author) => ({
+  name: author.data.name,
+  url: new URL(`/authors/${author.id}/`, site).href,
+}));
+
+const jsonLd = [
+  blogPostingSchema(
+    {
+      title: data.title,
+      description: data.description,
+      url: postUrl,
+      image: ogImage,
+      datePublished: data.pubDate,
+      dateModified: data.updatedDate,
+      authors: authorMeta,
+      section: data.category,
+      tags: data.tags,
+    },
+    site,
+  ),
+  breadcrumbSchema([
+    { name: "Home", url: site.href },
+    { name: "Stories", url: new URL("/blog/", site).href },
+    {
+      name: data.category,
+      url: new URL(`/categories/${categorySlug(data.category)}/`, site).href,
+    },
+    { name: data.title, url: postUrl.href },
+  ]),
+];
 ---
 
 <BaseLayout
   title={data.title}
   description={data.description}
   type="article"
+  image={ogImage}
+  imageAlt={data.coverAlt || data.title}
+  jsonLd={jsonLd}
+  article={{
+    publishedTime: data.pubDate,
+    modifiedTime: data.updatedDate ?? data.pubDate,
+    authors: authors.map((author) => author.data.name),
+    section: data.category,
+    tags: data.tags,
+  }}
 >
   <article>
     <div class="mx-auto max-w-3xl px-6 pt-12 sm:pt-16">

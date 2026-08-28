@@ -4,19 +4,41 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
+interface ArticleMeta {
+  publishedTime?: string | Date;
+  modifiedTime?: string | Date;
+  authors?: string[];
+  section?: string;
+  tags?: string[];
+}
+
 interface Props {
   title: string;
   description?: string;
   image?: string;
+  imageAlt?: string;
   type?: "website" | "article";
+  article?: ArticleMeta;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
 }
-const { title, description, image, type } = Astro.props;
+const { title, description, image, imageAlt, type, article, jsonLd, noindex } =
+  Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} image={image} type={type} />
+    <BaseHead
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      type={type}
+      article={article}
+      jsonLd={jsonLd}
+      noindex={noindex}
+    />
   </head>
   <body class="flex min-h-screen flex-col">
     <a
