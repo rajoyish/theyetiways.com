@@ -1,8 +1,6 @@
 ---
 /**
- * The Yeti Ways brand glyph — a 6-spoke snowflake that echoes the radial
- * spike-mark idea from DESIGN.md. Uses `currentColor` so it inherits ink,
- * on-dark, or coral from its context.
+ * The Yeti Ways brand logo.
  */
 interface Props {
   size?: number;
@@ -11,19 +9,10 @@ interface Props {
 const { size = 24, class: className } = Astro.props;
 ---
 
-<svg
+<img
+  src="/favicon.svg"
+  alt=""
   width={size}
   height={size}
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="1.6"
-  stroke-linecap="round"
-  aria-hidden="true"
   class={className}
->
-  <path d="M12 2v20M3.34 7l17.32 10M3.34 17L20.66 7" />
-  <path d="M12 5.5 9.6 7.7M12 5.5l2.4 2.2M12 18.5l-2.4-2.2M12 18.5l2.4 2.2" />
-  <path d="M5.5 8.9l.2 3.2M5.5 8.9l-3 .9M18.5 15.1l-.2-3.2M18.5 15.1l3-.9" />
-  <path d="M18.5 8.9l-.2 3.2M18.5 8.9l3 .9M5.5 15.1l.2-3.2M5.5 15.1l-3-.9" />
-</svg>
+/>

@@ -39,9 +39,9 @@ export function categoryFromSlug(slug: string): Category | undefined {
 }
 
 export const SOCIAL_CHANNELS = [
-  { label: "Facebook", href: "https://www.facebook.com/theyetiways" },
-  { label: "YouTube", href: "https://www.youtube.com/@theyetiways" },
-  { label: "TikTok", href: "https://www.tiktok.com/@theyetiways" },
+  { label: "Facebook", href: "https://www.facebook.com/TheYetiWays" },
+  { label: "YouTube", href: "https://www.youtube.com/@TheYetiWays" },
+  { label: "TikTok", href: "https://www.tiktok.com/@the.yeti.ways" },
 ] as const;
 
 export const FOOTER_LINKS = [

@@ -11,6 +11,42 @@
         ],
         "createdAt": "2026-08-30T11:33:35.265Z",
         "reason": "DESIGN.md:328 declares 'card accent edges' as a documented decorative use of the brand blue, alongside author dots and the header snowflake; .accent-edge implements it for the homepage category tiles, rotating the three Yeti family colors. Pre-existing intentional design, not model-authored. Not user-confirmed."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "bangers",
+        "createdAt": "2026-08-30T12:25:17.160Z",
+        "reason": "Claude: false positive - DESIGN.md:364 names Bangers the display face; --font-serif in global.css leads with it."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "24px",
+        "createdAt": "2026-08-30T12:25:17.202Z",
+        "reason": "Claude: OG card is a fixed 1200x630 raster, not a rendered page; its type is sized to stay legible as a small link-preview thumbnail and is independent of the web type ramp."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "30px",
+        "createdAt": "2026-08-30T12:25:17.241Z",
+        "reason": "Claude: OG card is a fixed 1200x630 raster, not a rendered page; its type is sized to stay legible as a small link-preview thumbnail and is independent of the web type ramp."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "26px",
+        "createdAt": "2026-08-30T12:25:17.281Z",
+        "reason": "Claude: OG card is a fixed 1200x630 raster, not a rendered page; its type is sized to stay legible as a small link-preview thumbnail and is independent of the web type ramp."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "22px",
+        "createdAt": "2026-08-30T12:25:17.322Z",
+        "reason": "Claude: OG card is a fixed 1200x630 raster, not a rendered page; its type is sized to stay legible as a small link-preview thumbnail and is independent of the web type ramp."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "besley",
+        "createdAt": "2026-08-30T12:31:50.507Z",
+        "reason": "Claude: false positive - DESIGN.md:364 and :368 name Besley the body/UI face; --font-sans in global.css leads with it. The OG card switched to Besley to match the site."
       }
     ]
   }

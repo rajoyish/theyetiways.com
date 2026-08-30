@@ -8,7 +8,7 @@ import Prose from "../components/Prose.astro";
 import RelatedPosts from "../components/RelatedPosts.astro";
 import CtaBand from "../components/CtaBand.astro";
 import { resolveAuthors, getRelatedPosts, type Post } from "../lib/posts";
-import { youTubeWatchUrl, youTubeThumb } from "../lib/youtube";
+import { youTubeWatchUrl } from "../lib/youtube";
 import { categorySlug, SITE } from "../lib/site";
 import { blogPostingSchema, breadcrumbSchema } from "../lib/seo";
 
@@ -23,9 +23,13 @@ const related = await getRelatedPosts(post, 3);
 
 const site = Astro.site ?? new URL(SITE.url);
 const postUrl = new URL(`/blog/${post.id}/`, site);
+/* A hand-picked cover wins; otherwise the story gets its generated OG card
+   from `src/pages/og/[...slug].png.ts`, which is built for every post. The old
+   YouTube-thumbnail fallback is gone: `maxresdefault` 404s for most Shorts, and
+   a bare video frame carries no title. */
 const ogImage = data.cover
   ? new URL(data.cover.src, site).href
-  : youTubeThumb(data.youtube, "maxresdefault");
+  : new URL(`/og/${post.id}.png`, site).href;
 const authorMeta = authors.map((author) => ({
   name: author.data.name,
   url: new URL(`/authors/${author.id}/`, site).href,

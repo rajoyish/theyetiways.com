@@ -44,6 +44,12 @@ If the user gives only one of the two, ask for the other before writing.
 6. **Verify**: run `pnpm build` (or `pnpm astro check`). A schema mistake in
    frontmatter fails the build with the offending field named.
 
+The Open Graph image needs no step of its own. `src/pages/og/[...slug].png.ts`
+renders one card per post during `astro build`, reading the title, description,
+category, and author straight from the frontmatter you just wrote. Adding the
+post is all it takes; the card lands at `/og/<slug>.png` and `PostLayout.astro`
+points `og:image` at it. Retitle the story later and the card follows.
+
 ## Frontmatter
 
 Must satisfy the `posts` schema in `src/content.config.ts`. Example:
@@ -69,8 +75,12 @@ featured: true
 - `featured: true`: only for the story that should own the homepage hero. Clear
   it from the previous featured post if you set it here.
 - `draft: true`: when the user wants it staged but not live.
-- Never add a `cover:` unless an image file actually exists; the layout falls
-  back to the YouTube thumbnail.
+- `cover:` is the story's **card art** on the homepage and in grids, not the
+  social image. It goes through Astro's `image()` helper, so it has to be a real
+  file under `src/` referenced relative to the post (`../../assets/foo.jpg`). A
+  `/public` path like `/og/slug.png` fails the build with `[ImageNotFound]`.
+  Leave it out unless such a file exists; the cards then fall back to the
+  YouTube thumbnail, and the social image is generated either way.
 - The video embed is rendered by `PostLayout.astro` from the `youtube` field.
   **Do not** put an embed, iframe, link, or thumbnail in the body. It would
   double up.
