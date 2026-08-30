@@ -3,63 +3,65 @@
 
 /* ---------------------------------------------------------------------------
    The Yeti Ways — design tokens
-   Tinted cream canvas + dark-navy surfaces carry the neutrals; the family
+   Neutral grey canvas + near-black surfaces carry the neutrals; the family
    palette supplies the voltage:
-     Vibrant Blue   #2A84D3  — Papa Yeti  (primary CTA / brand)
+     Vibrant Blue   #2A84D3  — Papa Yeti  (brand / decorative)
      Bubblegum Pink #F06BAA  — Mama Yeti  (accent)
      Mint Green     #6BCDB2  — Babu Yeti  (accent)
+   The neutral ramp is deliberately free of yellow: every grey sits at a
+   near-neutral hue so the creams that used to tint the page are gone.
    Serif display, humanist sans body, 96px section rhythm, color-block-first
    elevation.
+
+   Contrast: every foreground/background pairing below is verified at WCAG AA
+   (4.5:1) for body text. --color-primary is the brand blue deepened until it
+   clears AA both as link text on the lightest surfaces and as a button fill
+   under white text; --color-blue keeps the exact brand hex for decorative
+   fills, dots, and illustrations that never carry text.
    --------------------------------------------------------------------------- */
 @theme {
-  /* Brand & accent — the Yeti family colors.
-     --color-primary is the brand blue deepened just enough to clear AA
-     (4.5:1) for white button text; --color-blue keeps the exact brand hex
-     for decorative fills, dots, and illustrations. */
-  --color-primary: #1f7ac9;
-  --color-primary-active: #1a67ab;
-  --color-primary-disabled: #cfe2f4;
+  /* Brand & accent — the Yeti family colors. */
+  --color-primary: #16649f;
+  --color-primary-active: #0f4d80;
+  --color-primary-disabled: #c9dbec;
   --color-blue: #2a84d3;
   --color-blue-active: #1f6cb0;
   --color-accent-pink: #f06baa;
   --color-accent-pink-active: #d94f90;
   --color-accent-mint: #6bcdb2;
   --color-accent-mint-active: #4fb89b;
-  /* Back-compat aliases (kept so stray class names don't 404) */
-  --color-accent-teal: #6bcdb2;
-  --color-accent-amber: #f06baa;
 
   /* Text */
-  --color-ink: #141413;
-  --color-body: #3d3d3a;
-  --color-body-strong: #252523;
-  --color-muted: #6c6a64;
-  --color-muted-soft: #8e8b82;
+  --color-ink: #131316;
+  --color-body: #3c3c43;
+  --color-body-strong: #24242a;
+  --color-muted: #5f5f68;
+  --color-muted-soft: #61616b;
   --color-on-primary: #ffffff;
-  --color-on-dark: #faf9f5;
-  --color-on-dark-soft: #a09d96;
+  --color-on-dark: #fafafa;
+  --color-on-dark-soft: #a4a4ad;
 
   /* Surfaces */
-  --color-canvas: #faf9f5;
-  --color-surface-soft: #f5f0e8;
-  --color-surface-card: #efe9de;
-  --color-surface-cream-strong: #e8e0d2;
-  --color-surface-dark: #181715;
-  --color-surface-dark-elevated: #252320;
-  --color-surface-dark-soft: #1f1e1b;
+  --color-canvas: #fafafa;
+  --color-surface-soft: #f2f2f3;
+  --color-surface-card: #e9e9ec;
+  --color-surface-strong: #dededf;
+  --color-surface-dark: #17171a;
+  --color-surface-dark-elevated: #232329;
+  --color-surface-dark-soft: #1d1d21;
 
   /* Lines */
-  --color-hairline: #e6dfd8;
-  --color-hairline-soft: #ebe6df;
+  --color-hairline: #e2e2e4;
+  --color-hairline-soft: #ebebed;
 
-  /* Semantic */
-  --color-success: #5db872;
-  --color-warning: #d4a017;
+  /* Semantic — each one clears AA under white text */
+  --color-success: #2b8144;
+  --color-warning: #b4532a;
   --color-error: #c64545;
 
   /* Type families — licensed Copernicus/StyreneB substituted per DESIGN.md */
   --font-serif: "Bangers", "Cormorant Garamond", "Tiempos Headline", Garamond, "Times New Roman", serif;
-  --font-sans: "Playfair Display", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Besley", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Display type scale (serif, weight 500, negative tracking) */
@@ -128,7 +130,7 @@
   :focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
   }
 
   ::selection {
@@ -192,7 +194,7 @@
     border-color: var(--color-primary);
   }
 
-  /* Cream button used on the blue / dark bands */
+  /* Light button used on the blue / dark bands */
   .btn-invert {
     background-color: var(--color-canvas);
     color: var(--color-ink);
@@ -202,7 +204,7 @@
     box-shadow: 0 6px 16px rgba(20, 20, 19, 0.16);
   }
   .btn-invert:active {
-    background-color: var(--color-surface-cream-strong);
+    background-color: var(--color-surface-strong);
   }
 }
 

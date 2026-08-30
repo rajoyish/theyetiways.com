@@ -1,36 +1,34 @@
 ---
 version: alpha
 name: the-yeti-ways-design
-description: A warm-canvas editorial interface for The Yeti Ways family blog. The system anchors on a tinted cream canvas with serif display headlines and dark navy surfaces for the pacing rhythm. Brand voltage comes from the three Yeti family colors — Vibrant Blue (Papa), Bubblegum Pink (Mama), and Mint Green (Babu) — set against the cream. Blue is the primary CTA; pink and mint are companion accents. Type voice runs a slab-serif display ("Cormorant Garamond") for h1/h2 and a humanist sans (Inter) for body. A 6-spoke snowflake mark anchors the wordmark.
+description: A neutral-canvas editorial interface for The Yeti Ways family blog. The system anchors on a neutral grey canvas with serif display headlines and dark navy surfaces for the pacing rhythm. Brand voltage comes from the three Yeti family colors — Vibrant Blue (Papa), Bubblegum Pink (Mama), and Mint Green (Babu) — set against the grey. Blue is the primary CTA; pink and mint are companion accents. Type voice runs a slab-serif display ("Cormorant Garamond") for h1/h2 and a humanist sans (Inter) for body. A 6-spoke snowflake mark anchors the wordmark.
 
 colors:
-  primary: "#1f7ac9"
-  primary-active: "#1a67ab"
-  primary-disabled: "#cfe2f4"
+  primary: "#16649f"
+  primary-active: "#0f4d80"
+  primary-disabled: "#c9dbec"
   blue: "#2a84d3"
   accent-pink: "#f06baa"
   accent-mint: "#6bcdb2"
-  ink: "#141413"
-  body: "#3d3d3a"
-  body-strong: "#252523"
-  muted: "#6c6a64"
-  muted-soft: "#8e8b82"
-  hairline: "#e6dfd8"
-  hairline-soft: "#ebe6df"
-  canvas: "#faf9f5"
-  surface-soft: "#f5f0e8"
-  surface-card: "#efe9de"
-  surface-cream-strong: "#e8e0d2"
-  surface-dark: "#181715"
-  surface-dark-elevated: "#252320"
-  surface-dark-soft: "#1f1e1b"
+  ink: "#131316"
+  body: "#3c3c43"
+  body-strong: "#24242a"
+  muted: "#5f5f68"
+  muted-soft: "#61616b"
+  hairline: "#e2e2e4"
+  hairline-soft: "#ebebed"
+  canvas: "#fafafa"
+  surface-soft: "#f2f2f3"
+  surface-card: "#e9e9ec"
+  surface-strong: "#dededf"
+  surface-dark: "#17171a"
+  surface-dark-elevated: "#232329"
+  surface-dark-soft: "#1d1d21"
   on-primary: "#ffffff"
-  on-dark: "#faf9f5"
-  on-dark-soft: "#a09d96"
-  accent-teal: "#6bcdb2"
-  accent-amber: "#f06baa"
-  success: "#5db872"
-  warning: "#d4a017"
+  on-dark: "#fafafa"
+  on-dark-soft: "#a4a4ad"
+  success: "#2b8144"
+  warning: "#b4532a"
   error: "#c64545"
 
 typography:
@@ -303,23 +301,23 @@ components:
 
 ## Overview
 
-The Yeti Ways is a warm, editorial family blog. The base atmosphere is a **tinted cream canvas** (`{colors.canvas}` — #faf9f5) — distinctly warm, deliberately not cool gray-white. Headlines run a **slab-serif display** ("Cormorant Garamond") at weight 500 with negative letter-spacing, paired with **Inter** body sans. The combination feels like a literary publication, not a SaaS marketing page.
+The Yeti Ways is a warm, editorial family blog. The base atmosphere is a **neutral grey canvas** (`{colors.canvas}` — #fafafa) — distinctly warm, deliberately not cool gray-white. Headlines run a **slab-serif display** ("Cormorant Garamond") at weight 500 with negative letter-spacing, paired with **Inter** body sans. The combination feels like a literary publication, not a SaaS marketing page.
 
-Brand voltage comes from the **three Yeti family colors** set against the cream: **Vibrant Blue** (`{colors.blue}` — #2A84D3, Papa Yeti), **Bubblegum Pink** (`{colors.accent-pink}` — #F06BAA, Mama Yeti), and **Mint Green** (`{colors.accent-mint}` — #6BCDB2, Babu Yeti). Blue drives every primary CTA and the brand wordmark (deepened to `{colors.primary}` — #1F7AC9 so white button text clears AA); pink and mint are companion accents on badges, author dots, and card edges. One family, three footprints in the snow.
+Brand voltage comes from the **three Yeti family colors** set against the grey: **Vibrant Blue** (`{colors.blue}` — #2A84D3, Papa Yeti), **Bubblegum Pink** (`{colors.accent-pink}` — #F06BAA, Mama Yeti), and **Mint Green** (`{colors.accent-mint}` — #6BCDB2, Babu Yeti). Blue drives every primary CTA and the brand wordmark (deepened to `{colors.primary}` — #16649F so white button text clears AA); pink and mint are companion accents on badges, author dots, and card edges. One family, three footprints in the snow.
 
 The system has three surface modes that alternate page-by-page:
-1. **Cream canvas** (`{colors.canvas}`) — default body floor
-2. **Light cream cards** (`{colors.surface-card}`) — feature card backgrounds
+1. **Neutral canvas** (`{colors.canvas}`) — default body floor
+2. **Light grey cards** (`{colors.surface-card}`) — feature card backgrounds
 3. **Dark navy product surfaces** (`{colors.surface-dark}`) — code editor mockups, model showcase cards, pre-footer CTAs, footer itself
 
-The dark navy surfaces (`{colors.surface-dark}`) carry the "Find your trail" category grid, the pre-footer, and the footer. The cream-to-dark contrast is the page's pacing rhythm.
+The dark navy surfaces (`{colors.surface-dark}`) carry the "Find your trail" category grid, the pre-footer, and the footer. The light-to-dark contrast is the page's pacing rhythm.
 
 **Key Characteristics:**
-- Warm cream canvas (`{colors.canvas}` — #faf9f5) with dark warm-ink text (`{colors.ink}` — #141413).
-- Blue primary CTA (`{colors.primary}` — #1F7AC9). Used scarcely on individual buttons, generously on the full-bleed blue callout band.
+- Neutral grey canvas (`{colors.canvas}` — #fafafa) with near-black ink text (`{colors.ink}` — #131316).
+- Blue primary CTA (`{colors.primary}` — #16649F). Used scarcely on individual buttons, generously on the full-bleed blue callout band.
 - Pink + mint accents rotate through author dots, "Featured" badges, and the accent hairline on the left edge of cards.
 - Slab-serif display headlines via Cormorant Garamond at weight 500 with negative letter-spacing. Pairs with Inter body for a literary editorial voice.
-- Light cream feature cards (`{colors.surface-card}` — #efe9de) — slightly darker than canvas, used for story cards and family cards.
+- Light grey feature cards (`{colors.surface-card}` — #e9e9ec) — slightly darker than canvas, used for story cards and family cards.
 - 6-spoke snowflake mark — inherits `currentColor`, tinted blue in the header.
 - Border radius is hierarchical: `{rounded.md}` (8px) for buttons + inputs, `{rounded.lg}` (12px) for content cards, `{rounded.xl}` (16px) for the hero + CTA band, `{rounded.pill}` for badges.
 - Section rhythm `{spacing.section}` (96px) — modern-SaaS standard. Internal card padding stays generous at `{spacing.xl}` (32px).
@@ -328,46 +326,46 @@ The dark navy surfaces (`{colors.surface-dark}`) carry the "Find your trail" cat
 
 ### Brand & Accent
 - **Vibrant Blue** (`{colors.blue}` — #2A84D3): Papa Yeti's color and the brand blue. Exact hex used for decorative fills — author dots, the header snowflake, character illustrations, card accent edges.
-- **Primary** (`{colors.primary}` — #1F7AC9): The brand blue deepened just enough to clear AA (4.5:1) for white button text. Every primary CTA background and the pre-footer callout band.
-- **Primary Active** (`{colors.primary-active}` — #1A67AB): The press / darker variant.
-- **Primary Disabled** (`{colors.primary-disabled}` — #cfe2f4): A pale-blue disabled state.
+- **Primary** (`{colors.primary}` — #16649F): The brand blue deepened until it clears AA (4.5:1) in both directions: as white-on-blue button text, and as blue link text on every light surface. Every primary CTA background, link, and the pre-footer callout band.
+- **Primary Active** (`{colors.primary-active}` — #0F4D80): The press / darker variant.
+- **Primary Disabled** (`{colors.primary-disabled}` — #c9dbec): A pale-blue disabled state.
 - **Bubblegum Pink** (`{colors.accent-pink}` — #F06BAA): Mama Yeti's color. "Featured" badges (with ink text), her author dot, pink card edges. Always paired with `{colors.ink}` text — white fails on it.
 - **Mint Green** (`{colors.accent-mint}` — #6BCDB2): Babu Yeti's color. His author dot, mint card edges, occasional badge. Also paired with `{colors.ink}` text.
 
 ### Surface
-- **Canvas** (`{colors.canvas}` — #faf9f5): The default page floor. Tinted cream — warm, deliberately not pure white.
-- **Surface Soft** (`{colors.surface-soft}` — #f5f0e8): Section dividers, very-soft band backgrounds.
-- **Surface Card** (`{colors.surface-card}` — #efe9de): Feature cards, content cards. One step darker than canvas.
-- **Surface Cream Strong** (`{colors.surface-cream-strong}` — #e8e0d2): A strongest-cream variant used on selected category tabs and emphasized section bands.
-- **Surface Dark** (`{colors.surface-dark}` — #181715): Code editor mockups, model showcase cards, footer. The dominant dark surface.
-- **Surface Dark Elevated** (`{colors.surface-dark-elevated}` — #252320): Elevated cards inside dark bands (settings panels in mockups).
-- **Surface Dark Soft** (`{colors.surface-dark-soft}` — #1f1e1b): Slightly lighter dark, used for code block backgrounds inside larger dark cards.
-- **Hairline** (`{colors.hairline}` — #e6dfd8): The 1px border tone on cream surfaces. Same hex as `{colors.primary-disabled}` — borders feel like one elevation step rather than ink lines.
-- **Hairline Soft** (`{colors.hairline-soft}` — #ebe6df): Barely-visible divider used inside the same band.
+- **Canvas** (`{colors.canvas}` — #fafafa): The default page floor. Very light neutral grey, deliberately not pure white.
+- **Surface Soft** (`{colors.surface-soft}` — #f2f2f3): Section dividers, very-soft band backgrounds.
+- **Surface Card** (`{colors.surface-card}` — #e9e9ec): Feature cards, content cards. One step darker than canvas.
+- **Surface Strong** (`{colors.surface-strong}` — #dededf): The deepest neutral variant used on selected category tabs and emphasized section bands.
+- **Surface Dark** (`{colors.surface-dark}` — #17171a): Code editor mockups, model showcase cards, footer. The dominant dark surface.
+- **Surface Dark Elevated** (`{colors.surface-dark-elevated}` — #232329): Elevated cards inside dark bands (settings panels in mockups).
+- **Surface Dark Soft** (`{colors.surface-dark-soft}` — #1d1d21): Slightly lighter dark, used for code block backgrounds inside larger dark cards.
+- **Hairline** (`{colors.hairline}` — #e2e2e4): The 1px border tone on light surfaces. Borders feel like one elevation step rather than ink lines.
+- **Hairline Soft** (`{colors.hairline-soft}` — #ebebed): Barely-visible divider used inside the same band.
 
 ### Text
-- **Ink** (`{colors.ink}` — #141413): All headlines and primary text. Warm dark, slightly off-pure-black.
-- **Body Strong** (`{colors.body-strong}` — #252523): Emphasized paragraphs, lead text.
-- **Body** (`{colors.body}` — #3d3d3a): Default running-text color.
-- **Muted** (`{colors.muted}` — #6c6a64): Sub-headings, breadcrumbs, footer-adjacent secondary text.
-- **Muted Soft** (`{colors.muted-soft}` — #8e8b82): Captions, fine-print, copyright lines.
-- **On Primary** (`{colors.on-primary}` — #ffffff): Text on coral buttons.
-- **On Dark** (`{colors.on-dark}` — #faf9f5): Cream-tinted white used on dark surfaces (echoes the canvas tone).
-- **On Dark Soft** (`{colors.on-dark-soft}` — #a09d96): Footer body text, secondary labels in dark mockups.
+- **Ink** (`{colors.ink}` — #131316): All headlines and primary text. Neutral dark, slightly off-pure-black.
+- **Body Strong** (`{colors.body-strong}` — #24242a): Emphasized paragraphs, lead text.
+- **Body** (`{colors.body}` — #3c3c43): Default running-text color.
+- **Muted** (`{colors.muted}` — #5f5f68): Sub-headings, breadcrumbs, footer-adjacent secondary text.
+- **Muted Soft** (`{colors.muted-soft}` — #61616b): Captions, fine-print, copyright lines.
+- **On Primary** (`{colors.on-primary}` — #ffffff): Text on primary-blue buttons and other saturated fills.
+- **On Dark** (`{colors.on-dark}` — #fafafa): Near-white used on dark surfaces (echoes the canvas tone).
+- **On Dark Soft** (`{colors.on-dark-soft}` — #a4a4ad): Footer body text, secondary labels in dark mockups.
 
 ### Semantic
-- **Success** (`{colors.success}` — #5db872): Green status dots, "available" indicators.
-- **Warning** (`{colors.warning}` — #d4a017): Warning callouts (rare on marketing surfaces).
+- **Success** (`{colors.success}` — #2b8144): Green status dots, "available" indicators.
+- **Warning** (`{colors.warning}` — #b4532a, terracotta): Warning callouts (rare on marketing surfaces).
 - **Error** (`{colors.error}` — #c64545): Validation errors.
 
 ## Typography
 
 ### Font Family
-The system runs **Bangers** as the display face for headlines, and **Playfair Display** as the font for body, navigation, and UI labels. **JetBrains Mono** handles code blocks. The fallback stack walks `Tiempos Headline, Garamond, "Times New Roman", serif` for display and `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif` for body.
+The system runs **Bangers** as the display face for headlines, and **Besley** as the font for body, navigation, and UI labels. **JetBrains Mono** handles code blocks. The fallback stack walks `Tiempos Headline, Garamond, "Times New Roman", serif` for display and `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif` for body.
 
 The display/body split is editorial:
 - Bangers (weight 400, negative tracking) → h1, h2, h3, hero display
-- Playfair Display (weight 400-500) → body, navigation, buttons, captions, labels
+- Besley (weight 400-500) → body, navigation, buttons, captions, labels
 - JetBrains Mono → all code blocks and terminal text
 
 ### Hierarchy
@@ -392,10 +390,10 @@ The display/body split is editorial:
 ### Principles
 Display sizes use weight 400 (regular), never bold. Negative letter-spacing (-0.3 to -1.5px) is essential — Bangers without it reads as off-brand. The display character is what gives the brand its bold voice.
 
-Body type stays at weight 400 for paragraphs, weight 500 for labels and emphasized phrases. The body is Playfair Display.
+Body type stays at weight 400 for paragraphs, weight 500 for labels and emphasized phrases. The body is Besley.
 
 ### Note on Font Substitutes
-If Bangers is unavailable, **Cormorant Garamond** at weight 500 with -0.02em letter-spacing is the closest open-source approximation. **EB Garamond** is a fallback. For Playfair Display, **Inter** is the closest match — both are designed for screen reading. **Söhne** is another close alternative if licensed.
+If Bangers is unavailable, **Cormorant Garamond** at weight 500 with -0.02em letter-spacing is the closest open-source approximation. **EB Garamond** is a fallback. For Besley, **Inter** is the closest match — both are designed for screen reading. **Söhne** is another close alternative if licensed.
 
 ## Layout
 
@@ -414,7 +412,7 @@ If Bangers is unavailable, **Cormorant Garamond** at weight 500 with -0.02em let
 - **Pricing grid:** 3-up at desktop (Free / Pro / Team / Enterprise often), 1-up at mobile.
 
 ### Whitespace Philosophy
-The cream canvas + serif display + generous internal padding create an editorial pacing — Claude reads like a long-form magazine column rather than a marketing template. Whitespace between bands stays uniform at 96px; whitespace inside cards is generous (32px), letting type breathe.
+The neutral canvas + serif display + generous internal padding create an editorial pacing — Claude reads like a long-form magazine column rather than a marketing template. Whitespace between bands stays uniform at 96px; whitespace inside cards is generous (32px), letting type breathe.
 
 ## Elevation & Depth
 
@@ -422,16 +420,16 @@ The cream canvas + serif display + generous internal padding create an editorial
 |---|---|---|
 | Flat | No shadow, no border | Body sections, top nav, hero bands |
 | Soft hairline | 1px `{colors.hairline}` border | Inputs, sub-nav, occasionally on cards |
-| Cream card | `{colors.surface-card}` background — no shadow | Feature cards, content cards |
+| Light card | `{colors.surface-card}` background — no shadow | Feature cards, content cards |
 | Dark surface card | `{colors.surface-dark}` background — no shadow | Code editor mockups, model showcase cards |
 | Subtle drop shadow | Faint shadow at low alpha | Hover-elevated states (the system uses `0 1px 3px rgba(20,20,19,0.08)` rarely) |
 
-The elevation philosophy is **color-block first, shadow rare**. Most depth comes from the cream-vs-dark surface contrast. Shadows are minimal. The dark surface mockups have their own internal product chrome (code editor scrollbars, line numbers, syntax highlighting) which adds detail without needing external shadows.
+The elevation philosophy is **color-block first, shadow rare**. Most depth comes from the light-vs-dark surface contrast. Shadows are minimal. The dark surface mockups have their own internal product chrome (code editor scrollbars, line numbers, syntax highlighting) which adds detail without needing external shadows.
 
 ### Decorative Depth
 - The Anthropic spike-mark glyph (4-spoke radial asterisk) appears as a small black mark in the brand wordmark and inline as a content marker.
 - Code editor mockups carry their own internal depth: syntax-highlighted text in muted blues / oranges / grays, line numbers in `{colors.muted-soft}`, status bars at the bottom in `{colors.surface-dark-elevated}`.
-- Some hero illustrations use simple line-art with coral and dark-navy strokes on cream — minimal, hand-drawn-feeling, never photorealistic.
+- Some hero illustrations use simple line-art with coral and dark-navy strokes on light grey — minimal, hand-drawn-feeling, never photorealistic.
 
 ## Shapes
 
@@ -449,7 +447,7 @@ The elevation philosophy is **color-block first, shadow rare**. Most depth comes
 
 ### Photography & Illustrations
 Claude's hero rarely uses photography. Instead it uses:
-- Simple line-art illustrations with coral + dark-navy strokes on the cream canvas
+- Simple line-art illustrations with coral + dark-navy strokes on the neutral canvas
 - Code editor mockups (the dominant "hero" treatment on developer-focused pages)
 - Terminal output mockups with monospace text on dark
 - Model comparison cards (Opus / Sonnet / Haiku) with abstract geometric thumbnails
@@ -460,15 +458,15 @@ When photography is used (rare — mostly testimonials), avatars crop to perfect
 
 ### Top Navigation
 
-**`top-nav`** — Cream nav bar pinned to the top of every page. 64px tall, `{colors.canvas}` background. Carries the Anthropic spike-mark + "Claude" wordmark at left, primary horizontal menu (Product, Solutions, Use Cases, Pricing, Research, Company) center-left, right-side cluster with "Sign in" text-link, "Try Claude" `{component.button-primary}` (coral). Menu items in `{typography.nav-link}` (StyreneB 14px / 500).
+**`top-nav`** — Light nav bar pinned to the top of every page. 64px tall, `{colors.canvas}` background. Carries the Anthropic spike-mark + "Claude" wordmark at left, primary horizontal menu (Product, Solutions, Use Cases, Pricing, Research, Company) center-left, right-side cluster with "Sign in" text-link, "Try Claude" `{component.button-primary}` (coral). Menu items in `{typography.nav-link}` (StyreneB 14px / 500).
 
 ### Buttons
 
 **`button-primary`** — The signature coral CTA. Background `{colors.primary}` (#cc785c), text `{colors.on-primary}` (white), type `{typography.button}` (StyreneB 14px / 500), padding 12px × 20px, height 40px, rounded `{rounded.md}` (8px). Active state `button-primary-active` darkens to `{colors.primary-active}` (#a9583e).
 
-**`button-secondary`** — Cream button with hairline outline. Background `{colors.canvas}`, text `{colors.ink}`, 1px hairline border, same padding + height + radius as primary.
+**`button-secondary`** — Light button with hairline outline. Background `{colors.canvas}`, text `{colors.ink}`, 1px hairline border, same padding + height + radius as primary.
 
-**`button-secondary-on-dark`** — Used over `{colors.surface-dark}` cards. Background `{colors.surface-dark-elevated}` (#252320), text `{colors.on-dark}`. Stays dark — the system never inverts to a light secondary on dark surfaces.
+**`button-secondary-on-dark`** — Used over `{colors.surface-dark}` cards. Background `{colors.surface-dark-elevated}` (#232329), text `{colors.on-dark}`. Stays dark — the system never inverts to a light secondary on dark surfaces.
 
 **`button-text-link`** — Inline text button, no background. Used for "Sign in" in the top nav and inline CTA links.
 
@@ -478,11 +476,11 @@ When photography is used (rare — mostly testimonials), avatars crop to perfect
 
 ### Cards & Containers
 
-**`hero-band`** — Cream-canvas hero with a 6-6 grid: h1 + sub-headline + button row on the left, hero illustration card or product mockup card on the right. Vertical padding `{spacing.section}` (96px).
+**`hero-band`** — Neutral-canvas hero with a 6-6 grid: h1 + sub-headline + button row on the left, hero illustration card or product mockup card on the right. Vertical padding `{spacing.section}` (96px).
 
-**`hero-illustration-card`** — A larger card holding the hero's right-side artifact — sometimes a coral-stroke line illustration on cream background, sometimes a dark code editor mockup. Background `{colors.canvas}` or `{colors.surface-dark}` depending on context, rounded `{rounded.xl}` (16px).
+**`hero-illustration-card`** — A larger card holding the hero's right-side artifact — sometimes a coral-stroke line illustration on a light grey background, sometimes a dark code editor mockup. Background `{colors.canvas}` or `{colors.surface-dark}` depending on context, rounded `{rounded.xl}` (16px).
 
-**`feature-card`** — Used in 3-up feature grids. Background `{colors.surface-card}` (#efe9de — slightly darker cream), rounded `{rounded.lg}` (12px), internal padding `{spacing.xl}` (32px). Carries a small icon at top, an `{typography.title-md}` headline, and a body description in `{typography.body-md}`.
+**`feature-card`** — Used in 3-up feature grids. Background `{colors.surface-card}` (#e9e9ec — slightly darker grey), rounded `{rounded.lg}` (12px), internal padding `{spacing.xl}` (32px). Carries a small icon at top, an `{typography.title-md}` headline, and a body description in `{typography.body-md}`.
 
 **`product-mockup-card-dark`** — Dark navy card showing actual Claude product chrome (chat interface, code editor, agent controls). Background `{colors.surface-dark}`, rounded `{rounded.lg}`, internal padding `{spacing.xl}` (32px). Carries text labels in `{colors.on-dark}` and product UI fragments below.
 
@@ -494,7 +492,7 @@ When photography is used (rare — mostly testimonials), avatars crop to perfect
 
 **`pricing-tier-card-featured`** — The featured tier (typically "Pro" or "Team"). Background flips to `{colors.surface-dark}`, text inverts to `{colors.on-dark}`. The dark surface IS the featured-tier signal.
 
-**`callout-card-coral`** — A full-bleed coral card carrying a major call-to-action. Background `{colors.primary}` (#cc785c), text `{colors.on-primary}` (white), rounded `{rounded.lg}`, padding `{spacing.xxl}` (48px). The coral surface IS the voltage; the CTA inside uses an inverted button style (cream/canvas button on coral).
+**`callout-card-coral`** — A full-bleed coral card carrying a major call-to-action. Background `{colors.primary}` (#cc785c), text `{colors.on-primary}` (white), rounded `{rounded.lg}`, padding `{spacing.xxl}` (48px). The coral surface IS the voltage; the CTA inside uses an inverted button style (light canvas button on coral).
 
 **`connector-tile`** — Used on the connectors page's integration grid. Background `{colors.canvas}` with hairline border, rounded `{rounded.lg}`, padding 20px. Each tile carries a logo at top, a `{typography.title-sm}` connector name, and a short description.
 
@@ -504,7 +502,7 @@ When photography is used (rare — mostly testimonials), avatars crop to perfect
 
 **`text-input-focused`** — Focus state. Border thickens or shifts to `{colors.primary}` (coral) for emphasis. Carries a 3px coral-at-15%-alpha outer ring.
 
-**`cookie-consent-card`** — Bottom-right floating dark cookie banner. Background `{colors.surface-dark}`, text `{colors.on-dark}`, rounded `{rounded.lg}`, padding `{spacing.lg}` (24px). One of the few places dark surface appears at small scale on cream pages.
+**`cookie-consent-card`** — Bottom-right floating dark cookie banner. Background `{colors.surface-dark}`, text `{colors.on-dark}`, rounded `{rounded.lg}`, padding `{spacing.lg}` (24px). One of the few places dark surface appears at small scale on light pages.
 
 ### Tags / Badges
 
@@ -518,30 +516,30 @@ When photography is used (rare — mostly testimonials), avatars crop to perfect
 
 ### CTA / Footer
 
-**`cta-band-coral`** — A pre-footer "Try Claude" CTA card. Full-width coral fill, white type, rounded `{rounded.lg}`, padding 64px. Carries an h2 in `{typography.display-sm}` (still serif!), a sub-line, and a cream-button CTA.
+**`cta-band-coral`** — A pre-footer "Try Claude" CTA card. Full-width coral fill, white type, rounded `{rounded.lg}`, padding 64px. Carries an h2 in `{typography.display-sm}` (still serif!), a sub-line, and a light-button CTA.
 
 **`cta-band-dark`** — Alternative pre-footer band on developer-focused pages. Background `{colors.surface-dark}`, text `{colors.on-dark}`, rounded `{rounded.lg}`, padding 64px. Often pairs with a code-window card.
 
-**`footer`** — Dark navy footer that closes every page. Background `{colors.surface-dark}` (#181715), text `{colors.on-dark-soft}`. 4-column link list at desktop covering Product / Company / Resources / Legal. Vertical padding 64px. The Anthropic spike-mark + "Anthropic" wordmark sits at the top in `{colors.on-dark}`. The footer never inverts.
+**`footer`** — Dark navy footer that closes every page. Background `{colors.surface-dark}` (#17171a), text `{colors.on-dark-soft}`. 4-column link list at desktop covering Product / Company / Resources / Legal. Vertical padding 64px. The Anthropic spike-mark + "Anthropic" wordmark sits at the top in `{colors.on-dark}`. The footer never inverts.
 
 ## Do's and Don'ts
 
 ### Do
-- Anchor every page on the cream canvas. Pure white reads as "any other AI tool"; the warm tint is the brand differentiator.
+- Anchor every page on the neutral canvas. Pure white reads as "any other AI tool"; the warm tint is the brand differentiator.
 - Use Copernicus serif for every display headline. Pair with StyreneB sans body. Negative letter-spacing on display sizes is non-negotiable.
 - Reserve `{colors.primary}` (coral) for primary CTAs and full-bleed `{component.callout-card-coral}` moments. Don't paint accent moments coral elsewhere.
 - Use `{component.product-mockup-card-dark}` and `{component.code-window-card}` to show actual Claude product chrome. Don't paint marketing illustrations of code when you can show real code.
-- Pair `{component.feature-card}` (cream) with `{component.product-mockup-card-dark}` (navy) in alternating bands. The cream-to-dark rhythm is the brand's pacing mechanism.
+- Pair `{component.feature-card}` (light grey) with `{component.product-mockup-card-dark}` (navy) in alternating bands. The light-to-dark rhythm is the brand's pacing mechanism.
 - Use the Anthropic spike-mark glyph as the brand wordmark prefix. Never invert the mark to white-on-dark within the wordmark itself.
 - Apply `{spacing.section}` (96px) between major bands.
 
 ### Don't
-- Don't use cool grays or pure white for canvas. Cream is the brand.
+- Don't use pure white for canvas. The canvas is a soft neutral grey, one step off white — the tone is what keeps the page from glaring.
 - Don't bold serif display weight. Copernicus at 700 reads as bombastic; the system stays at 400.
 - Don't use cool blue or saturated cyan as a brand accent. The coral is the brand voltage.
 - Don't put coral everywhere. The coral is scarce on individual elements and generous only on full-bleed coral callout cards.
 - Don't use Inter for display headlines. The serif character is the brand voice.
-- Don't repeat the same surface mode in two consecutive bands. The pacing alternates: cream → cream-card → dark-mockup → cream → coral-callout → dark-footer.
+- Don't repeat the same surface mode in two consecutive bands. The pacing alternates: canvas → grey-card → dark-mockup → canvas → coral-callout → dark-footer.
 - Don't add hover state styling beyond what the system already encodes — primary darkens on press; nothing else changes.
 
 ## Responsive Behavior
@@ -562,7 +560,7 @@ When photography is used (rare — mostly testimonials), avatars crop to perfect
 - Connector tile entire card area is tappable; effective tap area >> 44px.
 
 ### Collapsing Strategy
-- Top nav collapses to hamburger at < 768px; menu opens as a full-screen cream sheet.
+- Top nav collapses to hamburger at < 768px; menu opens as a full-screen canvas sheet.
 - Hero band's 6-6 grid collapses to single-column on mobile — h1 + sub-head + buttons first, then the illustration / mockup card below.
 - Feature grids reduce columns rather than scaling cards down.
 - Pricing tier cards collapse 4 → 2 → 1; featured-tier dark surface stays visually distinct at every breakpoint.
@@ -580,7 +578,7 @@ When photography is used (rare — mostly testimonials), avatars crop to perfect
 3. Use `{token.refs}` everywhere — never inline hex.
 4. Never document hover. Default and Active/Pressed states only.
 5. Display headlines stay Copernicus serif 400 with negative tracking. Body stays StyreneB / Inter 400. The split is unbreakable.
-6. Cream + coral + dark navy is the trinity. Don't introduce a fourth surface tone (no purple cards, no green sections).
+6. Neutral grey + coral + dark navy is the trinity. Don't introduce a fourth surface tone (no purple cards, no green sections).
 7. When in doubt about emphasis: bigger Copernicus serif before bolder weight.
 
 ## Known Gaps
