@@ -361,12 +361,16 @@ The dark navy surfaces (`{colors.surface-dark}`) carry the "Find your trail" cat
 ## Typography
 
 ### Font Family
-The system runs **Bangers** as the display face for headlines, and **Besley** as the font for body, navigation, and UI labels. **JetBrains Mono** handles code blocks. The fallback stack walks `Tiempos Headline, Garamond, "Times New Roman", serif` for display and `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif` for body.
+The system runs **Bangers** as the display face for headlines, and **Besley** as the font for body, navigation, and UI labels. **JetBrains Mono** handles code blocks, and **Georgia** appears in exactly one decorative role, the pull-quote mark. The fallback stack walks `Tiempos Headline, Garamond, "Times New Roman", serif` for display and `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif` for body.
 
 The display/body split is editorial:
 - Bangers (weight 400, negative tracking) → h1, h2, h3, hero display
 - Besley (weight 400-500) → body, navigation, buttons, captions, labels
 - JetBrains Mono → all code blocks and terminal text
+- Georgia (`{colors}`-free, decorative) → the oversized opening quote mark on
+  pull quotes, and nothing else. Bangers carries no quote glyph that holds up at
+  display size, so the mark is set in a book serif via `--font-quote`. It is
+  decorative, carries empty alt text, and never sets running text.
 
 ### Hierarchy
 

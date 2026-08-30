@@ -3,8 +3,20 @@ import YetiMark from "./YetiMark.astro";
 import { NAV_LINKS, SITE } from "../lib/site";
 
 const pathname = Astro.url.pathname;
+/**
+ * A link is active on its own page and on anything nested under it, so a story
+ * at /blog/<slug>/ keeps "Stories" marked. Matching on a segment boundary
+ * rather than a bare prefix keeps /blog from claiming a hypothetical /blogroll.
+ */
 const isActive = (href: string) =>
-  href === "/" ? pathname === "/" : pathname.startsWith(href);
+  href === "/"
+    ? pathname === "/"
+    : pathname === href || pathname.startsWith(`${href}/`);
+
+const linkClass = (href: string) =>
+  isActive(href)
+    ? "bg-surface-card text-ink"
+    : "text-muted hover:bg-surface-soft hover:text-ink";
 ---
 
 <header class="sticky top-0 z-50 border-b border-hairline bg-canvas/90 backdrop-blur">
@@ -22,9 +34,7 @@ const isActive = (href: string) =>
             aria-current={isActive(link.href) ? "page" : undefined}
             class:list={[
               "rounded-md px-3 py-2 text-sm font-medium transition-colors",
-              isActive(link.href)
-                ? "text-ink"
-                : "text-muted hover:text-ink",
+              linkClass(link.href),
             ]}
           >
             {link.label}
@@ -48,51 +58,99 @@ const isActive = (href: string) =>
         aria-controls="mobile-menu"
         aria-label="Open menu"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <svg
+          id="menu-icon-open"
+          width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"
+        >
           <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg
+          id="menu-icon-close"
+          hidden
+          width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"
+        >
+          <path d="M6 6l12 12M18 6L6 18" />
         </svg>
       </button>
     </div>
   </div>
 
-  <div
-    id="mobile-menu"
-    hidden
-    class="fixed inset-0 top-16 z-40 bg-canvas px-6 py-8 md:hidden"
-  >
-    <nav class="flex flex-col gap-1" aria-label="Mobile">
-      {
-        NAV_LINKS.map((link) => (
-          <a
-            href={link.href}
-            class="rounded-md px-3 py-3 text-lg font-medium text-ink hover:bg-surface-soft"
-          >
-            {link.label}
-          </a>
-        ))
-      }
-      <a href="/blog" class="btn btn-primary mt-4 self-start">Read the stories</a>
-    </nav>
-  </div>
 </header>
+
+<div
+  id="mobile-menu"
+  hidden
+  class="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-canvas px-6 py-8 md:hidden"
+>
+  <nav class="flex flex-col gap-1" aria-label="Mobile">
+    {
+      NAV_LINKS.map((link) => (
+        <a
+          href={link.href}
+          aria-current={isActive(link.href) ? "page" : undefined}
+          class:list={[
+            "rounded-md px-3 py-3 text-lg font-medium transition-colors",
+            isActive(link.href)
+              ? "bg-surface-card text-ink"
+              : "text-body hover:bg-surface-soft hover:text-ink",
+          ]}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    <a href="/blog" class="btn btn-primary mt-4 self-start">Read the stories</a>
+  </nav>
+</div>
 
 <script>
   const toggle = document.getElementById("menu-toggle");
   const menu = document.getElementById("mobile-menu");
+  const iconOpen = document.getElementById("menu-icon-open");
+  const iconClose = document.getElementById("menu-icon-close");
+  /** Everything behind the full-screen overlay, made inert while it's open. */
+  const behind = () =>
+    document.querySelectorAll<HTMLElement>("main, footer");
+
   let open = false;
 
-  function setOpen(next: boolean) {
-    if (!toggle || !menu) return;
+  function setOpen(next: boolean, returnFocus = false) {
+    if (!toggle || !menu || next === open) return;
     open = next;
+
     menu.hidden = !open;
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    if (iconOpen) iconOpen.hidden = open;
+    if (iconClose) iconClose.hidden = !open;
     document.body.style.overflow = open ? "hidden" : "";
+    behind().forEach((el) => el.toggleAttribute("inert", open));
+
+    if (open) {
+      menu.querySelector<HTMLAnchorElement>("a")?.focus();
+    } else if (returnFocus) {
+      toggle.focus();
+    }
   }
 
   toggle?.addEventListener("click", () => setOpen(!open));
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setOpen(false);
+    if (event.key === "Escape" && open) setOpen(false, true);
+  });
+
+  /* Tapping a link closes the sheet, so a same-page anchor doesn't leave the
+     overlay covering the destination. */
+  menu?.addEventListener("click", (event) => {
+    if ((event.target as HTMLElement).closest("a")) setOpen(false);
+  });
+
+  /* Resizing past the md breakpoint hides the sheet via CSS. Without this the
+     body would stay scroll-locked and the page content inert. */
+  const desktop = window.matchMedia("(min-width: 48rem)");
+  desktop.addEventListener("change", (event) => {
+    if (event.matches) setOpen(false);
   });
 </script>

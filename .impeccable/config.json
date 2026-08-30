@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/styles/global.css"
+        ],
+        "createdAt": "2026-08-30T11:33:35.265Z",
+        "reason": "DESIGN.md:328 declares 'card accent edges' as a documented decorative use of the brand blue, alongside author dots and the header snowflake; .accent-edge implements it for the homepage category tiles, rotating the three Yeti family colors. Pre-existing intentional design, not model-authored. Not user-confirmed."
+      }
+    ]
+  }
+}
