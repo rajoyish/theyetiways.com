@@ -1,0 +1,34 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Prose from "../components/Prose.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import { CONTACT } from "../lib/site";
+
+/**
+ * Shell for the policy pages (privacy, terms). Same measure and rhythm as a
+ * story, minus the byline furniture — just the heading, the review date, and
+ * the body in `Prose`.
+ */
+interface Props {
+  title: string;
+  description: string;
+  /** Defaults to the site-wide review date in `CONTACT`. */
+  updated?: Date;
+}
+const { title, description, updated = CONTACT.legalUpdated } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <header class="border-b border-hairline pb-8">
+      <h1 class="text-display-md text-ink sm:text-display-lg">{title}</h1>
+      <p class="mt-4 text-sm text-muted">
+        Last updated <FormattedDate date={updated} />
+      </p>
+    </header>
+
+    <Prose class="mt-10">
+      <slot />
+    </Prose>
+  </article>
+</BaseLayout>

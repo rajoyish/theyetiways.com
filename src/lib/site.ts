@@ -11,11 +11,22 @@ export const SITE = {
     "The Yeti Ways is a family blog co-authored by Papa, Mama, and Babu Yeti — warm, honest stories about family, relationships, parenting, and growing up, each one built around a video from our channels.",
 } as const;
 
+/**
+ * How readers reach the family, and when the legal pages were last reviewed.
+ * Both the contact page and the policy pages read from here, so the address
+ * and the "last updated" line only ever change in one place.
+ */
+export const CONTACT = {
+  email: "hello@theyetiways.com",
+  legalUpdated: new Date("2026-08-30T00:00:00Z"),
+} as const;
+
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Stories", href: "/blog" },
   { label: "The Family", href: "/authors" },
   { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const CATEGORIES = [
@@ -72,6 +83,9 @@ export const FOOTER_LINKS = [
     heading: "More",
     links: [
       { label: "About", href: "/about" },
+      { label: "Contact", href: "/contact" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms & Conditions", href: "/terms" },
       { label: "RSS feed", href: "/rss.xml" },
     ],
   },
