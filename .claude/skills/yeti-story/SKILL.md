@@ -59,21 +59,25 @@ Must satisfy the `posts` schema in `src/content.config.ts`. Example:
 youtube: "https://youtube.com/shorts/VIDEOID"
 title: "The Sweetest Way to Stop Snoring"
 description: "One sentence with a hook and a hint of the lesson. 120 to 180 chars."
-pubDate: 2026-08-30
+pubDate: "2026-08-30T19:15:00+05:45"
 authors:
   - mama-yeti
 category: "Relationships"
 tags:
   - marriage
   - laughter
-featured: true
+featured: false
 ---
 ```
 
-- `pubDate`: today's date unless the user says otherwise.
-- `tags`: 3 or 4, lowercase, plain words. No hashes.
-- `featured: true`: only for the story that should own the homepage hero. Clear
-  it from the previous featured post if you set it here.
+- `pubDate`: a quoted timestamp, **not** a bare date. Now, in Nepal time
+  (`+05:45`), unless the user says otherwise. The time is what makes the ordering
+  deterministic: `getPublishedPosts` sorts newest first, and two posts sharing a
+  bare date sort by whatever order the glob loader happened to return.
+- `featured`: leave it `false`. The homepage hero is automatic. `getFeaturedPost`
+  returns the newest post when nothing is flagged, so a new story takes the hero
+  on its timestamp alone. Set `featured: true` only when the user asks to pin an
+  *older* story to the hero, and clear it from the previous one when you do.
 - `draft: true`: when the user wants it staged but not live.
 - `cover:` is the story's **card art** on the homepage and in grids, not the
   social image. It goes through Astro's `image()` helper, so it has to be a real

@@ -2,7 +2,7 @@
 youtube: "https://youtube.com/shorts/tpx6mC_Qkwo"
 title: "The Sweetest Way to Stop Snoring"
 description: "Rain on the roof, a warm blanket, and one small sound at 2 a.m. What happened in the four seconds after is the whole reason I married this big blue Yeti."
-pubDate: 2026-08-30
+pubDate: "2026-08-30T09:00:00+05:45"
 authors:
   - mama-yeti
 category: "Relationships"
@@ -10,7 +10,7 @@ tags:
   - marriage
   - laughter
   - acceptance
-featured: true
+featured: false
 ---
 
 Rain on the cave roof for three days. Not the loud kind. The steady kind that

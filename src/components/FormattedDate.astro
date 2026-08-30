@@ -7,6 +7,7 @@ const { date, class: className } = Astro.props;
 
 const iso = date.toISOString();
 const formatted = date.toLocaleDateString("en-US", {
+  timeZone: "Asia/Kathmandu",
   year: "numeric",
   month: "long",
   day: "numeric",
