@@ -110,6 +110,26 @@ const serialize = (data: unknown) =>
   <script is:inline type="application/ld+json" set:html={serialize(schema)} />
 ))}
 
+<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#121216" media="(prefers-color-scheme: dark)" />
+
+{/*
+  Applies a saved theme choice before first paint, so a visitor who picked a
+  theme never sees the other one flash. With no saved choice the attribute is
+  left off entirely and prefers-color-scheme decides in CSS — which is also
+  what happens if this script never runs.
+*/}
+<script is:inline>
+  try {
+    const saved = localStorage.getItem("yeti-theme");
+    if (saved === "dark" || saved === "light") {
+      document.documentElement.dataset.theme = saved;
+    }
+  } catch (error) {
+    /* Storage blocked (private mode, cookies off) — fall back to the OS. */
+  }
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Besley:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">

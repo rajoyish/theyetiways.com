@@ -3,7 +3,8 @@ import { SOCIAL_CHANNELS } from "../lib/site";
 
 /**
  * Pre-footer callout band. The blue fill IS the voltage here; the CTA inside
- * uses the inverted light button.
+ * uses the inverted light button. The band keeps the same blue in both themes,
+ * so it uses the static tokens throughout — nothing inside it inverts.
  */
 interface Props {
   heading?: string;
@@ -19,10 +20,10 @@ const {
 
 <section class:list={["px-6", className]}>
   <div
-    class="mx-auto flex max-w-5xl flex-col items-start gap-6 rounded-xl bg-linear-135 from-blue to-blue-active px-8 py-12 text-on-primary shadow-[0_24px_60px_-28px_rgba(31,108,176,0.7)] sm:px-12 sm:py-16"
+    class="mx-auto flex max-w-5xl flex-col items-start gap-6 rounded-xl bg-linear-135 from-band-from to-band-to px-8 py-12 text-static-light shadow-[0_24px_60px_-28px_rgba(31,108,176,0.7)] sm:px-12 sm:py-16"
   >
-    <h2 class="max-w-2xl text-display-sm text-on-primary">{heading}</h2>
-    <p class="max-w-2xl text-on-primary/90">{text}</p>
+    <h2 class="max-w-2xl text-display-sm text-static-light">{heading}</h2>
+    <p class="max-w-2xl text-static-light/90">{text}</p>
     <div class="flex flex-wrap gap-3">
       {
         SOCIAL_CHANNELS.map((channel) => (

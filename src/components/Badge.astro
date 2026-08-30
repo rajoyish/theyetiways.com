@@ -3,6 +3,8 @@
  * Pill / solid badges in the Yeti family palette.
  * `pill` — soft grey pill for category tags.
  * `blue` / `pink` / `mint` — solid fill, uppercase, for "NEW" / featured flags.
+ * The pink/mint fills are the same bright accents in light and dark, so their
+ * label uses the static ink rather than --color-ink, which inverts.
  * `coral` is kept as an alias of `pink` for older markup.
  */
 interface Props {
@@ -18,9 +20,9 @@ const solid = "text-xs uppercase tracking-[0.09em] px-3 py-1";
 const styles = {
   pill: "bg-surface-card text-ink text-[0.8125rem] px-3 py-1",
   blue: `bg-primary text-on-primary ${solid}`,
-  pink: `bg-accent-pink text-ink ${solid}`,
-  mint: `bg-accent-mint text-ink ${solid}`,
-  coral: `bg-accent-pink text-ink ${solid}`,
+  pink: `bg-accent-pink text-static-dark ${solid}`,
+  mint: `bg-accent-mint text-static-dark ${solid}`,
+  coral: `bg-accent-pink text-static-dark ${solid}`,
 };
 const cls = [base, styles[variant], className].filter(Boolean).join(" ");
 const Tag = href ? "a" : "span";

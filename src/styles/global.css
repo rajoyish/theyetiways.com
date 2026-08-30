@@ -18,6 +18,13 @@
    clears AA both as link text on the lightest surfaces and as a button fill
    under white text; --color-blue keeps the exact brand hex for decorative
    fills, dots, and illustrations that never carry text.
+
+   Theming: the @theme block below IS the light theme. Dark mode re-points the
+   same tokens at the --dk-* palette further down, so every existing utility
+   (bg-canvas, text-body, border-hairline, ...) follows along with no `dark:`
+   variants in the markup. Tokens named `static-*` and `band-*` deliberately do
+   NOT flip: they sit on the always-blue CTA band and the always-bright accent
+   badges, where the surface is the same in both themes.
    --------------------------------------------------------------------------- */
 @theme {
   /* Brand & accent — the Yeti family colors. */
@@ -59,6 +66,18 @@
   --color-warning: #b4532a;
   --color-error: #c64545;
 
+  /* Theme-independent. These ride surfaces that look identical in light and
+     dark (the blue CTA band, the pink/mint badges), so flipping them would
+     break the only contrast they ever need. */
+  --color-static-light: #ffffff;
+  --color-static-dark: #131316;
+  --color-band-from: #1f6cb0;
+  --color-band-to: #16649f;
+
+  /* Fill behind fenced code blocks — dark in both themes, but lifted off pure
+     black in dark mode so the block still reads as a surface. */
+  --color-code-bg: #17171a;
+
   /* Type families — licensed Copernicus/StyreneB substituted per DESIGN.md */
   --font-serif: "Bangers", "Cormorant Garamond", "Tiempos Headline", Garamond, "Times New Roman", serif;
   --font-sans: "Besley", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -90,6 +109,154 @@
 
   /* Section rhythm (94px band spacing from DESIGN.md) */
   --spacing-section: 96px;
+}
+
+/* ---------------------------------------------------------------------------
+   Dark theme.
+
+   The raw dark palette lives once, in --dk-*, so the two blocks that activate
+   it can never drift apart. Activation is deliberately split:
+
+     - no data-theme attribute  → the OS decides, via prefers-color-scheme.
+       This is the default, and it works with JavaScript disabled.
+     - data-theme="dark"        → forced dark, whatever the OS says.
+     - data-theme="light"       → forced light; the :not() below keeps the
+       media query from overriding an explicit choice.
+
+   Contrast: every dark pairing in use clears WCAG AA (4.5:1) for body text —
+   the tightest is muted-soft on surface-card at 5.1:1.
+   --------------------------------------------------------------------------- */
+:root {
+  /* Surfaces — canvas sits above the footer/band slab so dark sections still
+     recede rather than merge into the page. */
+  --dk-canvas: #121216;
+  --dk-surface-soft: #1a1a20;
+  --dk-surface-card: #202028;
+  --dk-surface-strong: #2b2b34;
+  --dk-surface-dark: #0b0b0e;
+  --dk-surface-dark-elevated: #1e1e26;
+  --dk-surface-dark-soft: #16161c;
+
+  /* Text */
+  --dk-ink: #f2f2f5;
+  --dk-body: #c0c0ca;
+  --dk-body-strong: #e4e4ec;
+  --dk-muted: #9a9aa6;
+  --dk-muted-soft: #90909c;
+
+  /* Lines */
+  --dk-hairline: #2b2b34;
+  --dk-hairline-soft: #22222a;
+
+  /* Brand. On a near-black canvas no single blue can be both AA link text and
+     an AA fill under white, so the roles split: primary lightens for text and
+     for fills, and on-primary goes dark to sit on top of it. */
+  --dk-primary: #7dbdf6;
+  --dk-primary-active: #a7d3f9;
+  --dk-primary-disabled: #2d4256;
+  --dk-on-primary: #08161f;
+
+  /* Semantic — lightened until each clears AA as text on the dark canvas. */
+  --dk-success: #6cd08c;
+  --dk-warning: #f0a37a;
+  --dk-error: #f08a8a;
+
+  --dk-code-bg: #1c1c23;
+
+  /* Shadows. Light mode lifts with soft grey; dark mode has nothing to shade
+     against, so depth comes from a deeper, tighter black. */
+  --shadow-hero: 0 20px 50px -24px rgba(20, 20, 19, 0.28);
+  --shadow-lift: 0 14px 32px -12px rgba(20, 20, 19, 0.22);
+  --dk-shadow-hero: 0 20px 50px -20px rgba(0, 0, 0, 0.8);
+  --dk-shadow-lift: 0 14px 32px -12px rgba(0, 0, 0, 0.7);
+
+  /* Which glyph the theme toggle shows. Driving this from CSS rather than JS
+     means the button is already correct on first paint, with no swap after
+     hydration and no wrong icon for readers with JS disabled. */
+  --icon-sun: none;
+  --icon-moon: block;
+
+  color-scheme: light;
+}
+
+/* The single mapping from the dark palette onto the live tokens. Both
+   activation blocks below include it verbatim; keep them in sync. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --color-canvas: var(--dk-canvas);
+    --color-surface-soft: var(--dk-surface-soft);
+    --color-surface-card: var(--dk-surface-card);
+    --color-surface-strong: var(--dk-surface-strong);
+    --color-surface-dark: var(--dk-surface-dark);
+    --color-surface-dark-elevated: var(--dk-surface-dark-elevated);
+    --color-surface-dark-soft: var(--dk-surface-dark-soft);
+
+    --color-ink: var(--dk-ink);
+    --color-body: var(--dk-body);
+    --color-body-strong: var(--dk-body-strong);
+    --color-muted: var(--dk-muted);
+    --color-muted-soft: var(--dk-muted-soft);
+
+    --color-hairline: var(--dk-hairline);
+    --color-hairline-soft: var(--dk-hairline-soft);
+
+    --color-primary: var(--dk-primary);
+    --color-primary-active: var(--dk-primary-active);
+    --color-primary-disabled: var(--dk-primary-disabled);
+    --color-on-primary: var(--dk-on-primary);
+
+    --color-success: var(--dk-success);
+    --color-warning: var(--dk-warning);
+    --color-error: var(--dk-error);
+
+    --color-code-bg: var(--dk-code-bg);
+
+    --shadow-hero: var(--dk-shadow-hero);
+    --shadow-lift: var(--dk-shadow-lift);
+
+    --icon-sun: block;
+    --icon-moon: none;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-canvas: var(--dk-canvas);
+  --color-surface-soft: var(--dk-surface-soft);
+  --color-surface-card: var(--dk-surface-card);
+  --color-surface-strong: var(--dk-surface-strong);
+  --color-surface-dark: var(--dk-surface-dark);
+  --color-surface-dark-elevated: var(--dk-surface-dark-elevated);
+  --color-surface-dark-soft: var(--dk-surface-dark-soft);
+
+  --color-ink: var(--dk-ink);
+  --color-body: var(--dk-body);
+  --color-body-strong: var(--dk-body-strong);
+  --color-muted: var(--dk-muted);
+  --color-muted-soft: var(--dk-muted-soft);
+
+  --color-hairline: var(--dk-hairline);
+  --color-hairline-soft: var(--dk-hairline-soft);
+
+  --color-primary: var(--dk-primary);
+  --color-primary-active: var(--dk-primary-active);
+  --color-primary-disabled: var(--dk-primary-disabled);
+  --color-on-primary: var(--dk-on-primary);
+
+  --color-success: var(--dk-success);
+  --color-warning: var(--dk-warning);
+  --color-error: var(--dk-error);
+
+  --color-code-bg: var(--dk-code-bg);
+
+  --shadow-hero: var(--dk-shadow-hero);
+  --shadow-lift: var(--dk-shadow-lift);
+
+  --icon-sun: block;
+  --icon-moon: none;
 }
 
 @layer base {
@@ -197,17 +364,19 @@
     border-color: var(--color-primary);
   }
 
-  /* Light button used on the blue / dark bands */
+  /* Light button used on the blue band. The band is the same blue in both
+     themes, so this button uses the static tokens rather than canvas/ink —
+     following the theme would turn it into a dark button on dark blue. */
   .btn-invert {
-    background-color: var(--color-canvas);
-    color: var(--color-ink);
+    background-color: color-mix(in srgb, var(--color-static-light) 92%, transparent);
+    color: var(--color-static-dark);
   }
   .btn-invert:hover {
-    background-color: #ffffff;
+    background-color: var(--color-static-light);
     box-shadow: 0 6px 16px rgba(20, 20, 19, 0.16);
   }
   .btn-invert:active {
-    background-color: var(--color-surface-strong);
+    background-color: color-mix(in srgb, var(--color-static-light) 82%, transparent);
   }
 }
 
@@ -215,13 +384,22 @@
    Small shared polish utilities.
    --------------------------------------------------------------------------- */
 @layer components {
+  /* Theme-toggle glyphs. Exactly one is displayed at a time, chosen by the
+     active theme's --icon-* pair. */
+  .icon-sun {
+    display: var(--icon-sun);
+  }
+  .icon-moon {
+    display: var(--icon-moon);
+  }
+
   /* Gentle lift for linked cards (story cards, family cards, trail tiles). */
   .card-lift {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .card-lift:hover {
     transform: translateY(-3px);
-    box-shadow: 0 14px 32px -12px rgba(20, 20, 19, 0.22);
+    box-shadow: var(--shadow-lift);
   }
 
   /* Accent hairline that rides the left edge of a card. */
@@ -241,85 +419,86 @@
 /* ---------------------------------------------------------------------------
    Rendered Markdown — scoped to the post body only, tuned to the tokens.
    --------------------------------------------------------------------------- */
-@layer components {
-  .prose-yeti {
-    --tw-prose-body: var(--color-body);
-    --tw-prose-headings: var(--color-ink);
-    --tw-prose-lead: var(--color-body-strong);
-    --tw-prose-links: var(--color-primary);
-    --tw-prose-bold: var(--color-body-strong);
-    --tw-prose-counters: var(--color-muted);
-    --tw-prose-bullets: var(--color-primary);
-    --tw-prose-hr: var(--color-hairline);
-    --tw-prose-quotes: var(--color-body-strong);
-    --tw-prose-quote-borders: var(--color-primary);
-    --tw-prose-captions: var(--color-muted);
-    --tw-prose-code: var(--color-ink);
-    --tw-prose-pre-code: var(--color-on-dark);
-    --tw-prose-pre-bg: var(--color-surface-dark);
-    --tw-prose-th-borders: var(--color-hairline);
-    --tw-prose-td-borders: var(--color-hairline-soft);
-  }
+/* The typography plugin emits `.prose` into the `utilities` layer, which
+   outranks `components` no matter how specific the selector is — so these
+   overrides stay unlayered, where they beat every layer. */
+.prose-yeti {
+  --tw-prose-body: var(--color-body);
+  --tw-prose-headings: var(--color-ink);
+  --tw-prose-lead: var(--color-body-strong);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: var(--color-body-strong);
+  --tw-prose-counters: var(--color-muted);
+  --tw-prose-bullets: var(--color-primary);
+  --tw-prose-hr: var(--color-hairline);
+  --tw-prose-quotes: var(--color-body-strong);
+  --tw-prose-quote-borders: var(--color-primary);
+  --tw-prose-captions: var(--color-muted);
+  --tw-prose-code: var(--color-ink);
+  --tw-prose-pre-code: var(--color-on-dark);
+  --tw-prose-pre-bg: var(--color-code-bg);
+  --tw-prose-th-borders: var(--color-hairline);
+  --tw-prose-td-borders: var(--color-hairline-soft);
+}
 
-  .prose-yeti :is(h1, h2, h3, h4) {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-  }
+.prose-yeti :is(h1, h2, h3, h4) {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
 
-  /* Pull quote: an oversized opening mark sets the quote off instead of a rule
-     down the side. The glyph is decorative, so it carries empty alt text and
-     never lands in the accessibility tree. */
+/* Pull quote: an oversized opening mark sets the quote off instead of a rule
+   down the side. The glyph is decorative, so it carries empty alt text and
+   never lands in the accessibility tree. */
+.prose-yeti blockquote {
+  position: relative;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--color-body-strong);
+  background-color: var(--color-surface-soft);
+  border-radius: var(--radius-lg);
+  border-left: 0;
+  padding: 1.75rem 1.75rem 1.75rem 4.5rem;
+  quotes: none;
+}
+
+.prose-yeti blockquote::before {
+  content: "\201C" / "";
+  position: absolute;
+  top: 0.7rem;
+  left: 1.5rem;
+  font-family: var(--font-quote);
+  font-size: var(--text-display-xl);
+  line-height: 1;
+  color: color-mix(in srgb, var(--color-muted) 42%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (width < 40rem) {
   .prose-yeti blockquote {
-    position: relative;
-    font-style: normal;
-    font-weight: 400;
-    color: var(--color-body-strong);
-    background-color: var(--color-surface-soft);
-    border-radius: var(--radius-lg);
-    border-left: 0;
-    padding: 1.75rem 1.75rem 1.75rem 4.5rem;
-    quotes: none;
+    padding: 1.5rem 1.25rem 1.5rem 3.25rem;
   }
-
   .prose-yeti blockquote::before {
-    content: "\201C" / "";
-    position: absolute;
-    top: 0.7rem;
-    left: 1.5rem;
-    font-family: var(--font-quote);
-    font-size: var(--text-display-xl);
-    line-height: 1;
-    color: color-mix(in srgb, var(--color-muted) 42%, transparent);
-    pointer-events: none;
-    user-select: none;
+    top: 0.55rem;
+    left: 1rem;
+    font-size: var(--text-display-lg);
   }
+}
 
-  @media (width < 40rem) {
-    .prose-yeti blockquote {
-      padding: 1.5rem 1.25rem 1.5rem 3.25rem;
-    }
-    .prose-yeti blockquote::before {
-      top: 0.55rem;
-      left: 1rem;
-      font-size: var(--text-display-lg);
-    }
-  }
+.prose-yeti blockquote p:first-of-type::before,
+.prose-yeti blockquote p:last-of-type::after {
+  content: "";
+}
 
-  .prose-yeti blockquote p:first-of-type::before,
-  .prose-yeti blockquote p:last-of-type::after {
-    content: "";
-  }
+.prose-yeti :not(pre) > code {
+  background-color: var(--color-surface-card);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+  font-weight: 400;
+}
 
-  .prose-yeti :not(pre) > code {
-    background-color: var(--color-surface-card);
-    padding: 0.15em 0.4em;
-    border-radius: var(--radius-sm);
-    font-weight: 400;
-  }
-
-  .prose-yeti :not(pre) > code::before,
-  .prose-yeti :not(pre) > code::after {
-    content: "";
-  }
+.prose-yeti :not(pre) > code::before,
+.prose-yeti :not(pre) > code::after {
+  content: "";
 }

@@ -52,6 +52,30 @@ const linkClass = (href: string) =>
       </a>
       <button
         type="button"
+        id="theme-toggle"
+        class="btn btn-secondary size-10 !p-0"
+        aria-label="Toggle dark mode"
+      >
+        <svg
+          class="icon-moon"
+          width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true"
+        >
+          <path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z" />
+        </svg>
+        <svg
+          class="icon-sun"
+          width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4.2" />
+          <path d="M12 2.5v2M12 19.5v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2.5 12h2M19.5 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+      </button>
+      <button
+        type="button"
         id="menu-toggle"
         class="btn btn-secondary size-10 !p-0 md:hidden"
         aria-expanded="false"
@@ -153,4 +177,41 @@ const linkClass = (href: string) =>
   desktop.addEventListener("change", (event) => {
     if (event.matches) setOpen(false);
   });
+</script>
+
+<script>
+  /**
+   * Two-state theme switch. The head script has already applied any saved
+   * choice; this only reflects the *resolved* theme in aria-pressed and
+   * flips it on click. With no saved choice we stay on the OS preference,
+   * so the media query keeps steering and we follow it live.
+   */
+  const STORAGE_KEY = "yeti-theme";
+  const root = document.documentElement;
+  const toggle = document.getElementById("theme-toggle");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const resolved = () =>
+    root.dataset.theme ?? (prefersDark.matches ? "dark" : "light");
+
+  function sync() {
+    toggle?.setAttribute("aria-pressed", String(resolved() === "dark"));
+  }
+
+  toggle?.addEventListener("click", () => {
+    const next = resolved() === "dark" ? "light" : "dark";
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem(STORAGE_KEY, next);
+    } catch (error) {
+      /* Storage blocked — the choice still holds for this page view. */
+    }
+    sync();
+  });
+
+  /* Only reaches the button while no explicit choice is stored, since
+     data-theme takes precedence in resolved(). */
+  prefersDark.addEventListener("change", sync);
+
+  sync();
 </script>
