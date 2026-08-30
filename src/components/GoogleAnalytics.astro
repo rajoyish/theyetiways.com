@@ -1,0 +1,33 @@
+---
+/**
+ * Google tag (gtag.js) for GA4.
+ *
+ * Rendered only in production builds so local `astro dev` traffic never
+ * reaches the property. `astro build` sets PROD, so `pnpm preview` still
+ * serves the tag if you need to verify it before deploying.
+ *
+ * `set:html` (not `define:vars`) keeps the snippet at top level — `define:vars`
+ * wraps it in an IIFE, which would hide `gtag` from other scripts.
+ */
+const GA_MEASUREMENT_ID = "G-N63DLVWGFW";
+---
+
+{
+  import.meta.env.PROD && (
+    <>
+      <script
+        is:inline
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+      />
+      <script
+        is:inline
+        set:html={`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', '${GA_MEASUREMENT_ID}');`}
+      />
+    </>
+  )
+}
