@@ -21,6 +21,19 @@ export const CONTACT = {
   legalUpdated: new Date("2026-08-30T00:00:00Z"),
 } as const;
 
+/**
+ * Story dates read in the family's own timezone, so a post never looks like it
+ * landed a day early. Both `FormattedDate` and the search index use this.
+ */
+export function formatStoryDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    timeZone: "Asia/Kathmandu",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Stories", href: "/blog" },
@@ -60,6 +73,7 @@ export const FOOTER_LINKS = [
     heading: "Explore",
     links: [
       { label: "All stories", href: "/blog" },
+      { label: "Search", href: "/search" },
       { label: "Family", href: "/categories/family" },
       { label: "Relationships", href: "/categories/relationships" },
       { label: "Parenting", href: "/categories/parenting" },

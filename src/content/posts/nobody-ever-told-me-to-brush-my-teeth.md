@@ -24,15 +24,15 @@ it.
 
 ## The two of them at the sink
 
-Papa brushes like the toothbrush owes him money. Mama brushes like somebody is
-scoring her on it. Water goes everywhere. There are droplets on the mirror, on
+Papa Yeti brushes like the toothbrush owes him money. Mama Yeti brushes like
+somebody is scoring her on it. Water goes everywhere. There are droplets on the mirror, on
 the counter, and on me, and none of the three of us has ever mentioned it.
 
 Same two Yetis. Same forty seconds of scrubbing. Every single morning of my
 entire life.
 
-Then, halfway through, Papa leaned over and nuzzled Mama. Toothbrush still in his
-mouth. Foam on his chin. She made a sound like a kettle that is pleased about
+Then, halfway through, Papa Yeti leaned over and nuzzled Mama Yeti. Toothbrush
+still in his mouth. Foam on his chin. She made a sound like a kettle that is pleased about
 something.
 
 I kept brushing. Somebody in this family has to hold the routine together.

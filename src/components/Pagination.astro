@@ -1,0 +1,84 @@
+---
+import { pageHref } from "../lib/pagination";
+
+interface Props {
+  current: number;
+  total: number;
+  /** Listing root, e.g. "/blog". Page 1 lives here; later pages at /page/n. */
+  basePath: string;
+  label?: string;
+  class?: string;
+}
+const {
+  current,
+  total,
+  basePath,
+  label = "Pagination",
+  class: className,
+} = Astro.props;
+
+/** First page, last page, and the current page's neighbours — gaps become "…". */
+function pageWindow(current: number, total: number): (number | "gap")[] {
+  const wanted = new Set([1, total, current - 1, current, current + 1]);
+  const pages = [...wanted].filter((n) => n >= 1 && n <= total).sort((a, b) => a - b);
+  return pages.flatMap((page, i) =>
+    i > 0 && page - pages[i - 1] > 1 ? ["gap" as const, page] : [page],
+  );
+}
+
+const pages = pageWindow(current, total);
+const stepClass =
+  "rounded-md px-3.5 py-2 text-sm font-medium transition-colors text-muted hover:bg-surface-soft hover:text-ink";
+---
+
+{
+  total > 1 && (
+    <nav class:list={["flex items-center justify-between gap-4", className]} aria-label={label}>
+      {current > 1 ? (
+        <a href={pageHref(basePath, current - 1)} rel="prev" class={stepClass}>
+          <span aria-hidden="true">&larr;</span> Newer
+        </a>
+      ) : (
+        <span class="rounded-md px-3.5 py-2 text-sm font-medium text-muted opacity-40">
+          <span aria-hidden="true">&larr;</span> Newer
+        </span>
+      )}
+
+      <ol class="flex flex-wrap items-center gap-1">
+        {pages.map((page) =>
+          page === "gap" ? (
+            <li class="px-2 text-sm text-muted" aria-hidden="true">
+              &hellip;
+            </li>
+          ) : (
+            <li>
+              <a
+                href={pageHref(basePath, page)}
+                aria-current={page === current ? "page" : undefined}
+                aria-label={`Page ${page}`}
+                class:list={[
+                  "block rounded-md px-3.5 py-2 text-sm font-medium transition-colors",
+                  page === current
+                    ? "bg-surface-card text-ink"
+                    : "text-muted hover:bg-surface-soft hover:text-ink",
+                ]}
+              >
+                {page}
+              </a>
+            </li>
+          ),
+        )}
+      </ol>
+
+      {current < total ? (
+        <a href={pageHref(basePath, current + 1)} rel="next" class={stepClass}>
+          Older <span aria-hidden="true">&rarr;</span>
+        </a>
+      ) : (
+        <span class="rounded-md px-3.5 py-2 text-sm font-medium text-muted opacity-40">
+          Older <span aria-hidden="true">&rarr;</span>
+        </span>
+      )}
+    </nav>
+  )
+}

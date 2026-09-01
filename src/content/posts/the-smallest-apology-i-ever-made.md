@@ -13,8 +13,8 @@ tags:
 featured: false
 ---
 
-Third night of monsoon rain on the cave roof. Mama asleep on the pink side of the
-bed. Me asleep on the blue side, doing what I do every wet night, which is snore
+Third night of monsoon rain on the cave roof. Mama Yeti asleep on the pink side
+of the bed. Me asleep on the blue side, doing what I do every wet night, which is snore
 like a yak with strong opinions about the weather.
 
 I sleep like a mountain. Nothing wakes me. That is more or less the whole story
@@ -42,8 +42,9 @@ finds my back before it finds hers. It is my one skill and I am proud of it.
 
 And in about half a second I had undone all of it with a sound.
 
-She turned her head toward me and giggled. Not politely. She giggled the way Babu
-giggles in a temple when he knows he shouldn't, all shoulders and no dignity.
+She turned her head toward me and giggled. Not politely. She giggled the way
+Babu Yeti giggles in a temple when he knows he shouldn't, all shoulders and no
+dignity.
 
 So I did the only useful thing available to me. I reached up, lifted the top edge
 of the blanket once, and let the cold mountain air in to do its work. No speech.

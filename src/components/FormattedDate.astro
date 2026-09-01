@@ -1,4 +1,6 @@
 ---
+import { formatStoryDate } from "../lib/site";
+
 interface Props {
   date: Date;
   class?: string;
@@ -6,12 +8,7 @@ interface Props {
 const { date, class: className } = Astro.props;
 
 const iso = date.toISOString();
-const formatted = date.toLocaleDateString("en-US", {
-  timeZone: "Asia/Kathmandu",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const formatted = formatStoryDate(date);
 ---
 
 <time datetime={iso} class={className}>{formatted}</time>

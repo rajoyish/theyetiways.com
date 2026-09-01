@@ -155,10 +155,46 @@ Before finishing, grep the file and fix any hit:
 grep -n '—\|–\|--' src/content/posts/<slug>.md
 ```
 
+## Character names
+
+**Always write the full name: Papa Yeti, Mama Yeti, Babu Yeti.** Every mention,
+every time, in the body, the title, the description, and the `coverAlt`. Never
+the bare first word (`Papa`, `Mama`, `Babu`), and never a relationship word
+standing in for a name (`his father`, `my husband`, `the kid`, `her mother`).
+
+These are names, not roles. `src/content/authors/*.json` stores them as
+`Papa Yeti`, `Mama Yeti`, and `Babu Yeti`, and the author card under every post
+prints them that way. A story that shortens them reads like a different family
+than the one in the byline.
+
+| Don't write this | Write this |
+|---|---|
+| `Mama asleep on the pink side.` | `Mama Yeti asleep on the pink side.` |
+| `Then his father hugged me.` | `Then Papa Yeti hugged me.` |
+| `My husband walked in.` | `Papa Yeti walked in.` |
+| `The kid giggled into my fur.` | `Babu Yeti giggled into my fur.` |
+
+The repetition is handled by pronouns, not by clipping the name. Once
+`Papa Yeti walked in`, the next three sentences can say *he* freely. When a
+sentence needs the name again, it gets the whole name.
+
+The narrator is exempt only where a first-person pronoun already does the job.
+Mama Yeti writes *I*, not *Mama Yeti*, about herself. She writes
+`Papa Yeti` and `Babu Yeti` in full about the other two.
+
+Before finishing, grep for a shortened name and fix every hit:
+
+```
+perl -ne 'print "$.: $_" if /\b(Papa|Mama|Babu)\b(?! Yeti)/' src/content/posts/<slug>.md
+```
+
+The lowercase Nepali word *babu* is a different thing and passes cleanly.
+
 ## Voice
 
-- First person, the chosen author's voice. Papa worries and plans; Mama runs the
-  warm and names the feeling; Babu is dry, observant, and slightly over it.
+- First person, the chosen author's voice. Papa Yeti worries and plans; Mama Yeti
+  runs the warm and names the feeling; Babu Yeti is dry, observant, and slightly
+  over it.
 - Funny first, wise second. The lesson lands because the story was entertaining,
   not because it was solemn. Never moralize before the last section.
 - Keep the Yeti furniture in the language: fur, blanket, cave, den, mountain,
@@ -166,14 +202,16 @@ grep -n '—\|–\|--' src/content/posts/<slug>.md
   texture. Don't let it become a costume the story trips over.
 - Short paragraphs of three or four lines, never more. Vary sentence length hard.
   Let a one-line paragraph carry a beat on its own.
-- Nepali touches (Babu, dal, momo) are welcome when they fit; the family is
-  Nepali-Yeti and the site says so.
+- Nepali touches (dal, momo, a *namaste* at the cave mouth) are welcome when they
+  fit; the family is Nepali-Yeti and the site says so.
 - Family-safe throughout. Bathroom humor is fine when the video is about it.
   Handle it the way a fond grown-up would, with a wink and no crudeness.
 
 ## Anti-patterns
 
 - **Em dashes.** See the punctuation rule above. Grep before you finish.
+- **Clipped names.** `Papa`, `Mama`, `Babu`, `his father`, `my husband`. See the
+  character-name rule above. Grep before you finish.
 - **Going long.** The most common failure. A story over 3,800 characters is
   wrong even when every paragraph is good. Check with `wc -c` before you call
   it done.

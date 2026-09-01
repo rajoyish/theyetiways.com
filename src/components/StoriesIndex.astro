@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CategoryTabs from "./CategoryTabs.astro";
+import PostGrid from "./PostGrid.astro";
+import Pagination from "./Pagination.astro";
+import { paginate } from "../lib/pagination";
+import type { Post } from "../lib/posts";
+
+interface Props {
+  posts: Post[];
+  page: number;
+}
+const { posts, page } = Astro.props;
+
+const { items, current, total } = paginate(posts, page);
+const suffix = current > 1 ? ` (page ${current} of ${total})` : "";
+const description =
+  "Every story from The Yeti Ways — warm, honest notes on family, relationships, parenting, and growing up, each one built around a video.";
+---
+
+<BaseLayout
+  title={`Stories${suffix}`}
+  description={current > 1 ? `${description}${suffix}` : description}
+>
+  <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <header class="max-w-2xl">
+      <h1 class="text-display-md text-ink sm:text-display-lg">Stories</h1>
+      <p class="mt-4 text-lg text-body-strong">
+        Warm, honest notes on family, relationships, parenting, and growing up —
+        each one built around a video from our channels.
+      </p>
+    </header>
+
+    <div class="mt-10 border-y border-hairline py-4">
+      <CategoryTabs active="all" />
+    </div>
+
+    <div class="mt-12">
+      <PostGrid posts={items} />
+    </div>
+
+    <Pagination
+      current={current}
+      total={total}
+      basePath="/blog"
+      label="Stories pagination"
+      class="mt-12 border-t border-hairline pt-6"
+    />
+  </div>
+</BaseLayout>
