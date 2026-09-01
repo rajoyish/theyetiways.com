@@ -20,7 +20,7 @@ a small avalanche, it should have been the warmest place on the mountain.
 I was awake. Not for any good reason. My phone was in my paw and my face was blue
 in a way that had nothing to do with my fur.
 
-Next to me, Mama shivered.
+Next to me, Mama Yeti shivered.
 
 ## The click
 

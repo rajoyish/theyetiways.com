@@ -9,7 +9,8 @@ export default defineConfig({
   site: 'https://theyetiways.com',
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/404'),
+      // Both pages are noindex: /404 is an error, /search has no crawlable results.
+      filter: (page) => !page.includes('/404') && !page.includes('/search'),
     }),
   ],
   vite: {

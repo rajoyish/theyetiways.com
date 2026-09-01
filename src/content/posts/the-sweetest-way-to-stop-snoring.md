@@ -16,8 +16,8 @@ featured: false
 Rain on the cave roof for three days. Not the loud kind. The steady kind that
 makes the whole mountain feel tucked in with you.
 
-Papa was snoring. He always snores when it rains. It starts as a hum, becomes a
-saw, and lands somewhere around midnight on *yak clearing its throat inside a
+Papa Yeti was snoring. He always snores when it rains. It starts as a hum,
+becomes a saw, and lands somewhere around midnight on *yak clearing its throat inside a
 cooking pot.* Two round piles of fur under one heavy blanket. Pink on the left,
 blue on the right, warm all the way through.
 
