@@ -1,0 +1,106 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostGrid from "../PostGrid.astro";
+import CtaBand from "../CtaBand.astro";
+import {
+  authorPath,
+  authorText,
+  getPostsByAuthor,
+  type Author,
+} from "../../lib/posts";
+import { SITE } from "../../lib/site";
+import { profilePageSchema } from "../../lib/seo";
+import { fill, getLangFromUrl, useTranslations } from "../../lib/i18n";
+
+interface Props {
+  author: Author;
+}
+const { author } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const text = authorText(author, lang);
+const posts = await getPostsByAuthor(author.id, lang);
+
+const site = Astro.site ?? new URL(SITE.url);
+const profileSchema = profilePageSchema({
+  name: author.data.name,
+  description: text.bio,
+  url: new URL(`${authorPath(author.id, lang)}/`, site),
+  sameAs: (author.data.socials ?? []).map((social) => social.href),
+});
+
+const accentDot: Record<string, string> = {
+  blue: "bg-blue",
+  pink: "bg-accent-pink",
+  mint: "bg-accent-mint",
+};
+---
+
+<BaseLayout
+  title={author.data.name}
+  description={fill(t.authors.profileDescription, {
+    name: author.data.name,
+    tagline: text.tagline,
+  })}
+  jsonLd={[profileSchema]}
+>
+  <section class="border-b border-hairline">
+    <div class="mx-auto flex max-w-4xl flex-col gap-8 px-6 py-16 sm:flex-row sm:items-center sm:py-20">
+      <Image
+        src={author.data.avatar}
+        alt={author.data.name}
+        width={140}
+        height={140}
+        class="size-32 shrink-0 rounded-full object-cover sm:size-36"
+      />
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span
+            class:list={[
+              "inline-block size-2 rounded-full",
+              accentDot[author.data.accent] ?? "bg-primary",
+            ]}
+          />
+          <h1 class="text-display-md text-ink">{author.data.name}</h1>
+        </div>
+        {text.nepaliNote && (
+          <p class="mt-1 text-sm italic text-muted">{text.nepaliNote}</p>
+        )}
+        <p class="mt-4 max-w-xl text-lg text-body-strong">{text.bio}</p>
+        {
+          author.data.socials && author.data.socials.length > 0 && (
+            <div class="mt-5 flex flex-wrap gap-3">
+              {author.data.socials.map((social) => (
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm font-medium text-primary underline underline-offset-2"
+                >
+                  {social.label}
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <h2 class="mb-8 text-display-sm">
+      {fill(t.authors.storiesFrom, { name: author.data.name })}
+    </h2>
+    <PostGrid
+      posts={posts}
+      headingLevel="h3"
+      emptyMessage={fill(t.authors.noStoriesFrom, { name: author.data.name })}
+    />
+  </div>
+
+  <div class="pb-16 sm:pb-24">
+    <CtaBand />
+  </div>
+</BaseLayout>

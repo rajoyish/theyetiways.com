@@ -1,0 +1,8 @@
+---
+import HomeView from "../../components/views/HomeView.astro";
+import { langPaths } from "../../lib/routes";
+
+export const getStaticPaths = langPaths;
+---
+
+<HomeView />

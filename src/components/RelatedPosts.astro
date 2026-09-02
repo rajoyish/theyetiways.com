@@ -1,12 +1,14 @@
 ---
 import PostGrid from "./PostGrid.astro";
 import type { Post } from "../lib/posts";
+import { getLangFromUrl, useTranslations } from "../lib/i18n";
 
 interface Props {
   posts: Post[];
   heading?: string;
 }
-const { posts, heading = "More warm ways" } = Astro.props;
+const t = useTranslations(getLangFromUrl(Astro.url));
+const { posts, heading = t.post.related } = Astro.props;
 ---
 
 {

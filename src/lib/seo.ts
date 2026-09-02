@@ -7,6 +7,7 @@
  */
 
 import { SITE, SOCIAL_CHANNELS } from "./site";
+import { LOCALES, useTranslations, type Locale } from "./i18n";
 
 /** Absolute URL for the org logo, reused across schemas. */
 function logo(site: URL) {
@@ -16,22 +17,28 @@ function logo(site: URL) {
   } as const;
 }
 
-/** Site-wide `WebSite` node — emitted on every page. */
-export function websiteSchema(site: URL) {
+/**
+ * Site-wide `WebSite` node — emitted on every page.
+ *
+ * `url` stays the bare origin in every locale so all ten language editions
+ * resolve to one WebSite entity; the locale shows up in `inLanguage` and in
+ * the `hreflang` links, which is where crawlers look for it.
+ */
+export function websiteSchema(site: URL, lang: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE.name,
     alternateName: SITE.domain,
     url: site.href,
-    description: SITE.description,
-    inLanguage: "en-US",
+    description: useTranslations(lang).meta.description,
+    inLanguage: LOCALES[lang].tag,
     publisher: { "@id": `${site.href}#organization` },
   };
 }
 
 /** Site-wide `Organization` node — emitted on every page. */
-export function organizationSchema(site: URL) {
+export function organizationSchema(site: URL, lang: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -39,7 +46,7 @@ export function organizationSchema(site: URL) {
     name: SITE.name,
     url: site.href,
     logo: logo(site),
-    description: SITE.description,
+    description: useTranslations(lang).meta.description,
     sameAs: SOCIAL_CHANNELS.map((channel) => channel.href),
   };
 }
@@ -57,7 +64,11 @@ export interface BlogPostingInput {
 }
 
 /** `BlogPosting` node for an individual story. */
-export function blogPostingSchema(input: BlogPostingInput, site: URL) {
+export function blogPostingSchema(
+  input: BlogPostingInput,
+  site: URL,
+  lang: Locale,
+) {
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -80,7 +91,7 @@ export function blogPostingSchema(input: BlogPostingInput, site: URL) {
     },
     articleSection: input.section,
     keywords: input.tags.join(", "),
-    inLanguage: "en-US",
+    inLanguage: LOCALES[lang].tag,
   };
 }
 

@@ -1,46 +1,16 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import CategoryTabs from "../../components/CategoryTabs.astro";
-import PostGrid from "../../components/PostGrid.astro";
-import { CATEGORIES, categorySlug } from "../../lib/site";
-import { getPostsByCategory } from "../../lib/posts";
+import CategoryView from "../../components/views/CategoryView.astro";
+import { CATEGORIES } from "../../lib/site";
+import { DEFAULT_LOCALE, categorySlugFor } from "../../lib/i18n";
 
-export async function getStaticPaths() {
+export function getStaticPaths() {
   return CATEGORIES.map((category) => ({
-    params: { category: categorySlug(category) },
+    params: { category: categorySlugFor(category, DEFAULT_LOCALE) },
     props: { category },
   }));
 }
 
 const { category } = Astro.props;
-const posts = await getPostsByCategory(category);
-
-const blurbs: Record<string, string> = {
-  Family: "The everyday of living together — chores, routines, and the small rituals that hold a cave together.",
-  Relationships: "Staying warm with the people you love, even when the wind picks up.",
-  Parenting: "What we're learning as we raise Babu — usually the hard, honest way.",
-  "Growing Up": "Babu on new schools, new friends, and figuring out who he is.",
-  "Life Lessons": "The bigger stuff — change, courage, patience — as it actually shows up.",
-};
 ---
 
-<BaseLayout
-  title={category}
-  description={blurbs[category]}
->
-  <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-    <header class="max-w-2xl">
-      <p class="text-xs font-medium uppercase tracking-[0.14em] text-muted">Category</p>
-      <h1 class="mt-3 text-display-md text-ink sm:text-display-lg">{category}</h1>
-      <p class="mt-4 text-lg text-body-strong">{blurbs[category]}</p>
-    </header>
-
-    <div class="mt-10 border-y border-hairline py-4">
-      <CategoryTabs active={category} />
-    </div>
-
-    <div class="mt-12">
-      <PostGrid posts={posts} />
-    </div>
-  </div>
-</BaseLayout>
+<CategoryView category={category} />

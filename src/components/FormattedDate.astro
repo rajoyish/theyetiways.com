@@ -1,5 +1,5 @@
 ---
-import { formatStoryDate } from "../lib/site";
+import { formatDate, getLangFromUrl } from "../lib/i18n";
 
 interface Props {
   date: Date;
@@ -7,8 +7,9 @@ interface Props {
 }
 const { date, class: className } = Astro.props;
 
+const lang = getLangFromUrl(Astro.url);
 const iso = date.toISOString();
-const formatted = formatStoryDate(date);
+const formatted = formatDate(date, lang);
 ---
 
 <time datetime={iso} class={className}>{formatted}</time>

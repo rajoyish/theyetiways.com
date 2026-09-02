@@ -1,0 +1,20 @@
+---
+import CategoryView from "../../../components/views/CategoryView.astro";
+import { CATEGORIES } from "../../../lib/site";
+import { TRANSLATED_LOCALES, categorySlugFor } from "../../../lib/i18n";
+
+/* Each locale gets its own slug, so /de/categories/beziehungen and
+   /it/categories/relazioni both resolve to the Relationships listing. */
+export function getStaticPaths() {
+  return TRANSLATED_LOCALES.flatMap((lang) =>
+    CATEGORIES.map((category) => ({
+      params: { lang, category: categorySlugFor(category, lang) },
+      props: { category },
+    })),
+  );
+}
+
+const { category } = Astro.props;
+---
+
+<CategoryView category={category} />

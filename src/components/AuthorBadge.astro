@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import type { Author } from "../lib/posts";
+import { authorPath, authorText, type Author } from "../lib/posts";
+import { getLangFromUrl } from "../lib/i18n";
 
 /**
  * Renders one or more author avatars + names.
@@ -14,6 +15,8 @@ interface Props {
   class?: string;
 }
 const { authors, variant = "inline", size = 36, class: className } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
 
 const accentDot: Record<string, string> = {
   blue: "bg-blue",
@@ -42,7 +45,7 @@ const accentDot: Record<string, string> = {
           <>
             {i > 0 && <span> &amp; </span>}
             <a
-              href={`/authors/${author.id}`}
+              href={authorPath(author.id, lang)}
               class="font-medium text-body-strong hover:text-primary"
             >
               {author.data.name}
@@ -70,13 +73,13 @@ const accentDot: Record<string, string> = {
             ]}
           />
           <a
-            href={`/authors/${authors[0].id}`}
+            href={authorPath(authors[0].id, lang)}
             class="font-serif text-lg text-ink hover:text-primary"
           >
             {authors[0].data.name}
           </a>
         </div>
-        <p class="mt-1 text-sm text-muted">{authors[0].data.tagline}</p>
+        <p class="mt-1 text-sm text-muted">{authorText(authors[0], lang).tagline}</p>
       </div>
     </div>
   )

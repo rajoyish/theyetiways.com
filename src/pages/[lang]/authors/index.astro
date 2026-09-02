@@ -1,0 +1,8 @@
+---
+import AuthorsIndexView from "../../../components/views/AuthorsIndexView.astro";
+import { langPaths } from "../../../lib/routes";
+
+export const getStaticPaths = langPaths;
+---
+
+<AuthorsIndexView />

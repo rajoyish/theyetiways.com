@@ -1,0 +1,12 @@
+---
+import StoriesIndex from "../../../components/StoriesIndex.astro";
+import { getPublishedPosts } from "../../../lib/posts";
+import { langPaths } from "../../../lib/routes";
+
+export const getStaticPaths = langPaths;
+
+const { lang } = Astro.props;
+const posts = await getPublishedPosts(lang);
+---
+
+<StoriesIndex posts={posts} page={1} />

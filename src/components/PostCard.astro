@@ -3,9 +3,14 @@ import { Image } from "astro:assets";
 import Badge from "./Badge.astro";
 import AuthorBadge from "./AuthorBadge.astro";
 import FormattedDate from "./FormattedDate.astro";
-import { resolveAuthors, type Post } from "../lib/posts";
+import { postPath, resolveAuthors, type Post } from "../lib/posts";
 import { youTubeThumb } from "../lib/youtube";
-import { categorySlug } from "../lib/site";
+import {
+  categoryLabel,
+  categoryPath,
+  getLangFromUrl,
+  useTranslations,
+} from "../lib/i18n";
 
 interface Props {
   post: Post;
@@ -17,7 +22,9 @@ const { post, variant = "feature", headingLevel = "h2" } = Astro.props;
 const { data } = post;
 const authors = await resolveAuthors(post);
 const Heading = headingLevel;
-const href = `/blog/${post.id}`;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const href = postPath(post);
 ---
 
 <article
@@ -70,10 +77,10 @@ const href = `/blog/${post.id}`;
     ]}
   >
     <div class="flex flex-wrap items-center gap-2">
-      <Badge variant="pill" href={`/categories/${categorySlug(data.category)}`}>
-        {data.category}
+      <Badge variant="pill" href={categoryPath(data.category, lang)}>
+        {categoryLabel(data.category, lang)}
       </Badge>
-      {data.featured && <Badge variant="pink">Featured</Badge>}
+      {data.featured && <Badge variant="pink">{t.common.featured}</Badge>}
     </div>
 
     <Heading

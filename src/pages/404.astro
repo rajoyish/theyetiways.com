@@ -1,19 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import NotFoundView from "../components/views/NotFoundView.astro";
 ---
 
-<BaseLayout title="Page not found" description="This trail went cold." noindex={true}>
-  <section class="mx-auto flex max-w-2xl flex-col items-center px-6 py-24 sm:py-32 text-center">
-    <div class="flex size-24 items-center justify-center rounded-3xl bg-surface-card shadow-[var(--shadow-lift)] ring-1 ring-hairline">
-      <p class="text-5xl" aria-hidden="true">❄️</p>
-    </div>
-    <h1 class="mt-8 text-display-md text-ink sm:text-display-lg">This trail went cold</h1>
-    <p class="mt-4 max-w-lg text-lg text-body">
-      We couldn't find the page you were looking for. The footprints stop here — but there's a warm fire back at the den.
-    </p>
-    <div class="mt-10 flex flex-wrap justify-center gap-4">
-      <a href="/" class="btn btn-primary">Back home</a>
-      <a href="/blog" class="btn btn-secondary">Read the stories</a>
-    </div>
-  </section>
-</BaseLayout>
+<NotFoundView />

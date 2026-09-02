@@ -1,0 +1,25 @@
+---
+import StoriesIndex from "../../../../components/StoriesIndex.astro";
+import { getPublishedPosts } from "../../../../lib/posts";
+import { extraPageNumbers } from "../../../../lib/pagination";
+import { TRANSLATED_LOCALES } from "../../../../lib/i18n";
+
+/** Page 1 lives at /<lang>/blog, so this route only builds pages 2 and up. */
+export async function getStaticPaths() {
+  const pages = await Promise.all(
+    TRANSLATED_LOCALES.map(async (lang) => {
+      const posts = await getPublishedPosts(lang);
+      return extraPageNumbers(posts.length).map((page) => ({
+        params: { lang, page: String(page) },
+        props: { lang, page },
+      }));
+    }),
+  );
+  return pages.flat();
+}
+
+const { lang, page } = Astro.props;
+const posts = await getPublishedPosts(lang);
+---
+
+<StoriesIndex posts={posts} page={page} />

@@ -7,6 +7,10 @@ import { CATEGORIES } from "./lib/site";
 /**
  * `authors` — one JSON file per family member in `src/content/authors/`.
  * The filename (e.g. `papa-yeti.json`) becomes the entry `id`.
+ *
+ * Names never change between locales, so only the prose does: `i18n` holds the
+ * translated tagline, bio, and Nepali note, keyed by locale. English lives in
+ * the top-level fields and is what a missing locale falls back to.
  */
 const authors = defineCollection({
   loader: glob({ pattern: "**/*.json", base: "./src/content/authors" }),
@@ -26,11 +30,28 @@ const authors = defineCollection({
       socials: z
         .array(z.object({ label: z.string(), href: z.url() }))
         .optional(),
+      i18n: z
+        .record(
+          z.string(),
+          z.object({
+            tagline: z.string(),
+            bio: z.string(),
+            nepaliNote: z.string().optional(),
+          }),
+        )
+        .optional(),
     }),
 });
 
 /**
- * `posts` — one Markdown file per story in `src/content/posts/`.
+ * `posts` — one Markdown file per story in `src/content/posts/<locale>/`.
+ *
+ * The locale directory is part of the entry `id` (`es/puse-el-desayuno-...`),
+ * which is how `src/lib/posts.ts` tells a Spanish story from an English one.
+ * Slugs are translated too, so `translationKey` is what actually links the
+ * ten versions of a story together for `hreflang` and the language picker.
+ * It is the English slug by convention and must never change once published.
+ *
  * Every post is anchored to a YouTube video (`youtube`, required). The field
  * accepts any common YouTube URL or a bare ID and is normalised to the
  * 11-character video ID at load time.
@@ -39,6 +60,7 @@ const posts = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/posts" }),
   schema: ({ image }) =>
     z.object({
+      translationKey: z.string(),
       title: z.string(),
       description: z.string(),
       pubDate: z.coerce.date(),
@@ -56,6 +78,8 @@ const posts = defineCollection({
         }
         return id;
       }),
+      /* Always the English category name — the stable key every locale shares.
+         Readers see the translated label from `src/lib/ui/<locale>.ts`. */
       category: z.enum(CATEGORIES),
       tags: z.array(z.string()).default([]),
       // Optional custom cover; falls back to the YouTube thumbnail.

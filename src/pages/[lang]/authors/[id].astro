@@ -1,0 +1,20 @@
+---
+import AuthorView from "../../../components/views/AuthorView.astro";
+import { getFamily } from "../../../lib/posts";
+import { TRANSLATED_LOCALES } from "../../../lib/i18n";
+
+/* Author ids are proper names, so they are the same in every locale. */
+export async function getStaticPaths() {
+  const family = await getFamily();
+  return TRANSLATED_LOCALES.flatMap((lang) =>
+    family.map((author) => ({
+      params: { lang, id: author.id },
+      props: { author },
+    })),
+  );
+}
+
+const { author } = Astro.props;
+---
+
+<AuthorView author={author} />

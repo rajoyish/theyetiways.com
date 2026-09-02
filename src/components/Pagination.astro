@@ -1,5 +1,6 @@
 ---
 import { pageHref } from "../lib/pagination";
+import { getLangFromUrl, useTranslations } from "../lib/i18n";
 
 interface Props {
   current: number;
@@ -9,11 +10,12 @@ interface Props {
   label?: string;
   class?: string;
 }
+const t = useTranslations(getLangFromUrl(Astro.url));
 const {
   current,
   total,
   basePath,
-  label = "Pagination",
+  label = t.common.paginationNav,
   class: className,
 } = Astro.props;
 
@@ -36,11 +38,11 @@ const stepClass =
     <nav class:list={["flex items-center justify-between gap-4", className]} aria-label={label}>
       {current > 1 ? (
         <a href={pageHref(basePath, current - 1)} rel="prev" class={stepClass}>
-          <span aria-hidden="true">&larr;</span> Newer
+          <span aria-hidden="true">&larr;</span> {t.common.newer}
         </a>
       ) : (
         <span class="rounded-md px-3.5 py-2 text-sm font-medium text-muted opacity-40">
-          <span aria-hidden="true">&larr;</span> Newer
+          <span aria-hidden="true">&larr;</span> {t.common.newer}
         </span>
       )}
 
@@ -55,7 +57,7 @@ const stepClass =
               <a
                 href={pageHref(basePath, page)}
                 aria-current={page === current ? "page" : undefined}
-                aria-label={`Page ${page}`}
+                aria-label={`${t.common.page} ${page}`}
                 class:list={[
                   "block rounded-md px-3.5 py-2 text-sm font-medium transition-colors",
                   page === current
@@ -72,11 +74,11 @@ const stepClass =
 
       {current < total ? (
         <a href={pageHref(basePath, current + 1)} rel="next" class={stepClass}>
-          Older <span aria-hidden="true">&rarr;</span>
+          {t.common.older} <span aria-hidden="true">&rarr;</span>
         </a>
       ) : (
         <span class="rounded-md px-3.5 py-2 text-sm font-medium text-muted opacity-40">
-          Older <span aria-hidden="true">&rarr;</span>
+          {t.common.older} <span aria-hidden="true">&rarr;</span>
         </span>
       )}
     </nav>

@@ -1,0 +1,8 @@
+---
+import LegalView from "../../components/views/LegalView.astro";
+import { langPaths } from "../../lib/routes";
+
+export const getStaticPaths = langPaths;
+---
+
+<LegalView doc="terms" />

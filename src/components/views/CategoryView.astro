@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CategoryTabs from "../CategoryTabs.astro";
+import PostGrid from "../PostGrid.astro";
+import type { Category } from "../../lib/site";
+import { getPostsByCategory } from "../../lib/posts";
+import {
+  categoryBlurb,
+  categoryLabel,
+  categorySlugFor,
+  getLangFromUrl,
+  localeAlternates,
+  useTranslations,
+} from "../../lib/i18n";
+
+interface Props {
+  category: Category;
+}
+const { category } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const posts = await getPostsByCategory(category, lang);
+
+/* The slug is translated, so each locale's alternate is built from its own
+   slug table rather than by re-prefixing this page's path. */
+const alternates = localeAlternates(
+  (code) => `/categories/${categorySlugFor(category, code)}`,
+);
+
+const label = categoryLabel(category, lang);
+const blurb = categoryBlurb(category, lang);
+---
+
+<BaseLayout title={label} description={blurb} alternates={alternates}>
+  <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <header class="max-w-2xl">
+      <p class="text-xs font-medium uppercase tracking-[0.14em] text-muted">
+        {t.category.eyebrow}
+      </p>
+      <h1 class="mt-3 text-display-md text-ink sm:text-display-lg">{label}</h1>
+      <p class="mt-4 text-lg text-body-strong">{blurb}</p>
+    </header>
+
+    <div class="mt-10 border-y border-hairline py-4">
+      <CategoryTabs active={category} />
+    </div>
+
+    <div class="mt-12">
+      <PostGrid posts={posts} />
+    </div>
+  </div>
+</BaseLayout>
