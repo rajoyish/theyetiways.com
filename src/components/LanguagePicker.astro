@@ -1,0 +1,158 @@
+---
+import "flag-icons/css/flag-icons.min.css";
+import {
+  LOCALES,
+  LOCALE_CODES,
+  getLangFromUrl,
+  mirrorAlternates,
+  useTranslations,
+  type Locale,
+} from "../lib/i18n";
+
+
+/**
+ * Language switcher.
+ *
+ * `dropdown` is the header control, built on `<details>` so it opens with no
+ * JavaScript at all; the small script below only adds the niceties (close on
+ * Escape, close on outside click). `list` is the flat version for the mobile
+ * sheet, where a dropdown inside a sheet is one layer too many.
+ *
+ * Every entry is a real link with its own `hreflang`, so switching language is
+ * a normal navigation a crawler can follow, not a client-side redirect.
+ */
+interface Props {
+  /** locale -> path. Defaults to the current path re-prefixed per locale. */
+  alternates?: Partial<Record<Locale, string>>;
+  variant?: "dropdown" | "list";
+  class?: string;
+}
+const {
+  alternates = mirrorAlternates(Astro.url.pathname),
+  variant = "dropdown",
+  class: className,
+} = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const FLAG_MAP: Record<string, string> = {
+  en: "us",
+  es: "es",
+  ja: "jp",
+  fr: "fr",
+  de: "de",
+  pt: "br",
+  ko: "kr",
+  it: "it",
+  ru: "ru",
+  zh: "cn",
+};
+
+const options = LOCALE_CODES.filter((code) => alternates[code]).map((code) => ({
+  code,
+  href: alternates[code]!,
+  label: LOCALES[code].label,
+  tag: LOCALES[code].tag,
+  current: code === lang,
+  flag: FLAG_MAP[code as string],
+}));
+
+
+const itemClass = (current: boolean) =>
+  current
+    ? "bg-surface-card text-ink"
+    : "text-body hover:bg-surface-soft hover:text-ink";
+---
+
+{
+  variant === "list" ? (
+    <div class={className}>
+      {/* A <p>, not a heading: this sits above the page's own <h1> in the DOM,
+          and a heading here would put the document outline out of order. */}
+      <p
+        id="language-picker-label"
+        class="px-3 text-xs font-medium uppercase tracking-[0.12em] text-muted"
+      >
+        {t.common.language}
+      </p>
+      <ul class="mt-3 grid grid-cols-2 gap-1" aria-labelledby="language-picker-label">
+        {options.map((option) => (
+          <li>
+            <a
+              href={option.href}
+              hreflang={option.tag}
+              lang={option.tag}
+              aria-current={option.current ? "true" : undefined}
+              class:list={[
+                "flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-medium transition-colors",
+                itemClass(option.current),
+              ]}
+            >
+              <span class={`fi fi-${option.flag}`} />
+              {option.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <details id="language-picker" class:list={["relative", className]}>
+      <summary
+        class="btn btn-secondary h-10 cursor-pointer gap-1.5 px-3 [&::-webkit-details-marker]:hidden"
+        aria-label={t.common.chooseLanguage}
+        title={t.common.chooseLanguage}
+      >
+        <svg
+          width="17" height="17" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" />
+        </svg>
+        <span class="text-sm font-medium uppercase">{lang}</span>
+      </summary>
+
+      <ul
+        class="absolute right-0 top-full z-50 mt-2 w-44 rounded-lg border border-hairline bg-canvas p-1.5 shadow-[var(--shadow-lift)]"
+      >
+        {options.map((option) => (
+          <li>
+            <a
+              href={option.href}
+              hreflang={option.tag}
+              lang={option.tag}
+              aria-current={option.current ? "true" : undefined}
+              class:list={[
+                "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                itemClass(option.current),
+              ]}
+            >
+              <span class={`fi fi-${option.flag}`} />
+              {option.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  )
+}
+
+<script>
+  /* Progressive enhancement only — the <details> opens and closes on its own. */
+  const picker = document.getElementById("language-picker") as HTMLDetailsElement | null;
+
+  if (picker) {
+    document.addEventListener("click", (event) => {
+      if (picker.open && !picker.contains(event.target as Node)) picker.open = false;
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && picker.open) {
+        picker.open = false;
+        picker.querySelector("summary")?.focus();
+      }
+    });
+  }
+</script>

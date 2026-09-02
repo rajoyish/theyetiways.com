@@ -1,6 +1,15 @@
 ---
 import { SITE } from "../lib/site";
 import { organizationSchema, websiteSchema } from "../lib/seo";
+import {
+  DEFAULT_LOCALE,
+  LOCALES,
+  getLangFromUrl,
+  localizePath,
+  mirrorAlternates,
+  useTranslations,
+  type Locale,
+} from "../lib/i18n";
 
 interface ArticleMeta {
   publishedTime?: string | Date;
@@ -21,23 +30,48 @@ interface Props {
   /** Extra JSON-LD nodes to emit alongside the site-wide WebSite/Organization. */
   jsonLd?: Record<string, unknown>[];
   noindex?: boolean;
+  /**
+   * `hreflang` targets as locale -> absolute path. Pages whose path is the same
+   * in every locale can leave this out and get the current path re-prefixed;
+   * stories and category listings, whose slugs are translated, pass their own.
+   */
+  alternates?: Partial<Record<Locale, string>>;
 }
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const locale = LOCALES[lang];
 
 const {
   title,
-  description = SITE.description,
-  image = "/og/default.png",
+  description = t.meta.description,
+  image = `/og/default-${lang}.png`,
   imageAlt = SITE.name,
   type = "website",
   article,
   jsonLd = [],
   noindex = false,
+  alternates = mirrorAlternates(Astro.url.pathname),
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL(SITE.url);
 const canonical = new URL(Astro.url.pathname, siteUrl);
 const ogImage = new URL(image, siteUrl);
 const fullTitle = title === SITE.name ? title : `${title} — ${SITE.name}`;
+
+/* Every locale points at every other one, itself included — Google treats a
+   set of hreflang links as valid only when the return links are reciprocal.
+   `x-default` goes to English, which is what an unmatched visitor gets.
+
+   The trailing slash matters: the build emits directories, so a page's own
+   canonical ends in `/`. An hreflang target that omits it names a different
+   URL than the canonical it is supposed to point at, which is enough to make
+   Google drop the whole cluster. */
+const alternateUrl = (path: string) =>
+  new URL(path.endsWith("/") ? path : `${path}/`, siteUrl).href;
+
+const alternateEntries = Object.entries(alternates) as [Locale, string][];
+const xDefault = alternates[DEFAULT_LOCALE];
 
 const toIso = (value?: string | Date) =>
   value == null
@@ -49,8 +83,8 @@ const modifiedTime = toIso(article?.modifiedTime);
 const authorNames = article?.authors ?? [];
 
 const schemas = [
-  websiteSchema(siteUrl),
-  organizationSchema(siteUrl),
+  websiteSchema(siteUrl, lang),
+  organizationSchema(siteUrl, lang),
   ...jsonLd,
 ];
 /** Guard JSON-LD payloads against `</script>` breakouts. */
@@ -76,9 +110,22 @@ const serialize = (data: unknown) =>
 <link
   rel="alternate"
   type="application/rss+xml"
-  title={`${SITE.name} — Stories`}
-  href="/rss.xml"
+  title={`${SITE.name} — ${t.stories.title}`}
+  href={localizePath("/rss.xml", lang)}
 />
+
+{
+  alternateEntries.map(([code, path]) => (
+    <link
+      rel="alternate"
+      hreflang={LOCALES[code].tag}
+      href={alternateUrl(path)}
+    />
+  ))
+}
+{xDefault && (
+  <link rel="alternate" hreflang="x-default" href={alternateUrl(xDefault)} />
+)}
 
 <meta property="og:site_name" content={SITE.name} />
 <meta property="og:type" content={type} />
@@ -87,7 +134,14 @@ const serialize = (data: unknown) =>
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:alt" content={imageAlt} />
-<meta property="og:locale" content="en_US" />
+<meta property="og:locale" content={locale.ogLocale} />
+{
+  alternateEntries
+    .filter(([code]) => code !== lang)
+    .map(([code]) => (
+      <meta property="og:locale:alternate" content={LOCALES[code].ogLocale} />
+    ))
+}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />

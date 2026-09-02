@@ -1,0 +1,263 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CategoryTabs from "../CategoryTabs.astro";
+import { getLangFromUrl, localizePath, useTranslations } from "../../lib/i18n";
+
+/**
+ * Search runs entirely in the browser against the locale's own index, so a
+ * Spanish reader only ever matches Spanish stories. The page ships with an
+ * empty results list; `?q=` is honoured on load, so a shared link lands on the
+ * same results.
+ *
+ * Every string the client script needs is rendered into `data-*` on the form,
+ * because the script is bundled once and shared by all ten locales.
+ */
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const searchPath = localizePath("/search", lang);
+const indexPath = localizePath("/search-index.json", lang);
+const blogPath = localizePath("/blog", lang);
+---
+
+<BaseLayout title={t.search.title} description={t.search.description} noindex={true}>
+  <div class="mx-auto max-w-4xl px-6 py-16 sm:py-20">
+    <header class="max-w-2xl">
+      <h1 class="text-display-md text-ink sm:text-display-lg">{t.search.title}</h1>
+      <p class="mt-4 text-lg text-body-strong">{t.search.intro}</p>
+    </header>
+
+    <form
+      id="search-form"
+      role="search"
+      action={searchPath}
+      method="get"
+      class="mt-8"
+      data-index={indexPath}
+      data-blog={blogPath}
+      data-latest={t.search.latest}
+      data-no-match={t.search.noMatch}
+      data-no-match-body={t.search.noMatchBody}
+      data-browse-all={t.search.browseAll}
+      data-match-one={t.search.matchOne}
+      data-match-many={t.search.matchMany}
+      data-match-trimmed={t.search.matchTrimmed}
+      data-index-error={t.search.indexError}
+      data-index-error-body={t.search.indexErrorBody}
+      data-index-error-link={t.search.indexErrorLink}
+    >
+      <label for="search-input" class="sr-only">{t.common.searchStories}</label>
+      <div class="relative">
+        <svg
+          class="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.6-3.6" />
+        </svg>
+        <input
+          id="search-input"
+          type="search"
+          name="q"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder={t.search.placeholder}
+          class="h-12 w-full rounded-lg border border-hairline bg-surface-soft pl-12 pr-4 text-base text-ink transition-colors placeholder:text-muted-soft hover:border-primary/60 focus:border-primary"
+        />
+      </div>
+      <noscript>
+        <button type="submit" class="btn btn-primary mt-3">{t.search.submit}</button>
+        <p class="mt-4 rounded-lg bg-surface-card p-5 text-body">
+          {t.search.noJs}
+          <a href={blogPath} class="text-primary underline">{t.search.noJsLink}</a>
+          {t.search.noJsTail}
+        </p>
+      </noscript>
+    </form>
+
+    <p id="search-status" class="mt-8 text-sm text-muted" role="status" aria-live="polite">
+      {t.search.loading}
+    </p>
+
+    <ul id="search-results" class="mt-5 flex flex-col gap-4"></ul>
+
+    <div class="mt-12 border-t border-hairline pt-6">
+      <p class="text-sm text-muted">{t.search.orBrowse}</p>
+      <CategoryTabs active="none" class="mt-3" />
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import {
+    prepareDocs,
+    searchDocs,
+    highlightSegments,
+    tokenize,
+    type PreparedDoc,
+    type SearchDoc,
+  } from "../../lib/search";
+
+  /** Results kept on screen at once. Deeper matches are rarely what you meant. */
+  const MAX_RESULTS = 30;
+  /** How many latest stories greet an empty query. */
+  const LATEST_COUNT = 6;
+
+  const form = document.getElementById("search-form") as HTMLFormElement;
+  const input = document.getElementById("search-input") as HTMLInputElement;
+  const status = document.getElementById("search-status") as HTMLParagraphElement;
+  const list = document.getElementById("search-results") as HTMLUListElement;
+
+  /** Server-rendered strings and paths for the active locale. */
+  const copy = form.dataset as Record<string, string>;
+  const fill = (template: string, vars: Record<string, string | number>) =>
+    template.replace(/\{(\w+)\}/g, (match, key: string) =>
+      Object.hasOwn(vars, key) ? String(vars[key]) : match,
+    );
+
+  let index: PreparedDoc[] | null = null;
+
+  const escapeHtml = (value: string) =>
+    value.replace(
+      /[&<>"']/g,
+      (char) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!,
+    );
+
+  const highlight = (text: string, terms: string[]) =>
+    highlightSegments(text, terms)
+      .map((segment) =>
+        segment.match
+          ? `<mark class="rounded-xs bg-primary/20 px-0.5 text-ink">${escapeHtml(segment.text)}</mark>`
+          : escapeHtml(segment.text),
+      )
+      .join("");
+
+  function resultHtml(doc: SearchDoc, terms: string[]): string {
+    return `
+      <li>
+        <article class="card-lift flex gap-5 rounded-lg bg-surface-card p-5">
+          <a
+            href="${escapeHtml(doc.url)}"
+            tabindex="-1"
+            aria-hidden="true"
+            class="hidden aspect-video w-36 shrink-0 overflow-hidden rounded-md bg-surface-dark sm:block"
+          >
+            <img src="${escapeHtml(doc.thumb)}" alt="" loading="lazy" decoding="async"
+                 class="size-full object-cover" />
+          </a>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span class="inline-flex items-center rounded-full bg-surface-soft px-3 py-1 text-[0.8125rem] font-medium text-ink">
+                ${highlight(doc.category, terms)}
+              </span>
+              <time datetime="${escapeHtml(doc.date)}" class="text-sm text-muted">${escapeHtml(doc.dateLabel)}</time>
+            </div>
+            <h2 class="mt-2 text-xl text-ink">
+              <a href="${escapeHtml(doc.url)}" class="hover:text-primary">${highlight(doc.title, terms)}</a>
+            </h2>
+            <p class="mt-2 text-body">${highlight(doc.description, terms)}</p>
+            <p class="mt-2 text-sm text-muted">${highlight(doc.authors.join(" & "), terms)}</p>
+          </div>
+        </article>
+      </li>`;
+  }
+
+  function render(query: string) {
+    if (!index) return;
+
+    const trimmed = query.trim();
+
+    /* No query yet: the newest stories are a better landing than a blank page. */
+    if (trimmed === "") {
+      const latest = index.slice(0, LATEST_COUNT).map((entry) => entry.doc);
+      status.textContent = copy.latest;
+      list.innerHTML = latest.map((doc) => resultHtml(doc, [])).join("");
+      return;
+    }
+
+    const matches = searchDocs(index, trimmed);
+    const shown = matches.slice(0, MAX_RESULTS);
+    const terms = tokenize(trimmed);
+
+    if (matches.length === 0) {
+      status.textContent = fill(copy.noMatch, { query: trimmed });
+      list.innerHTML = `
+        <li class="rounded-lg bg-surface-card p-8 text-body">
+          ${escapeHtml(copy.noMatchBody)}
+          <a href="${escapeHtml(copy.blog)}" class="text-primary underline">${escapeHtml(copy.browseAll)}</a>. ❄️
+        </li>`;
+      return;
+    }
+
+    if (matches.length > shown.length) {
+      status.textContent = fill(copy.matchTrimmed, {
+        count: matches.length,
+        query: trimmed,
+        shown: shown.length,
+      });
+    } else if (matches.length === 1) {
+      status.textContent = fill(copy.matchOne, { query: trimmed });
+    } else {
+      status.textContent = fill(copy.matchMany, {
+        count: matches.length,
+        query: trimmed,
+      });
+    }
+
+    list.innerHTML = shown.map((doc) => resultHtml(doc, terms)).join("");
+  }
+
+  /** Keep `?q=` in step with the box, so results survive a copy-paste or reload. */
+  function syncUrl(query: string) {
+    const url = new URL(window.location.href);
+    if (query.trim() === "") url.searchParams.delete("q");
+    else url.searchParams.set("q", query.trim());
+    window.history.replaceState(null, "", url);
+  }
+
+  let pending: number | undefined;
+  input.addEventListener("input", () => {
+    window.clearTimeout(pending);
+    pending = window.setTimeout(() => {
+      render(input.value);
+      syncUrl(input.value);
+    }, 120);
+  });
+
+  /* With JS running, Enter should not reload the page onto the same results. */
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    window.clearTimeout(pending);
+    render(input.value);
+    syncUrl(input.value);
+  });
+
+  /* Back/forward between shared result links. */
+  window.addEventListener("popstate", () => {
+    input.value = new URL(window.location.href).searchParams.get("q") ?? "";
+    render(input.value);
+  });
+
+  input.value = new URL(window.location.href).searchParams.get("q") ?? "";
+  input.focus({ preventScroll: true });
+
+  fetch(copy.index)
+    .then((response) => {
+      if (!response.ok) throw new Error(`Index request failed: ${response.status}`);
+      return response.json() as Promise<SearchDoc[]>;
+    })
+    .then((docs) => {
+      index = prepareDocs(docs);
+      render(input.value);
+    })
+    .catch(() => {
+      status.textContent = copy.indexError;
+      list.innerHTML = `
+        <li class="rounded-lg bg-surface-card p-8 text-body">
+          ${escapeHtml(copy.indexErrorBody)}
+          <a href="${escapeHtml(copy.blog)}" class="text-primary underline">${escapeHtml(copy.indexErrorLink)}</a>. ❄️
+        </li>`;
+    });
+</script>

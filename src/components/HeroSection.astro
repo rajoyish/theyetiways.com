@@ -3,31 +3,44 @@ import { Image } from "astro:assets";
 import Badge from "./Badge.astro";
 import AuthorBadge from "./AuthorBadge.astro";
 import FormattedDate from "./FormattedDate.astro";
-import { resolveAuthors, type Post } from "../lib/posts";
+import { postPath, resolveAuthors, type Post } from "../lib/posts";
 import { youTubeThumb } from "../lib/youtube";
-import { SITE, categorySlug } from "../lib/site";
+import { SITE } from "../lib/site";
+import {
+  categoryLabel,
+  categoryPath,
+  getLangFromUrl,
+  localizePath,
+  useTranslations,
+} from "../lib/i18n";
 
 interface Props {
   post: Post;
 }
 const { post } = Astro.props;
 const authors = await resolveAuthors(post);
-const href = `/blog/${post.id}`;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const href = postPath(post);
 ---
 
 <section class="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:py-24 lg:grid-cols-2 lg:items-center">
   <div>
     <p class="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-muted">
       <span class="inline-block size-1.5 rounded-full bg-primary"></span>
-      The Yeti Ways
+      {SITE.name}
     </p>
     <h1 class="mt-5 text-display-lg text-ink sm:text-display-xl">
-      {SITE.tagline}
+      {t.meta.tagline}
     </h1>
-    <p class="mt-6 max-w-xl text-lg text-body-strong">{SITE.motto}</p>
+    <p class="mt-6 max-w-xl text-lg text-body-strong">{t.meta.motto}</p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <a href="/blog" class="btn btn-primary">Read the stories</a>
-      <a href="/authors" class="btn btn-secondary">Meet the family</a>
+      <a href={localizePath("/blog", lang)} class="btn btn-primary">
+        {t.common.readStories}
+      </a>
+      <a href={localizePath("/authors", lang)} class="btn btn-secondary">
+        {t.common.meetTheFamily}
+      </a>
     </div>
   </div>
 
@@ -59,9 +72,9 @@ const href = `/blog/${post.id}`;
     </a>
     <div class="flex flex-col gap-3 p-8">
       <div class="flex flex-wrap items-center gap-2">
-        <Badge variant="pink">Featured story</Badge>
-        <Badge variant="pill" href={`/categories/${categorySlug(post.data.category)}`}>
-          {post.data.category}
+        <Badge variant="pink">{t.common.featuredStory}</Badge>
+        <Badge variant="pill" href={categoryPath(post.data.category, lang)}>
+          {categoryLabel(post.data.category, lang)}
         </Badge>
       </div>
       <h2 class="text-display-sm">

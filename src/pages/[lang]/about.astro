@@ -1,0 +1,8 @@
+---
+import AboutView from "../../components/views/AboutView.astro";
+import { langPaths } from "../../lib/routes";
+
+export const getStaticPaths = langPaths;
+---
+
+<AboutView />

@@ -1,5 +1,6 @@
 ---
 import { youTubeThumb, youTubeEmbedUrl, youTubeWatchUrl } from "../lib/youtube";
+import { fill, getLangFromUrl, useTranslations } from "../lib/i18n";
 
 /**
  * Lightweight YouTube facade (DESIGN.md: dark product-surface card).
@@ -22,6 +23,8 @@ const posterSrc = poster ?? youTubeThumb(id, "maxresdefault");
 const posterFallback = youTubeThumb(id, "hqdefault");
 const embedUrl = youTubeEmbedUrl(id);
 const watchUrl = youTubeWatchUrl(id);
+const t = useTranslations(getLangFromUrl(Astro.url));
+const playLabel = fill(t.post.playVideo, { title });
 ---
 
 <div
@@ -45,7 +48,7 @@ const watchUrl = youTubeWatchUrl(id);
   <a
     class="yt-play absolute inset-0 flex items-center justify-center"
     href={watchUrl}
-    aria-label={`Play video: ${title}`}
+    aria-label={playLabel}
   >
     <span
       class="flex size-16 items-center justify-center rounded-full bg-primary text-on-primary shadow-sm transition-transform group-hover:scale-105 sm:size-20"

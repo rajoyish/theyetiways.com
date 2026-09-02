@@ -8,6 +8,47 @@
   "accent": "blue",
   "order": 1,
   "socials": [
-    { "label": "YouTube", "href": "https://www.youtube.com/@TheYetiWays" }
-  ]
+    {
+      "label": "YouTube",
+      "href": "https://www.youtube.com/@TheYetiWays"
+    }
+  ],
+  "i18n": {
+    "es": {
+      "tagline": "Guardián del mapa, perdedor del mapa.",
+      "bio": "Papá Yeti se encarga de planificar, de conducir y de casi toda la preocupación. Escribe sobre las lecciones lentas: la paciencia, estar presente y admitir delante de los hijos que se equivocó."
+    },
+    "ja": {
+      "tagline": "地図の管理人。地図をなくす人。",
+      "bio": "パパイエティは計画を立て、運転をし、心配のほとんどを引き受けている。ゆっくり効いてくる教訓について書いている。忍耐、そこにいること、そして間違えたと子どもたちの前で認めること。"
+    },
+    "fr": {
+      "tagline": "Gardien de la carte, perdeur de la carte.",
+      "bio": "Papa Yeti s'occupe des plans, de la conduite et de la plupart des inquiétudes. Il écrit sur les leçons lentes : la patience, le fait d'être là, et celui de reconnaître devant les enfants qu'il s'est trompé."
+    },
+    "de": {
+      "tagline": "Hüter der Karte, Verlierer der Karte.",
+      "bio": "Papa Yeti macht die Planung, das Fahren und den größten Teil der Sorgen. Er schreibt über die langsamen Lektionen: Geduld, da sein, und vor den Kindern zugeben, dass man falsch lag."
+    },
+    "pt": {
+      "tagline": "Guardião do mapa, perdedor do mapa.",
+      "bio": "Papai Yeti cuida do planejamento, da direção e de quase toda a preocupação. Ele escreve sobre as lições lentas: paciência, estar presente e admitir na frente dos filhos que errou."
+    },
+    "ko": {
+      "tagline": "지도를 지키는 사람, 지도를 잃어버리는 사람.",
+      "bio": "아빠 예티는 계획을 세우고, 운전을 하고, 걱정의 대부분을 맡는다. 천천히 배우는 교훈에 대해 쓴다. 인내, 곁에 있어 주는 일, 그리고 아이들 앞에서 자기가 틀렸다고 인정하는 일."
+    },
+    "it": {
+      "tagline": "Custode della mappa, smarritore della mappa.",
+      "bio": "Papà Yeti si occupa dei piani, della guida e di gran parte delle preoccupazioni. Scrive delle lezioni lente: la pazienza, l'esserci, e l'ammettere davanti ai figli di aver sbagliato."
+    },
+    "ru": {
+      "tagline": "Хранитель карты. Теряльщик карты.",
+      "bio": "Папа Йети занимается планами, дорогой и почти всеми тревогами. Он пишет о медленных уроках: о терпении, о том, чтобы быть рядом, и о том, как признать при детях, что ошибся."
+    },
+    "zh": {
+      "tagline": "地图的保管者，地图的弄丢者。",
+      "bio": "雪人爸爸负责规划、开车，以及大部分的操心。他写那些慢慢才学会的功课：耐心，人在场，以及当着孩子的面承认自己错了。"
+    }
+  }
 }

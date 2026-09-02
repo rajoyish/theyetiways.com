@@ -2,10 +2,11 @@
 import StoriesIndex from "../../../components/StoriesIndex.astro";
 import { getPublishedPosts } from "../../../lib/posts";
 import { extraPageNumbers } from "../../../lib/pagination";
+import { DEFAULT_LOCALE } from "../../../lib/i18n";
 
 /** Page 1 lives at /blog, so this route only builds pages 2 and up. */
 export async function getStaticPaths() {
-  const posts = await getPublishedPosts();
+  const posts = await getPublishedPosts(DEFAULT_LOCALE);
   return extraPageNumbers(posts.length).map((page) => ({
     params: { page: String(page) },
     props: { page },
@@ -13,7 +14,7 @@ export async function getStaticPaths() {
 }
 
 const { page } = Astro.props;
-const posts = await getPublishedPosts();
+const posts = await getPublishedPosts(DEFAULT_LOCALE);
 ---
 
 <StoriesIndex posts={posts} page={page} />

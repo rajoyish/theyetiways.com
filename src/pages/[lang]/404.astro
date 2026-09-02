@@ -1,0 +1,10 @@
+---
+import NotFoundView from "../../components/views/NotFoundView.astro";
+import { langPaths } from "../../lib/routes";
+
+/* Most static hosts only ever serve the root /404.html, but a locale-specific
+   one costs nothing and some hosts (and link checkers) do use it. */
+export const getStaticPaths = langPaths;
+---
+
+<NotFoundView />

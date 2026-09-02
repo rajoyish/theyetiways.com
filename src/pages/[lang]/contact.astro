@@ -1,0 +1,8 @@
+---
+import ContactView from "../../components/views/ContactView.astro";
+import { langPaths } from "../../lib/routes";
+
+export const getStaticPaths = langPaths;
+---
+
+<ContactView />

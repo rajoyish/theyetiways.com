@@ -1,0 +1,8 @@
+---
+import SearchView from "../../components/views/SearchView.astro";
+import { langPaths } from "../../lib/routes";
+
+export const getStaticPaths = langPaths;
+---
+
+<SearchView />

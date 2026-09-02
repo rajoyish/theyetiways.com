@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getLangFromUrl, localizePath, useTranslations } from "../../lib/i18n";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout
+  title={t.notFound.title}
+  description={t.notFound.description}
+  noindex={true}
+>
+  <section class="mx-auto flex max-w-2xl flex-col items-center px-6 py-24 sm:py-32 text-center">
+    <div class="flex size-24 items-center justify-center rounded-3xl bg-surface-card shadow-[var(--shadow-lift)] ring-1 ring-hairline">
+      <p class="text-5xl" aria-hidden="true">❄️</p>
+    </div>
+    <h1 class="mt-8 text-display-md text-ink sm:text-display-lg">{t.notFound.heading}</h1>
+    <p class="mt-4 max-w-lg text-lg text-body">{t.notFound.body}</p>
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <a href={localizePath("/", lang)} class="btn btn-primary">{t.common.backHome}</a>
+      <a href={localizePath("/blog", lang)} class="btn btn-secondary">
+        {t.common.readStories}
+      </a>
+    </div>
+  </section>
+</BaseLayout>

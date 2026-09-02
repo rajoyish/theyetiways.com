@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Prose from "../Prose.astro";
+import FormattedDate from "../FormattedDate.astro";
+import { CONTACT, SITE, SOCIAL_CHANNELS } from "../../lib/site";
+import {
+  fill,
+  getLangFromUrl,
+  localizePath,
+  useTranslations,
+} from "../../lib/i18n";
+
+/**
+ * Shell and body for the policy pages. Both documents live in the string table
+ * as headings plus HTML fragments, so the ten translations share this one
+ * layout and no locale can drift out of structure with the others.
+ */
+interface Props {
+  doc: "privacy" | "terms";
+}
+const { doc } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const document = t.legal[doc];
+
+const vars = {
+  site: SITE.name,
+  email: CONTACT.email,
+  mailto: `mailto:${CONTACT.email}`,
+  contact: localizePath("/contact", lang),
+  privacy: localizePath("/privacy", lang),
+  terms: localizePath("/terms", lang),
+  channels: SOCIAL_CHANNELS.map((channel) => channel.label).join(", "),
+};
+
+const sections = document.sections.map((section) => ({
+  heading: section.heading,
+  html: section.html.map((fragment) => fill(fragment, vars)).join(""),
+}));
+---
+
+<BaseLayout
+  title={document.title}
+  description={fill(document.description, vars)}
+>
+  <article class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <header class="border-b border-hairline pb-8">
+      <h1 class="text-display-md text-ink sm:text-display-lg">{document.title}</h1>
+      <p class="mt-4 text-sm text-muted">
+        {t.legal.lastUpdated} <FormattedDate date={CONTACT.legalUpdated} />
+      </p>
+    </header>
+
+    <Prose class="mt-10">
+      <p class="lead">{fill(document.lead, vars)}</p>
+      {
+        sections.map((section) => (
+          <>
+            <h2>{section.heading}</h2>
+            <Fragment set:html={section.html} />
+          </>
+        ))
+      }
+    </Prose>
+  </article>
+</BaseLayout>

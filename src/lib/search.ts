@@ -42,10 +42,18 @@ export function fold(value: string): string {
     .join("");
 }
 
-/** Split a query into search terms. Punctuation is a separator, never a term. */
+/**
+ * Split a query into search terms. Punctuation is a separator, never a term.
+ *
+ * The separator class is any character that is neither a letter nor a number in
+ * *any* script, not just ASCII — an `[^a-z0-9]` class would throw away a
+ * Cyrillic or CJK query whole and return no terms at all. Chinese and Japanese
+ * do not space their words, so a query in those scripts arrives as one long
+ * term and matches by substring, which is exactly what `termScore` does.
+ */
 export function tokenize(query: string): string[] {
   return fold(query)
-    .split(/[^a-z0-9]+/)
+    .split(/[^\p{L}\p{N}]+/u)
     .filter(Boolean);
 }
 
@@ -56,7 +64,8 @@ export function tokenize(query: string): string[] {
 function termScore(haystack: string, term: string): number {
   const at = haystack.indexOf(term);
   if (at < 0) return 0;
-  const isWordy = (char: string | undefined) => Boolean(char) && /[a-z0-9]/.test(char!);
+  const isWordy = (char: string | undefined) =>
+    Boolean(char) && /[\p{L}\p{N}]/u.test(char!);
   const startsWord = !isWordy(haystack[at - 1]);
   const endsWord = !isWordy(haystack[at + term.length]);
   if (startsWord && endsWord) return 1;

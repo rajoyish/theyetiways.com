@@ -1,14 +1,16 @@
-/** Site-wide constants for The Yeti Ways. */
+/**
+ * Site-wide constants for The Yeti Ways.
+ *
+ * Only things that are the same in every language live here: the name, the
+ * domain, the email, the channel URLs, the category keys. Everything a reader
+ * actually reads comes from `src/lib/ui/<locale>.ts`, and the localized nav and
+ * footer are assembled in `src/lib/nav.ts`.
+ */
 
 export const SITE = {
   name: "The Yeti Ways",
   domain: "theyetiways.com",
   url: "https://theyetiways.com",
-  motto:
-    "We might be Yetis, but our ways are warm. ❄️❤️ Big hearts. Thick fur. Good vibes.",
-  tagline: "Warm life lessons from a family of Yetis.",
-  description:
-    "The Yeti Ways is a family blog co-authored by Papa, Mama, and Babu Yeti — warm, honest stories about family, relationships, parenting, and growing up, each one built around a video from our channels.",
 } as const;
 
 /**
@@ -22,26 +24,10 @@ export const CONTACT = {
 } as const;
 
 /**
- * Story dates read in the family's own timezone, so a post never looks like it
- * landed a day early. Both `FormattedDate` and the search index use this.
+ * Category keys. These are the English names, stored verbatim in post
+ * frontmatter and used as the lookup key for every locale's label and slug.
+ * Renaming one is a content migration, not a translation.
  */
-export function formatStoryDate(date: Date): string {
-  return date.toLocaleDateString("en-US", {
-    timeZone: "Asia/Kathmandu",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-export const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "Stories", href: "/blog" },
-  { label: "The Family", href: "/authors" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-] as const;
-
 export const CATEGORIES = [
   "Family",
   "Relationships",
@@ -52,55 +38,11 @@ export const CATEGORIES = [
 
 export type Category = (typeof CATEGORIES)[number];
 
-/** URL-safe slug for a category ("Growing Up" -> "growing-up"). */
-export function categorySlug(category: string): string {
-  return category.toLowerCase().replace(/\s+/g, "-");
-}
-
-/** Reverse of `categorySlug` against the known list. */
-export function categoryFromSlug(slug: string): Category | undefined {
-  return CATEGORIES.find((c) => categorySlug(c) === slug);
-}
-
 export const SOCIAL_CHANNELS = [
   { label: "Facebook", href: "https://www.facebook.com/TheYetiWays" },
   { label: "YouTube", href: "https://www.youtube.com/@TheYetiWays" },
   { label: "TikTok", href: "https://www.tiktok.com/@the.yeti.ways" },
 ] as const;
 
-export const FOOTER_LINKS = [
-  {
-    heading: "Explore",
-    links: [
-      { label: "All stories", href: "/blog" },
-      { label: "Search", href: "/search" },
-      { label: "Family", href: "/categories/family" },
-      { label: "Relationships", href: "/categories/relationships" },
-      { label: "Parenting", href: "/categories/parenting" },
-      { label: "Growing Up", href: "/categories/growing-up" },
-      { label: "Life Lessons", href: "/categories/life-lessons" },
-    ],
-  },
-  {
-    heading: "The Family",
-    links: [
-      { label: "Papa Yeti", href: "/authors/papa-yeti" },
-      { label: "Mama Yeti", href: "/authors/mama-yeti" },
-      { label: "Babu Yeti", href: "/authors/babu-yeti" },
-    ],
-  },
-  {
-    heading: "Follow",
-    links: [...SOCIAL_CHANNELS],
-  },
-  {
-    heading: "More",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms & Conditions", href: "/terms" },
-      { label: "RSS feed", href: "/rss.xml" },
-    ],
-  },
-] as const;
+/** Family member ids, in the order they appear in the footer. */
+export const FAMILY_IDS = ["papa-yeti", "mama-yeti", "babu-yeti"] as const;

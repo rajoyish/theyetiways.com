@@ -4,6 +4,14 @@ import BaseHead from "../components/BaseHead.astro";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import {
+  LOCALES,
+  getLangFromUrl,
+  localizePath,
+  mirrorAlternates,
+  useTranslations,
+  type Locale,
+} from "../lib/i18n";
 
 interface ArticleMeta {
   publishedTime?: string | Date;
@@ -22,13 +30,28 @@ interface Props {
   article?: ArticleMeta;
   jsonLd?: Record<string, unknown>[];
   noindex?: boolean;
+  alternates?: Partial<Record<Locale, string>>;
 }
-const { title, description, image, imageAlt, type, article, jsonLd, noindex } =
-  Astro.props;
+const {
+  title,
+  description,
+  image,
+  imageAlt,
+  type,
+  article,
+  jsonLd,
+  noindex,
+  alternates,
+} = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+/* Resolved once here so the header, the picker, and the head all agree. */
+const localeAlternates = alternates ?? mirrorAlternates(Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={LOCALES[lang].tag} dir={LOCALES[lang].dir}>
   <head>
     <GoogleAnalytics />
     <BaseHead
@@ -40,16 +63,18 @@ const { title, description, image, imageAlt, type, article, jsonLd, noindex } =
       article={article}
       jsonLd={jsonLd}
       noindex={noindex}
+      alternates={localeAlternates}
     />
   </head>
-  <body class="flex min-h-screen flex-col">
+  <!-- data-search-path keeps the "/" shortcut inside the reader's locale. -->
+  <body class="flex min-h-screen flex-col" data-search-path={localizePath("/search", lang)}>
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-canvas"
     >
-      Skip to content
+      {t.common.skipToContent}
     </a>
-    <Header />
+    <Header alternates={localeAlternates} />
     <main id="main" class="flex-1">
       <slot />
     </main>

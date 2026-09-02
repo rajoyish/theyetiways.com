@@ -7,9 +7,26 @@ import YouTubeEmbed from "../components/YouTubeEmbed.astro";
 import Prose from "../components/Prose.astro";
 import RelatedPosts from "../components/RelatedPosts.astro";
 import CtaBand from "../components/CtaBand.astro";
-import { resolveAuthors, getRelatedPosts, type Post } from "../lib/posts";
+import {
+  authorPath,
+  getRelatedPosts,
+  getTranslations,
+  postOgPath,
+  postPath,
+  postSlug,
+  resolveAuthors,
+  type Post,
+} from "../lib/posts";
 import { youTubeWatchUrl } from "../lib/youtube";
-import { categorySlug, SITE } from "../lib/site";
+import { SITE } from "../lib/site";
+import {
+  categoryLabel,
+  categoryPath,
+  getLangFromUrl,
+  localeAlternates,
+  localizePath,
+  useTranslations,
+} from "../lib/i18n";
 import { blogPostingSchema, breadcrumbSchema } from "../lib/seo";
 
 interface Props {
@@ -18,21 +35,32 @@ interface Props {
 const { post } = Astro.props;
 const { data } = post;
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const authors = await resolveAuthors(post);
 const related = await getRelatedPosts(post, 3);
 
+/* A story's slug is translated, so its hreflang pairs come from the
+   translation group rather than from re-prefixing this page's path. */
+const siblings = await getTranslations(post);
+const alternates = localeAlternates((code) => {
+  const sibling = siblings[code];
+  return sibling ? `/blog/${postSlug(sibling)}` : undefined;
+});
+
 const site = Astro.site ?? new URL(SITE.url);
-const postUrl = new URL(`/blog/${post.id}/`, site);
+const postUrl = new URL(`${postPath(post)}/`, site);
 /* A hand-picked cover wins; otherwise the story gets its generated OG card
    from `src/pages/og/[...slug].png.ts`, which is built for every post. The old
    YouTube-thumbnail fallback is gone: `maxresdefault` 404s for most Shorts, and
    a bare video frame carries no title. */
 const ogImage = data.cover
   ? new URL(data.cover.src, site).href
-  : new URL(`/og/${post.id}.png`, site).href;
+  : new URL(postOgPath(post), site).href;
 const authorMeta = authors.map((author) => ({
   name: author.data.name,
-  url: new URL(`/authors/${author.id}/`, site).href,
+  url: new URL(`${authorPath(author.id, lang)}/`, site).href,
 }));
 
 const jsonLd = [
@@ -45,17 +73,21 @@ const jsonLd = [
       datePublished: data.pubDate,
       dateModified: data.updatedDate,
       authors: authorMeta,
-      section: data.category,
+      section: categoryLabel(data.category, lang),
       tags: data.tags,
     },
     site,
+    lang,
   ),
   breadcrumbSchema([
-    { name: "Home", url: site.href },
-    { name: "Stories", url: new URL("/blog/", site).href },
+    { name: t.post.breadcrumbHome, url: new URL(localizePath("/", lang), site).href },
     {
-      name: data.category,
-      url: new URL(`/categories/${categorySlug(data.category)}/`, site).href,
+      name: t.post.breadcrumbStories,
+      url: new URL(`${localizePath("/blog", lang)}/`, site).href,
+    },
+    {
+      name: categoryLabel(data.category, lang),
+      url: new URL(`${categoryPath(data.category, lang)}/`, site).href,
     },
     { name: data.title, url: postUrl.href },
   ]),
@@ -69,21 +101,22 @@ const jsonLd = [
   image={ogImage}
   imageAlt={data.coverAlt || data.title}
   jsonLd={jsonLd}
+  alternates={alternates}
   article={{
     publishedTime: data.pubDate,
     modifiedTime: data.updatedDate ?? data.pubDate,
     authors: authors.map((author) => author.data.name),
-    section: data.category,
+    section: categoryLabel(data.category, lang),
     tags: data.tags,
   }}
 >
   <article>
     <div class="mx-auto max-w-3xl px-6 pt-12 sm:pt-16">
       <div class="flex flex-wrap items-center gap-2">
-        <Badge variant="pill" href={`/categories/${categorySlug(data.category)}`}>
-          {data.category}
+        <Badge variant="pill" href={categoryPath(data.category, lang)}>
+          {categoryLabel(data.category, lang)}
         </Badge>
-        {data.featured && <Badge variant="pink">Featured</Badge>}
+        {data.featured && <Badge variant="pink">{t.common.featured}</Badge>}
       </div>
 
       <h1 class="mt-5 text-display-md text-ink sm:text-display-lg">{data.title}</h1>
@@ -96,7 +129,7 @@ const jsonLd = [
         {
           data.updatedDate && (
             <span class="text-sm text-muted-soft">
-              (updated <FormattedDate date={data.updatedDate} />)
+              ({t.post.updated} <FormattedDate date={data.updatedDate} />)
             </span>
           )
         }
@@ -106,7 +139,7 @@ const jsonLd = [
     <div class="mx-auto max-w-4xl px-6 py-10">
       <YouTubeEmbed id={data.youtube} title={data.title} />
       <p class="mt-3 text-sm text-muted">
-        <span>Watch on </span><a
+        <span>{t.post.watchOn} </span><a
           href={youTubeWatchUrl(data.youtube)}
           class="font-medium text-primary underline underline-offset-2"
           target="_blank"

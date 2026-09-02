@@ -1,5 +1,6 @@
 ---
 import { SOCIAL_CHANNELS } from "../lib/site";
+import { getLangFromUrl, useTranslations } from "../lib/i18n";
 
 /**
  * Pre-footer callout band. The blue fill IS the voltage here; the CTA inside
@@ -11,9 +12,10 @@ interface Props {
   text?: string;
   class?: string;
 }
+const t = useTranslations(getLangFromUrl(Astro.url));
 const {
-  heading = "Follow the Yetis",
-  text = "New stories land on our channels first. Come say hello — we save you a warm seat by the fire.",
+  heading = t.cta.heading,
+  text = t.cta.text,
   class: className,
 } = Astro.props;
 ---

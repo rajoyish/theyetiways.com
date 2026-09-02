@@ -1,12 +1,13 @@
 ---
 import { render } from "astro:content";
 import PostLayout from "../../layouts/PostLayout.astro";
-import { getPublishedPosts } from "../../lib/posts";
+import { getPublishedPosts, postSlug } from "../../lib/posts";
+import { DEFAULT_LOCALE } from "../../lib/i18n";
 
 export async function getStaticPaths() {
-  const posts = await getPublishedPosts();
+  const posts = await getPublishedPosts(DEFAULT_LOCALE);
   return posts.map((post) => ({
-    params: { id: post.id },
+    params: { id: postSlug(post) },
     props: { post },
   }));
 }

@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CtaBand from "../CtaBand.astro";
+import { SOCIAL_CHANNELS } from "../../lib/site";
+import { getLangFromUrl, useTranslations } from "../../lib/i18n";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={t.about.title} description={t.meta.description}>
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <h1 class="text-display-md text-ink sm:text-display-lg">{t.about.heading}</h1>
+
+    <figure class="my-12 border-l-4 border-primary bg-surface-card px-6 py-5">
+      <blockquote class="font-serif text-2xl leading-snug text-body-strong">
+        {t.meta.motto}
+      </blockquote>
+    </figure>
+
+    <div class="space-y-6 text-lg text-body">
+      {t.about.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      {
+        SOCIAL_CHANNELS.map((channel) => (
+          <a
+            href={channel.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary"
+          >
+            {channel.label}
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="pb-16 sm:pb-24">
+    <CtaBand heading={t.cta.aboutHeading} text={t.cta.aboutText} />
+  </div>
+</BaseLayout>
