@@ -40,7 +40,9 @@ If the user gives only one of the two, ask for the other before writing.
    columns repeat the same character description in every row. That is model
    prompt text, not story material. Ignore the repeated boilerplate (fur texture,
    "3D CGI rendering", "cinematic lighting") and keep only what *changes* between
-   rows: actions, expressions, sounds, and the setting.
+   rows: actions, expressions, sounds, and the setting. The timestamp column
+   orders the beats and does nothing else. It never reaches the prose; see the
+   stopwatch rule below.
 3. **Pick the author** from who the story belongs to:
    - **pink She-Yeti** central → `mama-yeti` (relationships, warmth, the emotional read on a moment)
    - **blue male Yeti** central → `papa-yeti` (slow lessons, patience, admitting he got it wrong)
@@ -166,7 +168,7 @@ and each has a better fix:
 | Don't write this | Write this |
 |---|---|
 | `The snoring — I want this recorded — stopped.` | `The snoring, and I want this recorded, stopped.` |
-| `Four seconds — maybe five.` | `Four seconds. Maybe five.` |
+| `The kettle whistled — nobody moved.` | `The kettle whistled. Nobody moved.` |
 | `He smiled back — no shame in it.` | `He smiled back. No shame in it.` |
 | `Not a low standard — it's the highest.` | `That is not a low standard. It is the highest one there is.` |
 
@@ -181,6 +183,38 @@ The rule is about English typography, not about the shape of the character.
 Russian and Chinese use their own dash as ordinary grammar, so the ban lifts for
 those two locales only. `references/locales.md` says which, and the checker
 applies it per locale.
+
+## No stopwatch time
+
+**Never put a measured duration in a story.** Not `four seconds`, not `two
+minutes`, not `0:03`. Not in the body, not in a heading, not in the `title` or
+the `description`.
+
+The number almost always comes from the storyboard's timestamp column, which is
+production metadata. Lifted into prose it reads as a stage direction, and it
+dates badly against the video the reader is watching while they read. If the
+story says four seconds and the moment runs six, the story is wrong about the
+one thing the reader can check.
+
+Write what the length felt like instead. That is the part the video cannot show,
+which is the whole reason the story exists.
+
+| Don't write this | Write this |
+|---|---|
+| `Four seconds, maybe five.` | `Long enough to notice. Not long enough to fix.` |
+| `I spent four seconds being embarrassed.` | `I spent one held breath being embarrassed.` |
+| `He was asleep within two minutes.` | `He was asleep before I finished the sentence.` |
+| `## The four seconds that matter` | `## The pause that matters` |
+
+Clock time stays. `at two in the morning`, `before the sun cleared the ridge`,
+and `by the time the dal was on` place a scene rather than time it, and the
+family voice runs on that kind of measure. So do the vague ones: `a moment`,
+`long enough`, `half the night`.
+
+The unit word is what tips it over. `a few seconds` and `wait a second` are
+stopwatch time even though no digit appears, and `check-story.mjs` fails on any
+number or number word sitting in front of a unit. `a moment` and `long enough`
+pass, because nothing is being counted.
 
 ## Character names
 
@@ -249,6 +283,7 @@ and passes cleanly.
 - **Stopping after English.** The story is half published. See phase 2.
 - **Em dashes.** See the punctuation rule above.
 - **Clipped names.** `Papa`, `Mama`, `Babu`, `his father`, `her mother`.
+- **Stopwatch time.** `four seconds`, `two minutes`, `0:03`. See the rule above.
 - **Going long.** The most common writing failure. A story over its budget is
   wrong even when every paragraph is good.
 - Re-describing the video shot by shot. The reader just watched it. Write around
@@ -306,6 +341,8 @@ moves a clause to keep the punchline last.
    longer than the English and Chinese about a third its length, so the budget
    is per locale rather than a translation of the English word count.
 6. Keep the names in the locale's own forms, in full, every time.
+7. Don't let a duration back in. If the English says `one held breath`, the
+   translation says the locale's version of that, not `cuatro segundos`.
 
 ## Verify
 
