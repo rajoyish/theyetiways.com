@@ -80,6 +80,27 @@ Never translate the author ids in frontmatter (`papa-yeti`, `mama-yeti`,
 `babu-yeti`). `src/content/authors/*.json` holds the translated bios under
 `i18n`, and the byline prints the names in Latin script in every locale.
 
+## No stopwatch time
+
+The ban on measured durations holds in all ten locales, and the checker looks
+for each one's unit words:
+
+| Locale | Words it flags after a number |
+|---|---|
+| en | second, seconds, minute, minutes |
+| es | segundo(s), minuto(s) |
+| fr | seconde(s), minute(s) |
+| de | Sekunde(n), Minute(n) |
+| pt | segundo(s), minuto(s) |
+| it | secondo/secondi, minuto/minuti |
+| ru | секунда, минута and their declensions |
+| ja | 秒, 分間 |
+| ko | 초, 분 |
+| zh | 秒, 分钟 |
+
+Clock time is fine everywhere. `a las dos de la madrugada` sets a scene; `cuatro
+segundos` counts one.
+
 ## Voice per locale
 
 The family is the same family in every language. Warm, funny first, wise last,

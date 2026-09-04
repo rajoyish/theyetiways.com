@@ -17,9 +17,58 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(fileURLToPath(new URL(".", import.meta.url)), "../../../..");
 const POSTS = join(ROOT, "src/content/posts");
 
+/* A number followed by a unit of time. The storyboard's timestamp column is
+   production metadata, so a counted duration in the prose is nearly always a
+   beat number that escaped. Clock time ("two in the morning") is fine and does
+   not match, because it names an hour rather than a length.
+
+   The number words run one to ten, the teens and tens that show up in these
+   stories, and the vague counts ("a few", "half a"), which are stopwatch time
+   too: the unit word is what makes it counted. Compounds fall out for free,
+   since "twenty-five seconds" matches on its second half. */
+const NUM = {
+  en: "a|an|half a|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|"
+    + "thirteen|fourteen|fifteen|twenty|thirty|forty|fifty|sixty|ninety|"
+    + "couple of|few|several",
+  es: "un|una|media|medio|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce|"
+    + "quince|veinte|treinta|cuarenta|cincuenta|noventa|unos|unas|pocos|varios",
+  fr: "un|une|demi|demie|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|"
+    + "quinze|vingt|trente|quarante|cinquante|quelques",
+  de: "ein|eine|halbe|halben|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|"
+    + "fünfzehn|zwanzig|dreißig|vierzig|fünfzig|neunzig|paar",
+  pt: "um|uma|meio|meia|dois|duas|três|quatro|cinco|seis|sete|oito|nove|dez|onze|doze|"
+    + "quinze|vinte|trinta|quarenta|cinquenta|noventa|poucos|alguns",
+  it: "un|uno|una|mezzo|mezza|due|tre|quattro|cinque|sei|sette|otto|nove|dieci|undici|"
+    + "dodici|quindici|venti|trenta|quaranta|cinquanta|novanta|pochi|qualche",
+  /* Russian declines its numerals, so the tens carry a wildcard ending. */
+  ru: "одна|одну|пол|две|два|три|четыре|пять|шесть|семь|восемь|девять|десять|"
+    + "двенадцать|пятнадцать|двадцат\\p{L}*|тридцат\\p{L}*|сорок|пятьдесят|"
+    + "девяност\\p{L}*|несколько",
+  ja: "十[一二三四五六七八九]?|[一二三四五六七八九]十?|半|数|何",
+  ko: "이십|삼십|사십|오십|육십|칠십|팔십|구십|스무|스물|서른|마흔|반|"
+    + "일|이|삼|사|오|육|칠|팔|구|십|한|두|세|네|다섯|여섯|일곱|여덟|아홉|몇",
+  zh: "十[一二三四五六七八九]?|[一二三四五六七八九两]十?|半|几",
+};
+
+const CLOCK = String.raw`\d{1,2}:\d{2}`;
+
+const duration = (locale, units) =>
+  [new RegExp(String.raw`(?<!\p{L})(\d+|${NUM[locale]})[\s-](${units})(?!\p{L})`, "giu"),
+   new RegExp(CLOCK, "g")];
+
+/* Japanese, Korean, and Chinese take neither guard: particles and suffixes
+   attach straight to the unit (`一分間は`, `일 분을`), so a trailing letter is
+   normal rather than a sign the match is part of another word. The number words
+   are specific enough on their own, longest first so `사십 초` doesn't match as
+   `십 초`. The space is optional. */
+const cjkDuration = (locale, units) =>
+  [new RegExp(String.raw`(\d+|${NUM[locale]})\s*(${units})`, "gu"),
+   new RegExp(CLOCK, "g")];
+
 /** Per-locale rules. Mirrors the table in references/locales.md. */
 const LOCALES = {
   en: { heading: "The Yeti Way", min: 2400, max: 3100, latinDash: true,
+        duration: duration("en", "seconds?|minutes?"),
         clipped: [/\b(Papa|Mama|Babu)\b(?!\s*Yeti)/g],
         /* Third-person role words always stand in for a name. */
         roles: [/\b(his father|her father|his mother|her mother|the little one)\b/gi],
@@ -28,24 +77,37 @@ const LOCALES = {
            needed the name at the first one. English only. The other locales say
            this their own way, so check those by eye. */
         spouse: /\b(my wife|my husband)\b/gi },
-  es: { heading: "La manera Yeti", min: 2500, max: 3200, latinDash: true,
+  es: { duration: duration("es", "segundos?|minutos?"),
+        heading: "La manera Yeti", min: 2500, max: 3200, latinDash: true,
         clipped: [/(?<!\p{L})(Papá|Mamá|Babu)(?!\s*Yeti)/gu] },
-  fr: { heading: "La manière Yeti", min: 2700, max: 3500, latinDash: true,
+  fr: { duration: duration("fr", "secondes?|minutes?"),
+        heading: "La manière Yeti", min: 2700, max: 3500, latinDash: true,
         clipped: [/(?<!\p{L})(Papa|Maman|Babu)(?!\s*Yeti)/gu] },
-  de: { heading: "Der Yeti-Weg", min: 2600, max: 3350, latinDash: true,
+  de: { duration: duration("de", "sekunden?|minuten?"),
+        heading: "Der Yeti-Weg", min: 2600, max: 3350, latinDash: true,
         clipped: [/(?<!\p{L})(Papa|Mama|Babu)(?!\s*Yeti)/gu] },
-  pt: { heading: "O jeito Yeti", min: 2450, max: 3200, latinDash: true,
+  pt: { duration: duration("pt", "segundos?|minutos?"),
+        heading: "O jeito Yeti", min: 2450, max: 3200, latinDash: true,
         clipped: [/(?<!\p{L})(Papai|Mamãe|Babu)(?!\s*Yeti)/gu] },
-  it: { heading: "Il modo Yeti", min: 2550, max: 3300, latinDash: true,
+  it: { duration: duration("it", "second[oi]|minut[oi]"),
+        heading: "Il modo Yeti", min: 2550, max: 3300, latinDash: true,
         clipped: [/(?<!\p{L})(Papà|Mamma|Babu)(?!\s*Yeti)/gu] },
-  ru: { heading: "Путь йети", min: 2300, max: 3000, latinDash: false,
+  ru: { duration: duration("ru", "секунд\\p{L}*|минут\\p{L}*"),
+        heading: "Путь йети", min: 2300, max: 3000, latinDash: false,
         clipped: [/(?<!\p{L})(Пап|Мам)[аыуеой]{1,2}(?!\s*Йети)/gu,
                   /(?<!\p{L})Бабу(?!\s*Йети)/gu] },
-  ja: { heading: "イエティのやり方", min: 1100, max: 1450, latinDash: true,
+  ja: { duration: [...cjkDuration("ja", "秒|分間"),
+                   /* A bare 十 in front of 分 is left alone: 十分 is far more
+                      often "enough" than "ten minutes". Write 10分 for the
+                      duration and it gets caught. */
+                   /(\d+|[一二三四五六七八九]十|十[一二三四五六七八九]|[一二三四五六七八九])\s*分(?!間)/gu],
+        heading: "イエティのやり方", min: 1100, max: 1450, latinDash: true,
         clipped: [/(パパ|ママ|ババ)(?!\s*イエティ)/g] },
-  ko: { heading: "예티의 방식", min: 1250, max: 1650, latinDash: true,
+  ko: { duration: cjkDuration("ko", "초|분"),
+        heading: "예티의 방식", min: 1250, max: 1650, latinDash: true,
         clipped: [/(아빠|엄마|바부)(?!\s*예티)/g] },
-  zh: { heading: "雪人的走法", min: 800, max: 1120, latinDash: false,
+  zh: { duration: cjkDuration("zh", "秒|分钟"),
+        heading: "雪人的走法", min: 800, max: 1120, latinDash: false,
         clipped: [/(?<!雪人\s*)(爸爸|妈妈)/g, /(?<!小\s*)巴布/g] },
 };
 
@@ -158,6 +220,13 @@ function checkFile(post) {
   } else {
     for (const hit of scan.matchAll(/–|--/g)) {
       fail(name, `wrong dash "${hit[0]}" at ${context(scan, hit.index)}`);
+    }
+  }
+
+  /* Duration */
+  for (const pattern of rules.duration ?? []) {
+    for (const hit of scan.matchAll(pattern)) {
+      fail(name, `counted time "${hit[0].trim()}" at ${context(scan, hit.index)}`);
     }
   }
 
