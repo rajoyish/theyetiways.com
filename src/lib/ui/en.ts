@@ -115,6 +115,13 @@ export const en = {
     },
   },
 
+  tag: {
+    eyebrow: "Tag",
+    /** Page title, e.g. "Stories tagged #hugs". */
+    title: "Stories tagged #{tag}",
+    description: "Every story we've tagged #{tag} on The Yeti Ways.",
+  },
+
   authors: {
     title: "The Yeti Family",
     description:

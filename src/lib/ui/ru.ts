@@ -104,6 +104,13 @@ export const ru = {
     },
   },
 
+  tag: {
+    eyebrow: "Тег",
+    /** Page title, e.g. "Stories tagged #hugs". */
+    title: "Истории с тегом #{tag}",
+    description: "Все истории с тегом #{tag} на The Yeti Ways.",
+  },
+
   authors: {
     title: "Семья Йети",
     description:

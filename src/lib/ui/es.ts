@@ -103,6 +103,13 @@ export const es = {
     },
   },
 
+  tag: {
+    eyebrow: "Etiqueta",
+    /** Page title, e.g. "Stories tagged #hugs". */
+    title: "Historias con la etiqueta #{tag}",
+    description: "Todas las historias etiquetadas con #{tag} en The Yeti Ways.",
+  },
+
   authors: {
     title: "La familia Yeti",
     description:

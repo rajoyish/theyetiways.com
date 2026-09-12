@@ -15,6 +15,7 @@ import {
   postPath,
   postSlug,
   resolveAuthors,
+  tagPath,
   type Post,
 } from "../lib/posts";
 import { youTubeWatchUrl } from "../lib/youtube";
@@ -156,9 +157,12 @@ const jsonLd = [
         data.tags.length > 0 && (
           <div class="mt-12 flex flex-wrap gap-2 border-t border-hairline pt-8">
             {data.tags.map((tag) => (
-              <span class="rounded-full bg-surface-card px-3 py-1 text-[0.8125rem] text-muted">
+              <a
+                href={tagPath(tag, lang)}
+                class="rounded-full bg-surface-card px-3 py-1 text-[0.8125rem] text-muted transition-colors hover:bg-surface-soft hover:text-ink"
+              >
                 #{tag}
-              </span>
+              </a>
             ))}
           </div>
         )
