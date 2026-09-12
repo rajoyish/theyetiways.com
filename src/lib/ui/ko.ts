@@ -102,6 +102,13 @@ export const ko = {
     },
   },
 
+  tag: {
+    eyebrow: "태그",
+    /** Page title, e.g. "Stories tagged #hugs". */
+    title: "#{tag} 이야기",
+    description: "The Yeti Ways에서 #{tag} 태그가 붙은 모든 이야기.",
+  },
+
   authors: {
     title: "예티 가족",
     description:

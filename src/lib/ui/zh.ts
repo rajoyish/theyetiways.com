@@ -104,6 +104,13 @@ export const zh = {
     },
   },
 
+  tag: {
+    eyebrow: "标签",
+    /** Page title, e.g. "Stories tagged #hugs". */
+    title: "带有 #{tag} 的故事",
+    description: "The Yeti Ways 上所有带有 #{tag} 标签的故事。",
+  },
+
   authors: {
     title: "雪人一家",
     description:

@@ -1,0 +1,22 @@
+---
+import TagView from "../../../components/views/TagView.astro";
+import { getTags } from "../../../lib/posts";
+import { TRANSLATED_LOCALES } from "../../../lib/i18n";
+
+/* Tags are translated, so each locale lists its own: /de/tags/umarmungen
+   and /ja/tags/ハグ each collect that language's stories. */
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of TRANSLATED_LOCALES) {
+    const tags = await getTags(lang);
+    for (const { tag, slug } of tags) {
+      paths.push({ params: { lang, tag: slug }, props: { tag } });
+    }
+  }
+  return paths;
+}
+
+const { tag } = Astro.props;
+---
+
+<TagView tag={tag} />

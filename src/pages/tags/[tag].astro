@@ -1,0 +1,14 @@
+---
+import TagView from "../../components/views/TagView.astro";
+import { getTags } from "../../lib/posts";
+import { DEFAULT_LOCALE } from "../../lib/i18n";
+
+export async function getStaticPaths() {
+  const tags = await getTags(DEFAULT_LOCALE);
+  return tags.map(({ tag, slug }) => ({ params: { tag: slug }, props: { tag } }));
+}
+
+const { tag } = Astro.props;
+---
+
+<TagView tag={tag} />

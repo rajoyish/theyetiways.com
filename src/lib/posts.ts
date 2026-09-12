@@ -93,6 +93,92 @@ export async function getPostsByCategory(
   return posts.filter((p) => p.data.category === category);
 }
 
+/* ------------------------------------------------------------------ */
+/* Tags                                                                */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Tags are translated per locale and written as plain lowercase words, some
+ * with spaces (`kleine gesten`, `перед сном`). The slug only collapses that
+ * whitespace: the letters stay as they are, so `/ja/tags/ハグ` is a real
+ * address rather than a transliteration nobody would guess.
+ */
+export function tagSlug(tag: string): string {
+  return tag.trim().toLowerCase().replace(/\s+/g, "-");
+}
+
+/** Path to a tag listing in one locale, prefix included. */
+export function tagPath(tag: string, lang: Locale): string {
+  return localizePath(`/tags/${tagSlug(tag)}`, lang);
+}
+
+export interface TagSummary {
+  /** The tag as written in frontmatter, from the first post that carries it. */
+  tag: string;
+  slug: string;
+  count: number;
+}
+
+/** Every tag used in one locale, most used first, then alphabetical. */
+export async function getTags(lang: Locale): Promise<TagSummary[]> {
+  const posts = await getPublishedPosts(lang);
+  const bySlug = new Map<string, TagSummary>();
+  for (const post of posts) {
+    for (const tag of post.data.tags) {
+      const slug = tagSlug(tag);
+      const entry = bySlug.get(slug);
+      if (entry) entry.count += 1;
+      else bySlug.set(slug, { tag, slug, count: 1 });
+    }
+  }
+  return [...bySlug.values()].sort(
+    (a, b) => b.count - a.count || a.tag.localeCompare(b.tag, lang),
+  );
+}
+
+/** Posts carrying a tag (matched by slug, so case and spacing don't matter). */
+export async function getPostsByTag(tag: string, lang: Locale): Promise<Post[]> {
+  const slug = tagSlug(tag);
+  const posts = await getPublishedPosts(lang);
+  return posts.filter((p) => p.data.tags.some((t) => tagSlug(t) === slug));
+}
+
+/**
+ * The same tag in other locales, keyed by locale.
+ *
+ * Tags carry no translation key of their own, but the ten versions of a story
+ * list their tags in the same order, so a tag's position in one post maps to
+ * its translation in each sibling post. Every post carrying the tag votes,
+ * and the most common answer per locale wins, which absorbs the odd post
+ * whose translator reordered the list.
+ */
+export async function getTagTranslations(
+  tag: string,
+  lang: Locale,
+): Promise<Partial<Record<Locale, string>>> {
+  const slug = tagSlug(tag);
+  const posts = await getPostsByTag(tag, lang);
+  const votes = new Map<Locale, Map<string, number>>();
+
+  for (const post of posts) {
+    const index = post.data.tags.findIndex((t) => tagSlug(t) === slug);
+    const siblings = await getTranslations(post);
+    for (const [code, sibling] of Object.entries(siblings) as [Locale, Post][]) {
+      const candidate = sibling.data.tags[index];
+      if (code === lang || candidate === undefined) continue;
+      const tally = votes.get(code) ?? new Map<string, number>();
+      tally.set(candidate, (tally.get(candidate) ?? 0) + 1);
+      votes.set(code, tally);
+    }
+  }
+
+  const out: Partial<Record<Locale, string>> = { [lang]: tag };
+  for (const [code, tally] of votes) {
+    out[code] = [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0];
+  }
+  return out;
+}
+
 /**
  * The same story in every locale that has it, keyed by locale.
  * `hreflang` and the language picker both read from this, so a reader who

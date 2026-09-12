@@ -103,6 +103,13 @@ export const ja = {
     },
   },
 
+  tag: {
+    eyebrow: "タグ",
+    /** Page title, e.g. "Stories tagged #hugs". */
+    title: "#{tag} の物語",
+    description: "The Yeti Ways で #{tag} のタグが付いた物語をすべて。",
+  },
+
   authors: {
     title: "イエティ一家",
     description:
