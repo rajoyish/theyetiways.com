@@ -6,7 +6,7 @@
  */
 
 import { getImage } from "astro:assets";
-import { getPublishedPosts, postPath, resolveAuthors } from "./posts";
+import { authorText, getPublishedPosts, postPath, resolveAuthors } from "./posts";
 import { youTubeThumb } from "./youtube";
 import { categoryLabel, formatDate, type Locale } from "./i18n";
 import type { SearchDoc } from "./search";
@@ -27,7 +27,7 @@ export async function localeSearchIndex(lang: Locale): Promise<Response> {
         description: post.data.description,
         category: categoryLabel(post.data.category, lang),
         tags: post.data.tags,
-        authors: authors.map((author) => author.data.name),
+        authors: authors.map((author) => authorText(author, lang).name),
         date: post.data.pubDate.toISOString(),
         dateLabel: formatDate(post.data.pubDate, lang),
         thumb,

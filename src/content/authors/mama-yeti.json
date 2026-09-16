@@ -15,50 +15,62 @@
   ],
   "i18n": {
     "bn": {
+      "name": "মামা ইয়েতি",
       "tagline": "উষ্ণতা বজায় রাখে। ক্যালেন্ডার সামলে রাখে।",
       "bio": "মামা ইয়েতি রুটিন সচল রাখে এবং হৃদয় স্থির রাখে। সে সম্পর্ক নিয়ে লেখে — আপনার সঙ্গীর সাথে, আপনার সন্তানদের সাথে এবং আপনার নিজের সাথে — এবং উষ্ণতা হলো এমন একটি অভ্যাস যা আপনি চর্চা করেন, এমন কোনো মেজাজ নয় যার জন্য আপনি অপেক্ষা করেন।"
     },
     "ar": {
+      "name": "ماما يتي",
       "tagline": "تحافظ على الدفء. تمسك التقويم.",
       "bio": "ماما يتي تحافظ على سير الروتين والقلوب ثابتة. تكتب عن العلاقات — مع شريكك، مع أطفالك، ومع نفسك — وكيف أن الدفء عادة تمارسها، وليس مزاجاً تنتظره."
     },
     "hi": {
+      "name": "ममा येती",
       "tagline": "गर्माहट बनाए रखती है। कैलेंडर संभालती है।",
       "bio": "ममा येती दिनचर्या को सुचारू रखती है और दिलों को स्थिर रखती है। वह रिश्तों के बारे में लिखती है — आपके साथी, आपके बच्चों और आपके खुद के साथ — और यह कि गर्माहट एक आदत है जिसका आप अभ्यास करते हैं, कोई मूड नहीं जिसका आप इंतजार करते हैं।"
     },
     "es": {
+      "name": "Mamá Yeti",
       "tagline": "Lleva el calor. Lleva el calendario.",
       "bio": "Mamá Yeti mantiene las rutinas en marcha y los corazones firmes. Escribe sobre las relaciones (con tu pareja, con tus hijos y contigo) y sobre cómo el calor es un hábito que se practica, no un ánimo que se espera."
     },
     "ja": {
+      "name": "ママイエティ",
       "tagline": "あたたかさの担当。カレンダーの管理人。",
       "bio": "ママイエティは日課を回し、心を落ち着かせている。関係について書いている。相手との、子どもとの、そして自分自身との関係。そして、あたたかさは待つ気分ではなく、練習する習慣だということ。"
     },
     "fr": {
+      "name": "Maman Yeti",
       "tagline": "Tient la chaleur. Tient le calendrier.",
       "bio": "Maman Yeti fait tourner les routines et tient les cœurs droits. Elle écrit sur les relations — avec votre partenaire, vos enfants et vous-même — et sur le fait que la chaleur est une habitude qu'on pratique, pas une humeur qu'on attend."
     },
     "de": {
+      "name": "Mama Yeti",
       "tagline": "Hält die Wärme. Hält den Kalender.",
       "bio": "Mama Yeti hält die Abläufe am Laufen und die Herzen ruhig. Sie schreibt über Beziehungen — zur Partnerin, zum Partner, zu den Kindern und zu sich selbst — und darüber, dass Wärme eine Gewohnheit ist, die man übt, keine Stimmung, auf die man wartet."
     },
     "pt": {
+      "name": "Mamãe Yeti",
       "tagline": "Segura o calor. Segura o calendário.",
       "bio": "Mamãe Yeti mantém as rotinas rodando e os corações firmes. Ela escreve sobre relacionamentos — com quem você ama, com os filhos e com você mesmo — e sobre como o calor é um hábito que se pratica, não um humor que se espera."
     },
     "ko": {
+      "name": "엄마 예티",
       "tagline": "따뜻함을 맡고, 달력을 맡는다.",
       "bio": "엄마 예티는 일과를 굴리고 마음을 붙든다. 관계에 대해 쓴다. 배우자와의, 아이와의, 그리고 자신과의 관계. 그리고 따뜻함은 기다리는 기분이 아니라 연습하는 습관이라는 것."
     },
     "it": {
+      "name": "Mamma Yeti",
       "tagline": "Tiene il calore. Tiene il calendario.",
       "bio": "Mamma Yeti manda avanti le routine e tiene fermi i cuori. Scrive di relazioni — con il partner, con i figli e con sé stessi — e di come il calore sia un'abitudine che si pratica, non un umore che si aspetta."
     },
     "ru": {
+      "name": "Мама Йети",
       "tagline": "Отвечает за тепло. Держит календарь.",
       "bio": "Мама Йети следит, чтобы распорядок шёл, а сердца были на месте. Она пишет об отношениях — с партнёром, с детьми и с собой — и о том, что тепло это привычка, которую тренируют, а не настроение, которого ждут."
     },
     "zh": {
+      "name": "雪人妈妈",
       "tagline": "管温度的人，也管日历。",
       "bio": "雪人妈妈让日常照常运转，也让心安稳。她写关系——和伴侣的、和孩子的、和自己的——以及温暖是一种练出来的习惯，不是等来的心情。"
     }

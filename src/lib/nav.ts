@@ -11,7 +11,8 @@ import {
   useTranslations,
   type Locale,
 } from "./i18n";
-import { CATEGORIES, FAMILY_IDS, SOCIAL_CHANNELS } from "./site";
+import { authorText, getFamily } from "./posts";
+import { CATEGORIES, SOCIAL_CHANNELS } from "./site";
 
 export interface NavLink {
   label: string;
@@ -33,20 +34,14 @@ export function navLinks(lang: Locale): NavLink[] {
   ].map((link) => ({ ...link, href: localizePath(link.path, lang) }));
 }
 
-/** Author display names, which are the same in every locale. */
-const AUTHOR_NAMES: Record<(typeof FAMILY_IDS)[number], string> = {
-  "papa-yeti": "Papa Yeti",
-  "mama-yeti": "Mama Yeti",
-  "babu-yeti": "Babu Yeti",
-};
-
 export interface FooterColumn {
   heading: string;
   links: NavLink[];
 }
 
-export function footerColumns(lang: Locale): FooterColumn[] {
+export async function footerColumns(lang: Locale): Promise<FooterColumn[]> {
   const t = useTranslations(lang);
+  const family = await getFamily();
   const local = (path: string, label: string): NavLink => ({
     label,
     path,
@@ -67,8 +62,8 @@ export function footerColumns(lang: Locale): FooterColumn[] {
     },
     {
       heading: t.footer.family,
-      links: FAMILY_IDS.map((id) =>
-        local(`/authors/${id}`, AUTHOR_NAMES[id]),
+      links: family.map((author) =>
+        local(`/authors/${author.id}`, authorText(author, lang).name),
       ),
     },
     {

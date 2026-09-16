@@ -6,7 +6,7 @@ import { getLangFromUrl, localizePath, useTranslations } from "../lib/i18n";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const columns = footerColumns(lang);
+const columns = await footerColumns(lang);
 const year = new Date().getFullYear();
 ---
 

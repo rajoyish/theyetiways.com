@@ -229,12 +229,14 @@ export async function getFamily(): Promise<Author[]> {
 }
 
 /**
- * An author's prose in one locale, falling back to the English fields when a
- * translation is missing. Names are never translated.
+ * An author's name and prose in one locale, falling back to the English
+ * fields when a translation is missing. The name is the locale's own form of
+ * it, the one the stories use in their prose, so the byline matches the body.
  */
 export function authorText(author: Author, lang: Locale) {
   const translated = lang === DEFAULT_LOCALE ? undefined : author.data.i18n?.[lang];
   return {
+    name: translated?.name ?? author.data.name,
     tagline: translated?.tagline ?? author.data.tagline,
     bio: translated?.bio ?? author.data.bio,
     nepaliNote: translated?.nepaliNote ?? author.data.nepaliNote,

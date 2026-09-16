@@ -34,6 +34,9 @@ const authors = defineCollection({
         .record(
           z.string(),
           z.object({
+            // The name in the locale's own script and form (بابا يتي,
+            // パパイエティ, Papá Yeti). Falls back to the English `name`.
+            name: z.string().optional(),
             tagline: z.string(),
             bio: z.string(),
             nepaliNote: z.string().optional(),
