@@ -65,11 +65,11 @@ const ACCENTS = ["#2a84d3", "#f06baa", "#6bcdb2"];
           CATEGORIES.map((category, i) => (
             <a
               href={categoryPath(category, lang)}
-              class="accent-edge group flex items-center justify-between rounded-lg bg-surface-dark-elevated px-6 py-5 pl-7 text-on-dark transition-colors hover:bg-surface-dark-soft"
+              class="accent-edge group flex items-center justify-between rounded-lg bg-surface-dark-elevated px-6 py-5 ps-7 text-on-dark transition-colors hover:bg-surface-dark-soft"
               style={`--accent-edge-color:${ACCENTS[i % 3]}`}
             >
               <span class="font-serif text-xl">{categoryLabel(category, lang)}</span>
-              <svg class="transition-transform group-hover:translate-x-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <svg class="transition-transform group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </a>

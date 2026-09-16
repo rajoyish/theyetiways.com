@@ -35,6 +35,30 @@ export const LOCALES = {
     rssLanguage: "en-us",
     dir: "ltr",
   },
+  hi: {
+    label: "हिन्दी",
+    tag: "hi",
+    ogLocale: "hi_IN",
+    dateLocale: "hi-IN",
+    rssLanguage: "hi",
+    dir: "ltr",
+  },
+  ar: {
+    label: "العربية",
+    tag: "ar",
+    ogLocale: "ar_SA",
+    dateLocale: "ar-SA",
+    rssLanguage: "ar",
+    dir: "rtl",
+  },
+  bn: {
+    label: "বাংলা",
+    tag: "bn",
+    ogLocale: "bn_BD",
+    dateLocale: "bn-BD",
+    rssLanguage: "bn",
+    dir: "ltr",
+  },
   es: {
     label: "Español",
     tag: "es",
@@ -116,7 +140,7 @@ export type Locale = keyof typeof LOCALES;
 
 export const LOCALE_CODES = Object.keys(LOCALES) as Locale[];
 
-/** The nine prefixed locales — the params for every `src/pages/[lang]/` route. */
+/** Every locale but English, the params for every `src/pages/[lang]/` route. */
 export const TRANSLATED_LOCALES = LOCALE_CODES.filter(
   (code): code is Exclude<Locale, typeof DEFAULT_LOCALE> => code !== DEFAULT_LOCALE,
 );

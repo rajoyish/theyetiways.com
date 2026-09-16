@@ -48,6 +48,14 @@ const NUM = {
   ko: "이십|삼십|사십|오십|육십|칠십|팔십|구십|스무|스물|서른|마흔|반|"
     + "일|이|삼|사|오|육|칠|팔|구|십|한|두|세|네|다섯|여섯|일곱|여덟|아홉|몇",
   zh: "十[一二三四五六七八九]?|[一二三四五六七八九两]十?|半|几",
+  hi: "एक|दो|तीन|चार|पाँच|पांच|छह|छः|सात|आठ|नौ|दस|ग्यारह|बारह|पंद्रह|बीस|तीस|"
+    + "चालीस|पचास|नब्बे|आधा|आधे|आधी|कुछ",
+  /* Arabic numerals inflect for gender and case, and the units take clitics
+     (لدقيقة, وثانية), so both sides carry a wildcard. */
+  ar: "ثانيت\\p{L}*|ثلاث\\p{L}*|أربع\\p{L}*|خمس\\p{L}*|ست\\p{L}*|سبع\\p{L}*|ثماني\\p{L}*|"
+    + "تسع\\p{L}*|عشر\\p{L}*|عشرين|ثلاثين|أربعين|خمسين|تسعين|نصف|بضع",
+  bn: "এক|দুই|দু|তিন|চার|পাঁচ|ছয়|সাত|আট|নয়|দশ|এগারো|বারো|পনেরো|বিশ|ত্রিশ|"
+    + "চল্লিশ|পঞ্চাশ|নব্বই|আধা|আধ|কয়েক",
 };
 
 const CLOCK = String.raw`\d{1,2}:\d{2}`;
@@ -64,6 +72,17 @@ const duration = (locale, units) =>
 const cjkDuration = (locale, units) =>
   [new RegExp(String.raw`(\d+|${NUM[locale]})\s*(${units})`, "gu"),
    new RegExp(CLOCK, "g")];
+
+/* Hindi, Bengali, and Arabic put a case ending or a clitic straight on the
+   unit (सेकंडों, সেকেন্ডের, للدقيقة), so the trailing guard goes and the
+   unit list carries its own wildcard. The leading guard stays: number words in
+   these scripts are whole words. The patterns are NFC-normalised because the
+   files are, and a precomposed য় would otherwise never match. */
+const suffixDuration = (locale, units) =>
+  [new RegExp(String.raw`(?<!\p{L})(\d+|${NUM[locale]})\s+(${units})`.normalize("NFC"), "giu"),
+   new RegExp(CLOCK, "g")];
+
+const nfc = (source, flags = "gu") => new RegExp(source.normalize("NFC"), flags);
 
 /** Per-locale rules. Mirrors the table in references/locales.md. */
 const LOCALES = {
@@ -109,6 +128,19 @@ const LOCALES = {
   zh: { duration: cjkDuration("zh", "秒|分钟"),
         heading: "雪人的走法", min: 800, max: 1120, latinDash: false,
         clipped: [/(?<!雪人\s*)(爸爸|妈妈)/g, /(?<!小\s*)巴布/g] },
+  hi: { duration: suffixDuration("hi", "सेकंड|सेकण्ड|सेकेंड|मिनट"),
+        heading: "येती का तरीका", min: 2300, max: 3300, latinDash: true,
+        clipped: [nfc(String.raw`(?<!\p{L})(पापा|ममा|मामा|बाबू)(?!\s*येती)`)] },
+  ar: { duration: [...suffixDuration("ar", "ثانية|ثوان\\p{L}*|ثانيت\\p{L}*|دقيقة|دقائق|دقيقت\\p{L}*"),
+                   /* "a single second" puts the number after the unit. */
+                   /(ثانية|دقيقة) واحدة/gu],
+        heading: "طريقة اليتي", min: 1800, max: 2750, latinDash: true,
+        /* A conjunction or preposition may sit on the front of the name
+           (وبابا يتي, لماما يتي); it is still the full name. */
+        clipped: [/(?<!\p{L})[وفلب]?(بابا|ماما|بابو)(?!\s*(?:ال)?يتي)/gu] },
+  bn: { duration: suffixDuration("bn", "সেকেন্ড|মিনিট"),
+        heading: "ইয়েতির পথ", min: 2300, max: 3650, latinDash: true,
+        clipped: [nfc(String.raw`(?<!\p{L})(পাপা|মামা|বাবু)(?!\s*ইয়েতি)`)] },
 };
 
 /* Frontmatter fields that must be byte-identical across a story's locales. */
@@ -168,7 +200,7 @@ function checkFile(post) {
   const parsed = parse(post.path);
   if (!parsed) return fail(name, "no frontmatter block");
   const { data, body } = parsed;
-  const text = body.trim();
+  const text = body.trim().normalize("NFC");
 
   /* Frontmatter */
   for (const field of ["translationKey", "youtube", "title", "description",
@@ -200,7 +232,7 @@ function checkFile(post) {
   if (headings.length !== 3) {
     fail(name, `${headings.length} "##" sections, expected exactly 3`);
   }
-  if (headings.at(-1) !== rules.heading) {
+  if (headings.at(-1) !== rules.heading.normalize("NFC")) {
     fail(name, `closing heading is "${headings.at(-1) ?? "(none)"}", expected "${rules.heading}"`);
   }
   const quotes = text.split(/\n\s*\n/).filter((b) => b.trimStart().startsWith(">"));

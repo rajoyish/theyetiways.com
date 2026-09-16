@@ -46,7 +46,7 @@ const accentEdge: Record<string, string> = {
       {
         members.map(({ author, text, count }) => (
           <article
-            class="accent-edge flex flex-col gap-6 rounded-lg bg-surface-card p-8 pl-9 sm:flex-row sm:items-start"
+            class="accent-edge flex flex-col gap-6 rounded-lg bg-surface-card p-8 ps-9 sm:flex-row sm:items-start"
             style={`--accent-edge-color:${accentEdge[author.data.accent] ?? "#2a84d3"}`}
           >
             <Image
