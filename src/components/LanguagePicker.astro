@@ -36,8 +36,12 @@ const {
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const FLAG_MAP: Record<string, string> = {
+/** flag-icons country code for each locale. Typed on `Locale` so a new locale fails the build until it gets a flag. */
+const FLAG_MAP: Record<Locale, string> = {
   en: "us",
+  hi: "in",
+  ar: "sa",
+  bn: "bd",
   es: "es",
   ja: "jp",
   fr: "fr",
@@ -55,7 +59,7 @@ const options = LOCALE_CODES.filter((code) => alternates[code]).map((code) => ({
   label: LOCALES[code].label,
   tag: LOCALES[code].tag,
   current: code === lang,
-  flag: FLAG_MAP[code as string],
+  flag: FLAG_MAP[code],
 }));
 
 
