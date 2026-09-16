@@ -259,6 +259,48 @@
   --icon-moon: none;
 }
 
+/* Hindi and Bangla set every family, headings included, in Google Sans. It is
+   the only face on those pages, so the Devanagari and Bengali glyphs and the
+   Latin punctuation between them come from one font instead of Bangers for
+   `:` and a system fallback for the script. BaseHead swaps the Google Fonts
+   request to match. The tight display tracking and line-height are tuned for
+   Latin caps and clip matras and stacked conjuncts, so they open back up. */
+:root:lang(hi),
+:root:lang(bn) {
+  --font-serif: "Google Sans", "Noto Sans Devanagari", "Noto Sans Bengali", system-ui, sans-serif;
+  --font-sans: "Google Sans", "Noto Sans Devanagari", "Noto Sans Bengali", system-ui, sans-serif;
+  --font-quote: "Google Sans", system-ui, sans-serif;
+  --text-display-xl--line-height: 1.2;
+  --text-display-xl--letter-spacing: 0;
+  --text-display-lg--line-height: 1.25;
+  --text-display-lg--letter-spacing: 0;
+  --text-display-md--line-height: 1.3;
+  --text-display-md--letter-spacing: 0;
+  --text-display-sm--line-height: 1.35;
+  --text-display-sm--letter-spacing: 0;
+}
+
+/* Arabic, CJK and Cyrillic have the same problem as Hindi and Bangla above,
+   with no web font to hand: Bangers still supplies `:` and `.` while the
+   script comes from the OS. Handing the display stack to the browser's own
+   per-language serif keeps every glyph in one face. */
+:root:lang(ar),
+:root:lang(ja),
+:root:lang(ko),
+:root:lang(zh),
+:root:lang(ru) {
+  --font-serif: serif;
+  --font-quote: serif;
+}
+
+/* Arabic letters join, so the tight Latin tracking pulls them apart. */
+:root:lang(ar) {
+  --text-display-xl--letter-spacing: 0;
+  --text-display-lg--letter-spacing: 0;
+  --text-display-md--letter-spacing: 0;
+  --text-display-sm--letter-spacing: 0;
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
@@ -294,6 +336,15 @@
     color: var(--color-ink);
     letter-spacing: -0.02em;
     line-height: 1.15;
+  }
+
+  :is(:lang(hi), :lang(bn)) :is(h1, h2, h3, h4) {
+    letter-spacing: 0;
+    line-height: 1.3;
+  }
+
+  :lang(ar) :is(h1, h2, h3, h4) {
+    letter-spacing: 0;
   }
 
   /* Visible, on-brand focus ring everywhere */
@@ -410,7 +461,8 @@
   .accent-edge::before {
     content: "";
     position: absolute;
-    inset: 0 auto 0 0;
+    inset-block: 0;
+    inset-inline: 0 auto;
     width: 4px;
     background: var(--accent-edge-color, var(--color-primary));
   }
@@ -447,6 +499,10 @@
   letter-spacing: -0.02em;
 }
 
+:is(:lang(hi), :lang(bn), :lang(ar)) .prose-yeti :is(h1, h2, h3, h4) {
+  letter-spacing: 0;
+}
+
 /* Pull quote: an oversized opening mark sets the quote off instead of a rule
    down the side. The glyph is decorative, so it carries empty alt text and
    never lands in the accessibility tree. */
@@ -457,8 +513,9 @@
   color: var(--color-body-strong);
   background-color: var(--color-surface-soft);
   border-radius: var(--radius-lg);
-  border-left: 0;
-  padding: 1.75rem 1.75rem 1.75rem 4.5rem;
+  border-inline-start: 0;
+  padding-block: 1.75rem;
+  padding-inline: 4.5rem 1.75rem;
   quotes: none;
 }
 
@@ -466,7 +523,7 @@
   content: "\201C" / "";
   position: absolute;
   top: 0.7rem;
-  left: 1.5rem;
+  inset-inline-start: 1.5rem;
   font-family: var(--font-quote);
   font-size: var(--text-display-xl);
   line-height: 1;
@@ -477,11 +534,12 @@
 
 @media (width < 40rem) {
   .prose-yeti blockquote {
-    padding: 1.5rem 1.25rem 1.5rem 3.25rem;
+    padding-block: 1.5rem;
+    padding-inline: 3.25rem 1.25rem;
   }
   .prose-yeti blockquote::before {
     top: 0.55rem;
-    left: 1rem;
+    inset-inline-start: 1rem;
     font-size: var(--text-display-lg);
   }
 }

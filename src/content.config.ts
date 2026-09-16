@@ -49,7 +49,7 @@ const authors = defineCollection({
  * The locale directory is part of the entry `id` (`es/puse-el-desayuno-...`),
  * which is how `src/lib/posts.ts` tells a Spanish story from an English one.
  * Slugs are translated too, so `translationKey` is what actually links the
- * ten versions of a story together for `hreflang` and the language picker.
+ * versions of a story together for `hreflang` and the language picker.
  * It is the English slug by convention and must never change once published.
  *
  * Every post is anchored to a YouTube video (`youtube`, required). The field

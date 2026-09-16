@@ -1,6 +1,6 @@
 ---
 name: yeti-story
-description: Write a new The Yeti Ways blog story from a YouTube Shorts link plus a storyboard table, then publish it in all ten locales the site serves. Trigger when the user provides a YouTube video/short URL and a storyboard (shot list) and asks for a story, post, or blog entry, when the user asks to translate an existing story, or runs /yeti-story.
+description: Write a new The Yeti Ways blog story from a YouTube Shorts link plus a storyboard table, then publish it in all thirteen locales the site serves. Trigger when the user provides a YouTube video/short URL and a storyboard (shot list) and asks for a story, post, or blog entry, when the user asks to translate an existing story, or runs /yeti-story.
 ---
 
 # Yeti Story Writer
@@ -12,11 +12,11 @@ what it *meant*.
 The job has two phases and is not done after the first one.
 
 1. **Write the English story** in `src/content/posts/en/`.
-2. **Ship the nine translations** in the other locale folders, so the story
+2. **Ship the twelve translations** in the other locale folders, so the story
    exists in every language the site serves.
 
-Every story in `src/content/posts/` exists in all ten locales. A story published
-in English alone leaves nine locales with a language picker that drops the reader
+Every story in `src/content/posts/` exists in all thirteen locales. A story
+published in English alone leaves twelve locales with a language picker that drops the reader
 onto a different page. Do phase 2 unless the user says English only.
 
 ## Inputs
@@ -87,21 +87,21 @@ featured: false
 ---
 ```
 
-- `translationKey`: **the English slug, always**, and identical in all ten files.
-  This is the only thing that links the ten versions of a story together.
+- `translationKey`: **the English slug, always**, and identical in all thirteen files.
+  This is the only thing that links the thirteen versions of a story together.
   `getTranslations` groups by it for `hreflang` and the language picker, and it
   never changes once published, even if the English slug is renamed later.
 - `pubDate`: a quoted timestamp, **not** a bare date. Now, in Nepal time
   (`+05:45`), unless the user says otherwise. The time is what makes the ordering
   deterministic: `getPublishedPosts` sorts newest first, and two posts sharing a
   bare date sort by whatever order the glob loader happened to return. Every
-  translation copies this timestamp character for character, so the ten locales
+  translation copies this timestamp character for character, so the thirteen locales
   order their front pages the same way.
 - `featured`: leave it `false`. The homepage hero is automatic. `getFeaturedPost`
   returns the newest post when nothing is flagged, so a new story takes the hero
   on its timestamp alone. Set `featured: true` only when the user asks to pin an
   *older* story to the hero, clear it from the previous one when you do, and make
-  the change in all ten locales at once.
+  the change in all thirteen locales at once.
 - `draft: true`: when the user wants it staged but not live.
 - `cover:` is the story's **card art** on the homepage and in grids, not the
   social image. It goes through Astro's `image()` helper, so it has to be a real
@@ -123,7 +123,7 @@ featured: false
 are. If you're over, cut; don't shrink the font of the idea.
 
 Every locale has its own budget, because the same story is a different number of
-characters in Japanese than in German. `check-story.mjs` knows all ten and
+characters in Japanese than in German. `check-story.mjs` knows all thirteen and
 `references/locales.md` lists them.
 
 What to cut first, in order:
@@ -295,10 +295,10 @@ and passes cleanly.
 - Generic advice that could have come from any blog. If the paragraph would
   survive with the Yetis deleted, rewrite it.
 
-# Phase 2: the nine translations
+# Phase 2: the twelve translations
 
-Nine more files, one per locale: `es`, `fr`, `de`, `pt`, `it`, `ru`, `ja`, `ko`,
-`zh`. **Read `references/locales.md` before writing any of them.** It carries the
+Twelve more files, one per locale: `es`, `fr`, `de`, `pt`, `it`, `ru`, `ja`,
+`ko`, `zh`, `hi`, `ar`, `bn`. **Read `references/locales.md` before writing any of them.** It carries the
 per-locale name table, closing heading, slug rule, length budget, and voice
 notes. Get one of those wrong and nothing fails loudly. It surfaces later as a
 wrong URL or a language picker that lands on the wrong page.
@@ -306,7 +306,7 @@ wrong URL or a language picker that lands on the wrong page.
 ## What carries across unchanged
 
 `translationKey`, `youtube`, `pubDate`, `authors`, `category`, `featured`, and
-`draft` are identical in all ten files. Frontmatter stores the category as the
+`draft` are identical in all thirteen files. Frontmatter stores the category as the
 English key in every locale, and `src/lib/i18n.ts` looks up the label the reader
 sees. Never translate the value.
 
@@ -319,7 +319,8 @@ sees. Never translate the value.
   ASCII kebab-case: strip accents (`durmió` → `durmio`), write German umlauts out
   (`süßeste` → `suesseste`), and romanise the non-Latin scripts the way the
   existing files do (Hepburn for Japanese, Revised Romanisation for Korean,
-  pinyin without tones for Chinese, a plain transliteration for Russian).
+  pinyin without tones for Chinese, a plain transliteration for Russian, Hindi,
+  Arabic, and Bengali).
 - Every `##` heading, including the closing one, which has a fixed translation
   per locale. Never leave `## The Yeti Way` in a translated file.
 
@@ -347,7 +348,7 @@ moves a clause to keep the punchline last.
 ## Verify
 
 Run the checker on the whole story group, by translation key. It compares the
-ten files against each other and against the rules:
+thirteen files against each other and against the rules:
 
 ```
 node .claude/skills/yeti-story/scripts/check-story.mjs <translation-key>
@@ -360,5 +361,5 @@ pnpm build
 ```
 
 A schema mistake in frontmatter fails the build with the offending field named,
-and the build is also what proves the ten OG cards and the `hreflang` pairs came
+and the build is also what proves the thirteen OG cards and the `hreflang` pairs came
 out right.

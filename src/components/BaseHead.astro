@@ -41,6 +41,7 @@ interface Props {
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const locale = LOCALES[lang];
+const usesGoogleSans = lang === "hi" || lang === "bn";
 
 const {
   title,
@@ -190,4 +191,14 @@ const serialize = (data: unknown) =>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Besley:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+{
+  /* Bangers and Besley only carry Latin glyphs. On a Hindi or Bangla page the
+     script would fall back to a system face while `:` and quote marks stayed
+     in Bangers, so those two locales load Google Sans instead and global.css
+     re-points every font token at it. */
+  usesGoogleSans ? (
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+  ) : (
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Besley:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  )
+}

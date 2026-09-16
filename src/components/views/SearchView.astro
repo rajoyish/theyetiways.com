@@ -10,7 +10,7 @@ import { getLangFromUrl, localizePath, useTranslations } from "../../lib/i18n";
  * same results.
  *
  * Every string the client script needs is rendered into `data-*` on the form,
- * because the script is bundled once and shared by all ten locales.
+ * because the script is bundled once and shared by every locale.
  */
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -49,7 +49,7 @@ const blogPath = localizePath("/blog", lang);
       <label for="search-input" class="sr-only">{t.common.searchStories}</label>
       <div class="relative">
         <svg
-          class="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted"
+          class="pointer-events-none absolute start-4 top-1/2 size-5 -translate-y-1/2 text-muted"
           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
           stroke-linecap="round" aria-hidden="true"
         >
@@ -63,7 +63,7 @@ const blogPath = localizePath("/blog", lang);
           autocomplete="off"
           spellcheck="false"
           placeholder={t.search.placeholder}
-          class="h-12 w-full rounded-lg border border-hairline bg-surface-soft pl-12 pr-4 text-base text-ink transition-colors placeholder:text-muted-soft hover:border-primary/60 focus:border-primary"
+          class="h-12 w-full rounded-lg border border-hairline bg-surface-soft ps-12 pe-4 text-base text-ink transition-colors placeholder:text-muted-soft hover:border-primary/60 focus:border-primary"
         />
       </div>
       <noscript>
