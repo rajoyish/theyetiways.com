@@ -9,6 +9,7 @@ import RelatedPosts from "../components/RelatedPosts.astro";
 import CtaBand from "../components/CtaBand.astro";
 import {
   authorPath,
+  authorText,
   getRelatedPosts,
   getTranslations,
   postOgPath,
@@ -60,7 +61,7 @@ const ogImage = data.cover
   ? new URL(data.cover.src, site).href
   : new URL(postOgPath(post), site).href;
 const authorMeta = authors.map((author) => ({
-  name: author.data.name,
+  name: authorText(author, lang).name,
   url: new URL(`${authorPath(author.id, lang)}/`, site).href,
 }));
 
@@ -106,7 +107,7 @@ const jsonLd = [
   article={{
     publishedTime: data.pubDate,
     modifiedTime: data.updatedDate ?? data.pubDate,
-    authors: authors.map((author) => author.data.name),
+    authors: authorMeta.map((author) => author.name),
     section: categoryLabel(data.category, lang),
     tags: data.tags,
   }}

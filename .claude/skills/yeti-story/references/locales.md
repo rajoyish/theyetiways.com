@@ -91,8 +91,9 @@ Two locale-specific notes:
   `لماما يتي`). That is still the full name; the checker allows the clitic.
 
 Never translate the author ids in frontmatter (`papa-yeti`, `mama-yeti`,
-`babu-yeti`). `src/content/authors/*.json` holds the translated bios under
-`i18n`, and the byline prints the names in Latin script in every locale.
+`babu-yeti`). `src/content/authors/*.json` holds the translated name, tagline,
+and bio under `i18n`, and the byline, author page, and search results print
+the name from the table above, so a story's prose and its byline agree.
 
 ## No stopwatch time
 

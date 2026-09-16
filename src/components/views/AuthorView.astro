@@ -39,9 +39,9 @@ const accentDot: Record<string, string> = {
 ---
 
 <BaseLayout
-  title={author.data.name}
+  title={text.name}
   description={fill(t.authors.profileDescription, {
-    name: author.data.name,
+    name: text.name,
     tagline: text.tagline,
   })}
   jsonLd={[profileSchema]}
@@ -50,7 +50,7 @@ const accentDot: Record<string, string> = {
     <div class="mx-auto flex max-w-4xl flex-col gap-8 px-6 py-16 sm:flex-row sm:items-center sm:py-20">
       <Image
         src={author.data.avatar}
-        alt={author.data.name}
+        alt={text.name}
         width={140}
         height={140}
         class="size-32 shrink-0 rounded-full object-cover sm:size-36"
@@ -63,7 +63,7 @@ const accentDot: Record<string, string> = {
               accentDot[author.data.accent] ?? "bg-primary",
             ]}
           />
-          <h1 class="text-display-md text-ink">{author.data.name}</h1>
+          <h1 class="text-display-md text-ink">{text.name}</h1>
         </div>
         {text.nepaliNote && (
           <p class="mt-1 text-sm italic text-muted">{text.nepaliNote}</p>
@@ -91,12 +91,12 @@ const accentDot: Record<string, string> = {
 
   <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
     <h2 class="mb-8 text-display-sm">
-      {fill(t.authors.storiesFrom, { name: author.data.name })}
+      {fill(t.authors.storiesFrom, { name: text.name })}
     </h2>
     <PostGrid
       posts={posts}
       headingLevel="h3"
-      emptyMessage={fill(t.authors.noStoriesFrom, { name: author.data.name })}
+      emptyMessage={fill(t.authors.noStoriesFrom, { name: text.name })}
     />
   </div>
 

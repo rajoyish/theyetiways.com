@@ -43,6 +43,3 @@ export const SOCIAL_CHANNELS = [
   { label: "YouTube", href: "https://www.youtube.com/@TheYetiWays" },
   { label: "TikTok", href: "https://www.tiktok.com/@the.yeti.ways" },
 ] as const;
-
-/** Family member ids, in the order they appear in the footer. */
-export const FAMILY_IDS = ["papa-yeti", "mama-yeti", "babu-yeti"] as const;

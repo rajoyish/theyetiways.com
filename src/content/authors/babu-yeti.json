@@ -10,61 +10,73 @@
   "order": 3,
   "i18n": {
     "bn": {
+      "name": "বাবু ইয়েতি",
       "tagline": "আবারও নতুন শিশু। এতে ভালোই পারদর্শী হয়ে উঠছি।",
       "bio": "বাবু ইয়েতি হলো বড় শিশু। সে এমন সব বিষয়ে লেখে যেগুলোর বিষয়ে কেউ আপনাকে আগে থেকে সতর্ক করে না — প্রথম দিনগুলো, শূন্য থেকে বন্ধু তৈরি করা, এবং ঘরের নতুন ইয়েতি হিসেবে কেমন লাগে।",
       "nepaliNote": "নেপালি ভাষায় বাবু মানে ছেলে।"
     },
     "ar": {
+      "name": "بابو يتي",
       "tagline": "الطفل الجديد، مرة أخرى. أصبح جيدًا في ذلك.",
       "bio": "بابو يتي هو الطفل الأكبر. يكتب عن الأشياء التي لا يحذرك منها أحد — الأيام الأولى، تكوين صداقات من الصفر، وكيف يبدو الأمر عندما تكون اليتي الجديد في الغرفة.",
       "nepaliNote": "كلمة 'بابو' تعني 'ابن' باللغة النيبالية."
     },
     "hi": {
+      "name": "बाबू येती",
       "tagline": "फिर से नया बच्चा। अब इसमें माहिर हो रहा हूँ।",
       "bio": "बाबू येती बड़ा बच्चा है। वह उन चीज़ों के बारे में लिखता है जिनके बारे में कोई आपको चेतावनी नहीं देता — पहले दिन, शून्य से दोस्त बनाना, और कमरे में नया येती होने पर कैसा महसूस होता है।",
       "nepaliNote": "नेपाली में बाबू का मतलब बेटा होता है।"
     },
     "es": {
+      "name": "Babu Yeti",
       "tagline": "El nuevo otra vez. Ya se me da bien.",
       "bio": "Babu Yeti es el hijo mayor. Escribe sobre lo que nadie te avisa: los primeros días, hacer amigos desde cero y qué se siente al ser el yeti nuevo de la sala.",
       "nepaliNote": "Babu significa hijo en nepalí."
     },
     "ja": {
+      "name": "ババイエティ",
       "tagline": "また転校生。だいぶ慣れてきた。",
       "bio": "ババイエティは年上の子ども。誰も先に教えてくれないことについて書いている。初日、ゼロから友だちを作ること、そして部屋でいちばん新しいイエティでいるのはどんな感じか。",
       "nepaliNote": "ババはネパール語で「息子」という意味です。"
     },
     "fr": {
+      "name": "Babu Yeti",
       "tagline": "Le nouveau, encore. Il commence à être bon.",
       "bio": "Babu Yeti est l'aîné. Il écrit sur ce dont personne ne vous prévient : les premiers jours, se faire des amis à partir de rien, et ce que ça fait d'être le nouveau Yeti de la pièce.",
       "nepaliNote": "Babu veut dire fils en népalais."
     },
     "de": {
+      "name": "Babu Yeti",
       "tagline": "Schon wieder der Neue. Wird langsam gut darin.",
       "bio": "Babu Yeti ist das ältere Kind. Er schreibt über das, wovor niemand warnt: erste Tage, Freundschaften von null aufbauen, und wie es sich anfühlt, der neue Yeti im Raum zu sein.",
       "nepaliNote": "Babu heißt auf Nepali Sohn."
     },
     "pt": {
+      "name": "Babu Yeti",
       "tagline": "O novato de novo. Já está ficando bom nisso.",
       "bio": "Babu Yeti é o filho mais velho. Ele escreve sobre o que ninguém avisa: os primeiros dias, fazer amigos do zero e como é ser o Yeti novo da sala.",
       "nepaliNote": "Babu significa filho em nepalês."
     },
     "ko": {
+      "name": "바부 예티",
       "tagline": "또 전학생. 이제 좀 는 것 같다.",
       "bio": "바부 예티는 큰아이다. 아무도 미리 알려 주지 않는 것들에 대해 쓴다. 첫날, 맨바닥에서 친구를 만드는 일, 그리고 그 방에서 가장 새로운 예티라는 기분.",
       "nepaliNote": "바부는 네팔어로 아들이라는 뜻입니다."
     },
     "it": {
+      "name": "Babu Yeti",
       "tagline": "Di nuovo il nuovo. Ci sta prendendo la mano.",
       "bio": "Babu Yeti è il figlio più grande. Scrive di quello di cui nessuno ti avverte: i primi giorni, farsi amici da zero, e cosa si prova a essere lo Yeti nuovo nella stanza.",
       "nepaliNote": "Babu vuol dire figlio in nepalese."
     },
     "ru": {
+      "name": "Бабу Йети",
       "tagline": "Снова новенький. Уже почти профессионал.",
       "bio": "Бабу Йети — старший ребёнок. Он пишет о том, о чём никто не предупреждает: о первых днях, о том, как заводить друзей с нуля, и каково это — быть новым йети в комнате.",
       "nepaliNote": "«Бабу» на непальском значит «сын»."
     },
     "zh": {
+      "name": "小巴布",
       "tagline": "又是新来的。已经越来越熟练了。",
       "bio": "小巴布是家里的大孩子。他写那些没人事先提醒你的事——第一天、从零开始交朋友，以及当那个屋子里的新雪人是什么感觉。",
       "nepaliNote": "「巴布」在尼泊尔语里是「儿子」的意思。"
