@@ -72,6 +72,8 @@ export interface OgCard {
   byline?: string;
   /** Which family accent tints the rule and the corner wash. */
   accent?: OgAccent;
+  /** On-disk path of a 16:9 picture; fills the right side of the card. */
+  image?: string;
 }
 
 /* Design tokens, mirrored from src/styles/global.css. The card is always the
@@ -103,7 +105,12 @@ const markDataUri = (color: string) => {
  * against Bangers, which is narrow and sets far more text per line than a
  * text face would.
  */
-const titleSize = (title: string) => {
+const titleSize = (title: string, withImage: boolean) => {
+  if (withImage) {
+    if (title.length > 58) return 52;
+    if (title.length > 38) return 62;
+    return 74;
+  }
   if (title.length > 58) return 68;
   if (title.length > 38) return 82;
   return 96;
@@ -128,23 +135,32 @@ const clamp = (text: string, max: number) => {
 const TITLE_MAX = 90;
 const DESCRIPTION_MAX = 185;
 
+/* With a picture the text column is 640px wide, so the budgets shrink to what
+   four lines of Bangers and three of Besley at 24px hold. */
+const TITLE_MAX_SPLIT = 72;
+const DESCRIPTION_MAX_SPLIT = 150;
+const IMAGE_WIDTH = 560;
+
+/** Reads a JPEG from disk into a data URI, which is what satori's `img` takes. */
+const imageDataUri = (file: string) =>
+  `data:image/jpeg;base64,${fs.readFileSync(file).toString("base64")}`;
+
 /** Builds the satori element tree for one card. */
 function cardTree(card: OgCard) {
   const accent = ACCENTS[card.accent ?? "blue"];
   const footer = [SITE.name, card.byline].filter(Boolean).join("  ·  ");
+  const split = Boolean(card.image);
 
-  return {
+  const text = {
     type: "div",
     props: {
       style: {
-        width: "100%",
-        height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        backgroundColor: CANVAS,
-        padding: "72px 90px",
-        fontFamily: "Besley",
+        width: split ? `${OG_WIDTH - IMAGE_WIDTH}px` : "100%",
+        height: "100%",
+        padding: split ? "60px 48px 56px 74px" : "72px 90px",
         position: "relative",
       },
       children: [
@@ -207,24 +223,27 @@ function cardTree(card: OgCard) {
                   style: {
                     display: "flex",
                     fontFamily: "Bangers",
-                    fontSize: `${titleSize(card.title)}px`,
+                    fontSize: `${titleSize(card.title, split)}px`,
                     lineHeight: 1.08,
                     letterSpacing: "1px",
                     color: INK,
                   },
-                  children: clamp(card.title, TITLE_MAX),
+                  children: clamp(card.title, split ? TITLE_MAX_SPLIT : TITLE_MAX),
                 },
               },
               card.description && {
                 type: "div",
                 props: {
                   style: {
-                    marginTop: "22px",
-                    fontSize: "28px",
+                    marginTop: split ? "18px" : "22px",
+                    fontSize: split ? "24px" : "28px",
                     lineHeight: 1.4,
                     color: BODY,
                   },
-                  children: clamp(card.description, DESCRIPTION_MAX),
+                  children: clamp(
+                    card.description,
+                    split ? DESCRIPTION_MAX_SPLIT : DESCRIPTION_MAX,
+                  ),
                 },
               },
             ].filter(Boolean),
@@ -242,13 +261,14 @@ function cardTree(card: OgCard) {
               justifyContent: "space-between",
               flexShrink: 0,
               gap: "24px",
+              flexWrap: "nowrap",
             },
             children: [
               {
                 type: "div",
                 props: {
                   style: {
-                    fontSize: "26px",
+                    fontSize: split ? "22px" : "26px",
                     fontWeight: 600,
                     color: INK,
                     whiteSpace: "nowrap",
@@ -260,7 +280,7 @@ function cardTree(card: OgCard) {
                 type: "div",
                 props: {
                   style: {
-                    fontSize: "22px",
+                    fontSize: split ? "20px" : "22px",
                     color: MUTED,
                     whiteSpace: "nowrap",
                   },
@@ -271,6 +291,32 @@ function cardTree(card: OgCard) {
           },
         },
       ],
+    },
+  };
+
+  /* The story's hero, cover-cropped into the right column so the card shows
+     the same picture as the page it links to. */
+  const picture = card.image && {
+    type: "img",
+    props: {
+      src: imageDataUri(card.image),
+      width: IMAGE_WIDTH,
+      height: OG_HEIGHT,
+      style: { objectFit: "cover", flexShrink: 0 },
+    },
+  };
+
+  return {
+    type: "div",
+    props: {
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        backgroundColor: CANVAS,
+        fontFamily: "Besley",
+      },
+      children: [text, picture].filter(Boolean),
     },
   };
 }

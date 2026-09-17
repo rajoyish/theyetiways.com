@@ -4,7 +4,7 @@ import Badge from "./Badge.astro";
 import AuthorBadge from "./AuthorBadge.astro";
 import FormattedDate from "./FormattedDate.astro";
 import { postPath, resolveAuthors, type Post } from "../lib/posts";
-import { youTubeThumb } from "../lib/youtube";
+import { postThumb, postThumbFallback } from "../lib/thumbs";
 import { SITE } from "../lib/site";
 import {
   categoryLabel,
@@ -22,6 +22,7 @@ const authors = await resolveAuthors(post);
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const href = postPath(post);
+const thumb = postThumb(post);
 ---
 
 <section class="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:py-24 lg:grid-cols-2 lg:items-center">
@@ -45,20 +46,24 @@ const href = postPath(post);
   </div>
 
   <article class="overflow-hidden rounded-xl bg-surface-card shadow-[var(--shadow-hero)] ring-1 ring-hairline">
-    <a href={href} class="relative block aspect-video overflow-hidden bg-surface-dark">
+    <a href={href} class="relative block aspect-[1200/630] overflow-hidden bg-surface-dark">
       {
-        post.data.cover ? (
+        thumb ? (
           <Image
-            src={post.data.cover}
+            src={thumb}
             alt=""
-            width={960}
-            height={540}
+            widths={[600, 900, 1200]}
+            sizes="(min-width: 64rem) 34rem, calc(100vw - 3rem)"
+            loading="eager"
+            fetchpriority="high"
             class="size-full object-cover"
           />
         ) : (
           <img
-            src={youTubeThumb(post.data.youtube, "hqdefault")}
+            src={postThumbFallback(post)}
             alt=""
+            loading="eager"
+            fetchpriority="high"
             decoding="async"
             class="size-full object-cover"
           />

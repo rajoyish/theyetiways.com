@@ -7,7 +7,7 @@
 
 import { getImage } from "astro:assets";
 import { authorText, getPublishedPosts, postPath, resolveAuthors } from "./posts";
-import { youTubeThumb } from "./youtube";
+import { postThumb, postThumbFallback } from "./thumbs";
 import { categoryLabel, formatDate, type Locale } from "./i18n";
 import type { SearchDoc } from "./search";
 
@@ -17,9 +17,10 @@ export async function localeSearchIndex(lang: Locale): Promise<Response> {
   const docs: SearchDoc[] = await Promise.all(
     posts.map(async (post) => {
       const authors = await resolveAuthors(post);
-      const thumb = post.data.cover
-        ? (await getImage({ src: post.data.cover, width: 320, height: 180 })).src
-        : youTubeThumb(post.data.youtube, "mqdefault");
+      const picture = postThumb(post);
+      const thumb = picture
+        ? (await getImage({ src: picture, width: 320, height: 168 })).src
+        : postThumbFallback(post);
 
       return {
         url: postPath(post),

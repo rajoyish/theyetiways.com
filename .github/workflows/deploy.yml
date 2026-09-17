@@ -27,6 +27,14 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # Story hero images are built from YouTube by scripts/thumbs.mjs and are
+      # not committed. Restoring the folder means only new videos are fetched.
+      - uses: actions/cache@v4
+        with:
+          path: src/assets/thumbs
+          key: thumbs-${{ hashFiles('src/content/posts/en/*.md') }}
+          restore-keys: thumbs-
+
       - run: pnpm build
 
       - uses: cloudflare/wrangler-action@v3

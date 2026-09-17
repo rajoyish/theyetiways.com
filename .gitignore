@@ -23,3 +23,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 .wrangler/
+
+# story hero images, built from YouTube by scripts/thumbs.mjs
+src/assets/thumbs/
