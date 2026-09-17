@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import satori from "satori";
+import sharp from "sharp";
 import { Resvg } from "@resvg/resvg-js";
 import { SITE } from "./site";
 
@@ -72,7 +73,7 @@ export interface OgCard {
   byline?: string;
   /** Which family accent tints the rule and the corner wash. */
   accent?: OgAccent;
-  /** On-disk path of a 16:9 picture; fills the right side of the card. */
+  /** On-disk path of a 9:16 picture, shown whole in the right column. */
   image?: string;
 }
 
@@ -139,14 +140,34 @@ const DESCRIPTION_MAX = 185;
    four lines of Bangers and three of Besley at 24px hold. */
 const TITLE_MAX_SPLIT = 72;
 const DESCRIPTION_MAX_SPLIT = 150;
-const IMAGE_WIDTH = 560;
 
-/** Reads a JPEG from disk into a data URI, which is what satori's `img` takes. */
-const imageDataUri = (file: string) =>
-  `data:image/jpeg;base64,${fs.readFileSync(file).toString("base64")}`;
+/* The picture column. A 9:16 frame at card height is only 354px wide, so the
+   frame sits centred on a blurred, darkened cover copy of itself, the same
+   device YouTube uses for a Short's own 16:9 thumbnail. */
+const IMAGE_WIDTH = 560;
+const FRAME_WIDTH = Math.round((OG_HEIGHT * 9) / 16);
+
+/**
+ * Composites the picture column with sharp and hands it to satori as a data
+ * URI, which is what its `img` takes. Satori has no `filter`, so the blur
+ * cannot be done in the element tree.
+ */
+async function columnDataUri(file: string): Promise<string> {
+  const frame = await sharp(file)
+    .resize(FRAME_WIDTH, OG_HEIGHT, { kernel: "lanczos3" })
+    .toBuffer();
+  const column = await sharp(file)
+    .resize(IMAGE_WIDTH, OG_HEIGHT, { fit: "cover" })
+    .blur(24)
+    .modulate({ brightness: 0.55, saturation: 0.9 })
+    .composite([{ input: frame, left: Math.round((IMAGE_WIDTH - FRAME_WIDTH) / 2), top: 0 }])
+    .jpeg({ quality: 90, mozjpeg: true })
+    .toBuffer();
+  return `data:image/jpeg;base64,${column.toString("base64")}`;
+}
 
 /** Builds the satori element tree for one card. */
-function cardTree(card: OgCard) {
+async function cardTree(card: OgCard) {
   const accent = ACCENTS[card.accent ?? "blue"];
   const footer = [SITE.name, card.byline].filter(Boolean).join("  ·  ");
   const split = Boolean(card.image);
@@ -294,15 +315,15 @@ function cardTree(card: OgCard) {
     },
   };
 
-  /* The story's hero, cover-cropped into the right column so the card shows
-     the same picture as the page it links to. */
+  /* The whole Shorts frame, pre-composited into the column at exactly the
+     size it is drawn, so satori only has to place it. */
   const picture = card.image && {
     type: "img",
     props: {
-      src: imageDataUri(card.image),
+      src: await columnDataUri(card.image),
       width: IMAGE_WIDTH,
       height: OG_HEIGHT,
-      style: { objectFit: "cover", flexShrink: 0 },
+      style: { flexShrink: 0 },
     },
   };
 
@@ -331,7 +352,7 @@ function cardTree(card: OgCard) {
 export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>> {
   fontCache ??= await loadFonts();
 
-  const svg = await satori(cardTree(card) as never, {
+  const svg = await satori((await cardTree(card)) as never, {
     width: OG_WIDTH,
     height: OG_HEIGHT,
     fonts: fontCache,

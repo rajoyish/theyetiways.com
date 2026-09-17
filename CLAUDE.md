@@ -10,11 +10,13 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Story images
 
-`scripts/thumbs.mjs` builds one 1200x630 (1.91:1) picture per video into `src/assets/thumbs/`
-(gitignored) from the YouTube Shorts thumbnail. It runs before `pnpm dev` and
-`pnpm build` and skips ids that already have a file. Run `pnpm thumbs` after
-adding a post if the dev server was started with `astro dev` directly. The
-post hero, story cards, home hero and OG cards all read from that folder via
+`scripts/thumbs.mjs` cuts the 9:16 frame out of each video's YouTube Shorts
+thumbnail and writes two pictures into `src/assets/thumbs/` (gitignored): a
+1200x630 (1.91:1) crop at the top level for the post hero, story cards and
+home hero, and the whole 540x960 frame under `portrait/` for the OG card. It
+runs before `pnpm dev` and `pnpm build` and skips ids that already have both
+files. Run `pnpm thumbs` after adding a post if the dev server was started
+with `astro dev` directly. Everything reads from that folder via
 `src/lib/thumbs.ts`.
 
 ## Documentation

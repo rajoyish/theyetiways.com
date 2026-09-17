@@ -1,18 +1,24 @@
 /**
- * Builds one hero image per story video into `src/assets/thumbs/<id>.jpg`.
+ * Builds two pictures per story video from its YouTube Shorts thumbnail.
  *
  * Every story is a YouTube Short, and the only 16:9 thumbnail YouTube serves
  * for a Short is a composite: the sharp 9:16 frame in the middle, a darkened
  * cover-scaled copy of the same frame filling the sides. This script cuts the
- * middle panel out, crops it to the Open Graph shape (1200x630, 1.91:1)
- * anchored a little above centre (faces sit in the top third of a portrait
- * frame), and upscales it with Lanczos so the browser never has to scale a
- * 405px strip itself. The same shape is used for every picture box on the
- * site, so one file serves the hero, the cards and the OG card.
+ * middle panel out once and writes it twice:
+ *
+ *   src/assets/thumbs/<id>.jpg           1200x630 (1.91:1), the middle of the
+ *                                        frame anchored a little above centre,
+ *                                        for the hero and the story cards
+ *   src/assets/thumbs/portrait/<id>.jpg  540x960 (9:16), the whole frame, for
+ *                                        the OG card, whose picture column is
+ *                                        exactly this shape
+ *
+ * Both are upscaled with Lanczos so nothing downstream has to scale a 405px
+ * strip itself.
  *
  * Runs before `astro dev` and `astro build` (see package.json). The output
- * folder is gitignored: an id whose file already exists is skipped, so a run
- * only fetches what is new. Delete a file to rebuild it.
+ * folder is gitignored: an id whose files both exist is skipped, so a run only
+ * fetches what is new. Delete a file to rebuild it.
  *
  * The hero, story cards and OG cards all read from this folder through
  * `src/lib/thumbs.ts`, which falls back to the raw YouTube thumbnail when a
@@ -25,11 +31,13 @@ import sharp from "sharp";
 const ROOT = process.cwd();
 const POSTS_DIR = path.join(ROOT, "src/content/posts");
 const OUT_DIR = path.join(ROOT, "src/assets/thumbs");
+const PORTRAIT_DIR = path.join(OUT_DIR, "portrait");
 
-const OUT_WIDTH = 1200;
-const OUT_HEIGHT = 630;
-/* Vertical anchor for the crop, as a share of the slack above and below.
-   0 is the top of the portrait frame, 0.5 its centre. */
+const LANDSCAPE = { width: 1200, height: 630 };
+const PORTRAIT = { width: 540, height: 960 };
+/* Vertical anchor for the landscape crop, as a share of the slack above and
+   below. 0 is the top of the portrait frame, 0.5 its centre. Faces sit in the
+   top third of a Shorts frame. */
 const ANCHOR = 0.35;
 const CONCURRENCY = 4;
 
@@ -65,43 +73,66 @@ async function fetchComposite(id) {
  * and `hqdefault` are 4:3 with the 16:9 composite letterboxed inside, so the
  * content box is derived from the width and centred vertically.
  */
-function panelCrop(width, height) {
+function panelRegion(width, height) {
   const contentHeight = Math.round((width * 9) / 16);
   const contentTop = Math.round((height - contentHeight) / 2);
   const panelWidth = Math.round((contentHeight * 9) / 16);
   const panelLeft = Math.round((width - panelWidth) / 2);
-  const cropHeight = Math.round((panelWidth * OUT_HEIGHT) / OUT_WIDTH);
-  const cropTop = contentTop + Math.round((contentHeight - cropHeight) * ANCHOR);
-  return { left: panelLeft, top: cropTop, width: panelWidth, height: cropHeight };
+  return { left: panelLeft, top: contentTop, width: panelWidth, height: contentHeight };
 }
 
-async function buildOne(id) {
-  const out = path.join(OUT_DIR, `${id}.jpg`);
+/** The 1.91:1 window inside a panel of the given size. */
+function landscapeRegion(width, height) {
+  const cropHeight = Math.round((width * LANDSCAPE.height) / LANDSCAPE.width);
+  const top = Math.round((height - cropHeight) * ANCHOR);
+  return { left: 0, top, width, height: cropHeight };
+}
+
+async function exists(file) {
   try {
-    await fs.access(out);
-    return "kept";
+    await fs.access(file);
+    return true;
   } catch {
-    /* not built yet */
+    return false;
   }
+}
 
-  const composite = await fetchComposite(id);
-  const { width, height } = await sharp(composite).metadata();
-  const region = panelCrop(width, height);
-
-  await sharp(composite)
-    .extract(region)
-    .resize(OUT_WIDTH, OUT_HEIGHT, { kernel: "lanczos3" })
-    /* A light pass to bring edges back after a ~4x upscale. Stronger values
+/** Resizes, sharpens and writes one picture through a temp file. */
+async function write(input, { width, height }, out) {
+  await sharp(input)
+    .resize(width, height, { kernel: "lanczos3" })
+    /* A light pass to bring edges back after a ~2-4x upscale. Stronger values
        halo the JPEG blocks in the source. */
     .sharpen({ sigma: 1, m1: 0.3, m2: 0.5 })
     .jpeg({ quality: 92, mozjpeg: true })
     .toFile(`${out}.tmp`);
   await fs.rename(`${out}.tmp`, out);
+}
+
+async function buildOne(id) {
+  const landscapeOut = path.join(OUT_DIR, `${id}.jpg`);
+  const portraitOut = path.join(PORTRAIT_DIR, `${id}.jpg`);
+  const [hasLandscape, hasPortrait] = await Promise.all([
+    exists(landscapeOut),
+    exists(portraitOut),
+  ]);
+  if (hasLandscape && hasPortrait) return "kept";
+
+  const composite = await fetchComposite(id);
+  const { width, height } = await sharp(composite).metadata();
+  const panel = await sharp(composite).extract(panelRegion(width, height)).toBuffer();
+  const { width: panelWidth, height: panelHeight } = await sharp(panel).metadata();
+
+  if (!hasPortrait) await write(panel, PORTRAIT, portraitOut);
+  if (!hasLandscape) {
+    const window = await sharp(panel).extract(landscapeRegion(panelWidth, panelHeight)).toBuffer();
+    await write(window, LANDSCAPE, landscapeOut);
+  }
   return "built";
 }
 
 async function main() {
-  await fs.mkdir(OUT_DIR, { recursive: true });
+  await fs.mkdir(PORTRAIT_DIR, { recursive: true });
   const ids = await collectIds();
   const counts = { built: 0, kept: 0, failed: 0 };
 
