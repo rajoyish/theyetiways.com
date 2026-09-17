@@ -10,8 +10,8 @@
  *                                        frame anchored a little above centre,
  *                                        for the hero and the story cards
  *   src/assets/thumbs/portrait/<id>.jpg  540x960 (9:16), the whole frame, for
- *                                        the OG card, whose picture column is
- *                                        exactly this shape
+ *                                        the OG card, which crops it from the
+ *                                        top to fill its picture column
  *
  * Both are upscaled with Lanczos so nothing downstream has to scale a 405px
  * strip itself.

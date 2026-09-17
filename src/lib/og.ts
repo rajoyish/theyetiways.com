@@ -73,7 +73,7 @@ export interface OgCard {
   byline?: string;
   /** Which family accent tints the rule and the corner wash. */
   accent?: OgAccent;
-  /** On-disk path of a 9:16 picture, shown whole in the right column. */
+  /** On-disk path of a 9:16 picture, cropped from the top to fill the right column. */
   image?: string;
 }
 
@@ -141,26 +141,19 @@ const DESCRIPTION_MAX = 185;
 const TITLE_MAX_SPLIT = 72;
 const DESCRIPTION_MAX_SPLIT = 150;
 
-/* The picture column. A 9:16 frame at card height is only 354px wide, so the
-   frame sits centred on a blurred, darkened cover copy of itself, the same
-   device YouTube uses for a Short's own 16:9 thumbnail. */
+/* The picture column. The 9:16 frame is scaled to the column's width and
+   cropped from the top, so it fills the column edge to edge and keeps the
+   faces, which sit in the top third of a Shorts frame. */
 const IMAGE_WIDTH = 560;
-const FRAME_WIDTH = Math.round((OG_HEIGHT * 9) / 16);
 
 /**
- * Composites the picture column with sharp and hands it to satori as a data
- * URI, which is what its `img` takes. Satori has no `filter`, so the blur
+ * Crops the picture column with sharp and hands it to satori as a data URI,
+ * which is what its `img` takes. Satori has no `object-fit`, so the crop
  * cannot be done in the element tree.
  */
 async function columnDataUri(file: string): Promise<string> {
-  const frame = await sharp(file)
-    .resize(FRAME_WIDTH, OG_HEIGHT, { kernel: "lanczos3" })
-    .toBuffer();
   const column = await sharp(file)
-    .resize(IMAGE_WIDTH, OG_HEIGHT, { fit: "cover" })
-    .blur(24)
-    .modulate({ brightness: 0.55, saturation: 0.9 })
-    .composite([{ input: frame, left: Math.round((IMAGE_WIDTH - FRAME_WIDTH) / 2), top: 0 }])
+    .resize(IMAGE_WIDTH, OG_HEIGHT, { fit: "cover", position: "top", kernel: "lanczos3" })
     .jpeg({ quality: 90, mozjpeg: true })
     .toBuffer();
   return `data:image/jpeg;base64,${column.toString("base64")}`;
@@ -315,8 +308,8 @@ async function cardTree(card: OgCard) {
     },
   };
 
-  /* The whole Shorts frame, pre-composited into the column at exactly the
-     size it is drawn, so satori only has to place it. */
+  /* The Shorts frame, pre-cropped to exactly the size the column is drawn,
+     so satori only has to place it. */
   const picture = card.image && {
     type: "img",
     props: {
