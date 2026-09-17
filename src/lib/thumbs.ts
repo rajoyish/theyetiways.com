@@ -6,10 +6,12 @@ import { youTubeThumb } from "./youtube";
 
 /**
  * Story pictures, built by `scripts/thumbs.mjs` into `src/assets/thumbs/`
- * before every dev run and build. Every file is 1200x630, the Open Graph
- * shape, and every picture box on the site uses the same 1.91:1 ratio. The folder is gitignored, so it is read
- * through a glob rather than imported by name: a missing file is `undefined`,
- * not a build error, and callers fall back to YouTube's own thumbnail.
+ * before every dev run and build. The top level holds one 1200x630 (1.91:1)
+ * landscape crop per video, the shape every picture box on the site uses;
+ * `portrait/` holds the whole 9:16 frame for the OG card. The folder is
+ * gitignored, so it is read through a glob rather than imported by name: a
+ * missing file is `undefined`, not a build error, and callers fall back to
+ * YouTube's own thumbnail.
  */
 const thumbs = import.meta.glob<ImageMetadata>("/src/assets/thumbs/*.jpg", {
   eager: true,
@@ -36,11 +38,15 @@ export function postThumbFallback(post: Post): string {
 }
 
 /**
- * On-disk path of the built hero, for build-time renderers such as the OG
- * card that read bytes rather than serve an `<img>`. `process.cwd()` is the
- * project root during `astro build`.
+ * On-disk path of the built 9:16 frame, for the OG card, which reads bytes
+ * rather than serving an `<img>`. `process.cwd()` is the project root during
+ * `astro build`.
  */
-export function postThumbFile(post: Post): string | undefined {
-  const file = path.join(process.cwd(), "src/assets/thumbs", `${post.data.youtube}.jpg`);
+export function postPortraitFile(post: Post): string | undefined {
+  const file = path.join(
+    process.cwd(),
+    "src/assets/thumbs/portrait",
+    `${post.data.youtube}.jpg`,
+  );
   return fs.existsSync(file) ? file : undefined;
 }
