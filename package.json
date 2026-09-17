@@ -7,7 +7,10 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "thumbs": "node scripts/thumbs.mjs",
+    "predev": "node scripts/thumbs.mjs",
     "dev": "astro dev",
+    "prebuild": "node scripts/thumbs.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

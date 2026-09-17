@@ -1,26 +1,29 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import { youTubeThumb, youTubeEmbedUrl, youTubeWatchUrl } from "../lib/youtube";
 import { fill, getLangFromUrl, useTranslations } from "../lib/i18n";
 
 /**
  * Lightweight YouTube facade (DESIGN.md: dark product-surface card).
- * Renders only a thumbnail + play button — no YouTube script or iframe, and
+ * Renders only a poster + play button — no YouTube script or iframe, and
  * therefore no network request to youtube.com, until the visitor clicks play.
  * On click the inline script swaps in a privacy-friendly `youtube-nocookie`
  * iframe. Progressive enhancement: without JS the play button is a plain link
  * to watch on YouTube.
+ *
+ * The poster is the story's built hero from `src/lib/thumbs.ts`, served
+ * through Astro's image pipeline at a few widths. Without one (the build
+ * script has not run) it falls back to YouTube's own thumbnail.
  */
 interface Props {
   id: string;
   title: string;
-  /** Optional custom poster URL; defaults to the YouTube thumbnail. */
-  poster?: string;
+  poster?: ImageMetadata;
   class?: string;
 }
 const { id, title, poster, class: className } = Astro.props;
 
-const posterSrc = poster ?? youTubeThumb(id, "maxresdefault");
-const posterFallback = youTubeThumb(id, "hqdefault");
 const embedUrl = youTubeEmbedUrl(id);
 const watchUrl = youTubeWatchUrl(id);
 const t = useTranslations(getLangFromUrl(Astro.url));
@@ -29,21 +32,34 @@ const playLabel = fill(t.post.playVideo, { title });
 
 <div
   class:list={[
-    "yt-facade group relative aspect-video overflow-hidden rounded-lg bg-surface-dark",
+    "yt-facade group relative aspect-[1200/630] overflow-hidden rounded-lg bg-surface-dark",
     className,
   ]}
   data-embed-url={embedUrl}
   data-title={title}
 >
-  <img
-    src={posterSrc}
-    data-fallback={posterFallback}
-    alt=""
-    loading="lazy"
-    decoding="async"
-    class="absolute inset-0 size-full object-cover"
-  />
-  <div class="absolute inset-0 bg-surface-dark/25 transition-colors group-hover:bg-surface-dark/10"></div>
+  {
+    poster ? (
+      <Image
+        src={poster}
+        alt=""
+        widths={[600, 900, 1200]}
+        sizes="(min-width: 56rem) 53rem, calc(100vw - 3rem)"
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 size-full object-cover"
+      />
+    ) : (
+      <img
+        src={youTubeThumb(id, "hqdefault")}
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        class="absolute inset-0 size-full object-cover"
+      />
+    )
+  }
 
   <a
     class="yt-play absolute inset-0 flex items-center justify-center"
@@ -64,18 +80,6 @@ const playLabel = fill(t.post.playVideo, { title });
   class YetiYouTube {
     constructor(root: HTMLElement) {
       const play = root.querySelector<HTMLAnchorElement>(".yt-play");
-      const img = root.querySelector<HTMLImageElement>("img[data-fallback]");
-
-      if (img) {
-        img.addEventListener(
-          "error",
-          () => {
-            const fallback = img.dataset.fallback;
-            if (fallback && img.src !== fallback) img.src = fallback;
-          },
-          { once: true },
-        );
-      }
 
       play?.addEventListener("click", (event) => {
         event.preventDefault();

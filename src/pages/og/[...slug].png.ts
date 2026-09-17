@@ -2,6 +2,7 @@ import type { APIRoute, GetStaticPaths } from "astro";
 import { getAllPublishedPosts, resolveAuthors } from "../../lib/posts";
 import { renderOgPng, type OgAccent, type OgCard } from "../../lib/og";
 import { LOCALE_CODES, categoryLabel, useTranslations } from "../../lib/i18n";
+import { postThumbFile } from "../../lib/thumbs";
 
 /**
  * Open Graph images, one PNG per story plus one site-wide default per locale.
@@ -33,6 +34,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
             /* The lead author's colour tints the card, so a Mama story reads
                pink and a Babu story mint, exactly as it does on the site. */
             accent: (authors[0]?.data.accent ?? "blue") as OgAccent,
+            image: postThumbFile(post),
           } satisfies OgCard,
         },
       };
