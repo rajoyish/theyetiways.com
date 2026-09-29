@@ -1,10 +1,9 @@
 ---
-import { Image } from "astro:assets";
 import Badge from "./Badge.astro";
 import AuthorBadge from "./AuthorBadge.astro";
 import FormattedDate from "./FormattedDate.astro";
+import HeroMeshImage from "./HeroMeshImage.astro";
 import { postPath, resolveAuthors, type Post } from "../lib/posts";
-import { postThumb, postThumbFallback } from "../lib/thumbs";
 import {
   categoryLabel,
   categoryPath,
@@ -25,7 +24,7 @@ const Heading = headingLevel;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const href = postPath(post);
-const thumb = postThumb(post);
+
 ---
 
 <article
@@ -43,32 +42,15 @@ const thumb = postThumb(post);
     tabindex="-1"
     aria-hidden="true"
   >
-    {
-      thumb ? (
-        <Image
-          src={thumb}
-          alt=""
-          widths={[480, 800, 1200]}
-          sizes="(min-width: 64rem) 30rem, (min-width: 40rem) 50vw, calc(100vw - 3rem)"
-          class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-        />
-      ) : (
-        <img
-          src={postThumbFallback(post)}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-        />
-      )
-    }
-    <span
-      class="absolute start-3 top-3 flex size-9 items-center justify-center rounded-full bg-primary/95 text-on-primary"
-    >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.79-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
-      </svg>
-    </span>
+    <HeroMeshImage post={post} class="h-full !aspect-auto" imgClass="transition-transform duration-300 group-hover:scale-[1.03]">
+      <span
+        class="absolute start-3 top-3 flex size-9 items-center justify-center rounded-full bg-primary/95 text-on-primary shadow-sm"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.79-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
+        </svg>
+      </span>
+    </HeroMeshImage>
   </a>
 
   <div

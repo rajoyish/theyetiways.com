@@ -22,6 +22,31 @@ const byId = new Map(
   Object.entries(thumbs).map(([file, image]) => [path.basename(file, ".jpg"), image]),
 );
 
+const portraitThumbs = import.meta.glob<ImageMetadata>(
+  "/src/assets/thumbs/portrait/*.jpg",
+  {
+    eager: true,
+    import: "default",
+  },
+);
+
+const portraitById = new Map(
+  Object.entries(portraitThumbs).map(([file, image]) => [
+    path.basename(file, ".jpg"),
+    image,
+  ]),
+);
+
+/** The built portrait (9:16 Shorts frame) for a video id. */
+export function videoPortraitThumb(id: string): ImageMetadata | undefined {
+  return portraitById.get(id);
+}
+
+/** A story's portrait picture: a hand-picked cover wins, then the built portrait frame. */
+export function postPortraitThumb(post: Post): ImageMetadata | undefined {
+  return post.data.cover ?? videoPortraitThumb(post.data.youtube);
+}
+
 /** The built hero for a video id, when the script has produced one. */
 export function videoThumb(id: string): ImageMetadata | undefined {
   return byId.get(id);
