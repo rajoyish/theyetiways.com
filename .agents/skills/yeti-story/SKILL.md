@@ -354,10 +354,11 @@ thirteen files against each other and against the rules:
 node .agents/skills/yeti-story/scripts/check-story.mjs <translation-key>
 ```
 
-Then build once at the end:
+Then generate the hero image and build once at the end:
 
 ```
-pnpm build
+rtk pnpm thumbs
+rtk pnpm build
 ```
 
 A schema mistake in frontmatter fails the build with the offending field named,

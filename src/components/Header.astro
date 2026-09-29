@@ -135,7 +135,7 @@ const search = localizePath("/search", lang);
         </svg>
         <svg
           id="menu-icon-close"
-          hidden
+          class="hidden"
           width="20" height="20" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"
         >
@@ -211,8 +211,8 @@ const search = localizePath("/search", lang);
       ? toggle.dataset.labelClose
       : toggle.dataset.labelOpen;
     if (label) toggle.setAttribute("aria-label", label);
-    if (iconOpen) iconOpen.hidden = open;
-    if (iconClose) iconClose.hidden = !open;
+    if (iconOpen) iconOpen.classList.toggle("hidden", open);
+    if (iconClose) iconClose.classList.toggle("hidden", !open);
     document.body.style.overflow = open ? "hidden" : "";
     behind().forEach((el) => el.toggleAttribute("inert", open));
 

@@ -32,6 +32,7 @@ const ROOT = process.cwd();
 const POSTS_DIR = path.join(ROOT, "src/content/posts");
 const OUT_DIR = path.join(ROOT, "src/assets/thumbs");
 const PORTRAIT_DIR = path.join(OUT_DIR, "portrait");
+const MESH_JSON = path.join(OUT_DIR, "mesh-gradients.json");
 
 const LANDSCAPE = { width: 1200, height: 630 };
 const PORTRAIT = { width: 540, height: 960 };
@@ -131,6 +132,140 @@ async function buildOne(id) {
   return "built";
 }
 
+function rgbToHsl(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h = 0,
+    s = 0,
+    l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+  return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+}
+
+function hslToHex(h, s, l) {
+  s /= 100;
+  l /= 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, "0");
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+const BASE_STOPS = [
+  { x: 55, y: 12 },
+  { x: 9, y: 74 },
+  { x: 96, y: 31 },
+  { x: 42, y: 24 },
+  { x: 32, y: 52 },
+  { x: 2, y: 51 },
+  { x: 11, y: 53 },
+];
+
+async function extractMeshGradient(imageInput, id) {
+  const { data } = await sharp(imageInput)
+    .resize(96, 96, { fit: "cover" })
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  const NUM_BINS = 12;
+  const bins = Array.from({ length: NUM_BINS }, () => []);
+
+  for (let i = 0; i < data.length; i += 3) {
+    const r = data[i],
+      g = data[i + 1],
+      b = data[i + 2];
+    const [h, s, l] = rgbToHsl(r, g, b);
+    if (l < 10 || l > 95 || s < 10) continue;
+    const binIdx = Math.floor((h % 360) / (360 / NUM_BINS));
+    bins[binIdx].push({ h, s, l, score: s * (1 - Math.abs(l - 55) / 50) });
+  }
+
+  const candidates = [];
+  for (let i = 0; i < NUM_BINS; i++) {
+    const bin = bins[i];
+    if (bin.length < 5) continue;
+    bin.sort((a, b) => b.score - a.score);
+    const top = bin.slice(0, Math.max(1, Math.floor(bin.length * 0.15)));
+    const avgH = Math.round(top.reduce((acc, p) => acc + p.h, 0) / top.length);
+    const avgS = Math.round(top.reduce((acc, p) => acc + p.s, 0) / top.length);
+    const avgL = Math.round(top.reduce((acc, p) => acc + p.l, 0) / top.length);
+    candidates.push({
+      h: avgH,
+      s: Math.min(95, Math.max(55, Math.round(avgS * 1.25))),
+      l: Math.min(
+        78,
+        Math.max(58, avgL < 50 ? avgL + 25 : avgL > 80 ? avgL - 10 : avgL),
+      ),
+      weight: bin.reduce((acc, p) => acc + p.score, 0),
+    });
+  }
+
+  candidates.sort((a, b) => b.weight - a.weight);
+
+  while (candidates.length < 8) {
+    const base = candidates[0] || { h: 210, s: 70, l: 65 };
+    const newH = (base.h + candidates.length * 45) % 360;
+    candidates.push({ h: newH, s: base.s, l: base.l, weight: 1 });
+  }
+
+  const baseColor = hslToHex(candidates[0].h, candidates[0].s, candidates[0].l);
+  const hash = hashString(id);
+  const stops = BASE_STOPS.map((stop, i) => {
+    const jitterX = ((hash >> (i * 3)) & 15) - 7;
+    const jitterY = ((hash >> (i * 3 + 1)) & 15) - 7;
+    const x = Math.max(0, Math.min(100, stop.x + jitterX));
+    const y = Math.max(0, Math.min(100, stop.y + jitterY));
+    const color = candidates[i + 1];
+    return {
+      at: `${x}% ${y}%`,
+      hsla: `hsla(${color.h},${color.s}%,${color.l}%,1)`,
+    };
+  });
+
+  const gradients = stops.map(
+    (s) => `radial-gradient(at ${s.at}, ${s.hsla} 0px, transparent 50%)`,
+  );
+
+  return {
+    backgroundColor: baseColor,
+    backgroundImage: gradients.join(",\n"),
+    style: `background-color: ${baseColor}; background-image: ${gradients.join(", ")};`,
+  };
+}
+
 async function main() {
   await fs.mkdir(PORTRAIT_DIR, { recursive: true });
   const ids = await collectIds();
@@ -150,9 +285,35 @@ async function main() {
     }),
   );
 
+  let meshGradients = {};
+  if (await exists(MESH_JSON)) {
+    try {
+      meshGradients = JSON.parse(await fs.readFile(MESH_JSON, "utf8"));
+    } catch {
+      meshGradients = {};
+    }
+  }
+
+  let meshUpdated = false;
+  for (const id of ids) {
+    const portraitOut = path.join(PORTRAIT_DIR, `${id}.jpg`);
+    if (!meshGradients[id] && (await exists(portraitOut))) {
+      try {
+        meshGradients[id] = await extractMeshGradient(portraitOut, id);
+        meshUpdated = true;
+      } catch (error) {
+        console.warn(`thumbs: mesh for ${id} failed (${error.message})`);
+      }
+    }
+  }
+
+  if (meshUpdated || !(await exists(MESH_JSON))) {
+    await fs.writeFile(MESH_JSON, JSON.stringify(meshGradients, null, 2), "utf8");
+  }
+
   console.log(
     `thumbs: ${counts.built} built, ${counts.kept} kept, ${counts.failed} failed ` +
-      `(${ids.length} videos)`,
+      `(${ids.length} videos, ${Object.keys(meshGradients).length} mesh gradients)`,
   );
 }
 

@@ -1,0 +1,80 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import type { Post } from "../lib/posts";
+import {
+  postPortraitThumb,
+  postThumb,
+  postThumbFallback,
+  videoPortraitThumb,
+} from "../lib/thumbs";
+import { getMeshGradient } from "../lib/mesh";
+import { youTubeThumb } from "../lib/youtube";
+
+interface Props {
+  post?: Post;
+  id?: string;
+  image?: ImageMetadata;
+  title?: string;
+  alt?: string;
+  class?: string;
+  imgClass?: string;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+const {
+  post,
+  id: propId,
+  image: explicitImage,
+  title = "",
+  alt: explicitAlt,
+  class: className = "",
+  imgClass = "",
+  loading = "eager",
+  fetchpriority = "high",
+} = Astro.props;
+
+const videoId = post?.data.youtube ?? propId ?? "";
+const mesh = getMeshGradient(videoId);
+
+const portraitImage = explicitImage ?? (post ? postPortraitThumb(post) : (videoId ? videoPortraitThumb(videoId) : undefined));
+const fallbackImage = post?.data.cover ?? (post ? postThumb(post) : undefined);
+const image = portraitImage ?? fallbackImage;
+
+const fallbackUrl = post ? postThumbFallback(post) : (videoId ? youTubeThumb(videoId, "hqdefault") : "");
+const alt = explicitAlt ?? title ?? post?.data.title ?? "";
+---
+
+<div
+  class:list={[
+    "mesh-gradient object-contain relative aspect-[1200/630] w-full overflow-hidden",
+    className,
+  ]}
+  style={mesh.style}
+>
+  {
+    image ? (
+      <Image
+        src={image}
+        alt={alt}
+        widths={[480, 720, 1080]}
+        sizes="(min-width: 64rem) 48rem, calc(100vw - 3rem)"
+        loading={loading}
+        fetchpriority={fetchpriority}
+        class:list={["block m-auto size-full object-contain", imgClass]}
+      />
+    ) : fallbackUrl ? (
+      <img
+        src={fallbackUrl}
+        alt={alt}
+        loading={loading}
+        fetchpriority={fetchpriority}
+        decoding="async"
+        class:list={["block m-auto size-full object-contain", imgClass]}
+      />
+    ) : null
+  }
+  <slot />
+</div>
+
