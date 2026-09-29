@@ -62,7 +62,7 @@ const alt = explicitAlt ?? title ?? post?.data.title ?? "";
         sizes="(min-width: 64rem) 48rem, calc(100vw - 3rem)"
         loading={loading}
         fetchpriority={fetchpriority}
-        class:list={["block m-auto size-full object-contain", imgClass]}
+        class:list={["block m-auto size-full object-contain scale-150 [mask-image:radial-gradient(ellipse,black_40%,transparent_75%)]", imgClass]}
       />
     ) : fallbackUrl ? (
       <img
@@ -71,7 +71,7 @@ const alt = explicitAlt ?? title ?? post?.data.title ?? "";
         loading={loading}
         fetchpriority={fetchpriority}
         decoding="async"
-        class:list={["block m-auto size-full object-contain", imgClass]}
+        class:list={["block m-auto size-full object-contain scale-150 [mask-image:radial-gradient(ellipse,black_40%,transparent_75%)]", imgClass]}
       />
     ) : null
   }
