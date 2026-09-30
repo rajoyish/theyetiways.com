@@ -100,7 +100,7 @@ const LOCALES = {
         heading: "La manera Yeti", min: 2500, max: 3200, latinDash: true,
         clipped: [/(?<!\p{L})(Papá|Mamá|Babu)(?!\s*Yeti)/gu] },
   fr: { duration: duration("fr", "secondes?|minutes?"),
-        heading: "La manière Yeti", min: 2700, max: 3500, latinDash: true,
+        heading: "La voie du Yéti", min: 2700, max: 3500, latinDash: true,
         clipped: [/(?<!\p{L})(Papa|Maman|Babu)(?!\s*Yeti)/gu] },
   de: { duration: duration("de", "sekunden?|minuten?"),
         heading: "Der Yeti-Weg", min: 2600, max: 3350, latinDash: true,
