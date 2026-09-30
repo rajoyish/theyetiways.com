@@ -12,7 +12,7 @@ strings in `src/lib/ui/<locale>.ts`. Adding a story touches neither.
 |---|---|---|---|---|---|---|
 | en | `posts/en/` | Papa Yeti | Mama Yeti | Babu Yeti | `## The Yeti Way` | 2400 to 3100 |
 | es | `posts/es/` | Papá Yeti | Mamá Yeti | Babu Yeti | `## La manera Yeti` | 2500 to 3200 |
-| fr | `posts/fr/` | Papa Yeti | Maman Yeti | Babu Yeti | `## La manière Yeti` | 2700 to 3500 |
+| fr | `posts/fr/` | Papa Yeti | Maman Yeti | Babu Yeti | `## La voie du Yéti` | 2700 to 3500 |
 | de | `posts/de/` | Papa Yeti | Mama Yeti | Babu Yeti | `## Der Yeti-Weg` | 2600 to 3350 |
 | pt | `posts/pt/` | Papai Yeti | Mamãe Yeti | Babu Yeti | `## O jeito Yeti` | 2450 to 3200 |
 | it | `posts/it/` | Papà Yeti | Mamma Yeti | Babu Yeti | `## Il modo Yeti` | 2550 to 3300 |
