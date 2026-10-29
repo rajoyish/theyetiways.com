@@ -20,7 +20,7 @@
     "@astrojs/sitemap": "^3.7.4",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.4",
+    "astro": "^7.4.4",
     "flag-icons": "^7.5.0",
     "satori": "^0.33.4",
     "sharp": "^0.35.4",
@@ -30,7 +30,7 @@
     "esbuild": true
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
+    "@astrojs/check": "^0.9.12",
     "@tailwindcss/typography": "^0.5.20",
     "typescript": "^6.0.3",
     "wrangler": "^4.127.1"

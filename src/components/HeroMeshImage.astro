@@ -44,26 +44,69 @@ const image = portraitImage ?? fallbackImage;
 
 const fallbackUrl = post ? postThumbFallback(post) : (videoId ? youTubeThumb(videoId, "hqdefault") : "");
 const alt = explicitAlt ?? title ?? post?.data.title ?? "";
+
+/* The frame sits in three panels, as in the Photoshop thumbnails: the sharp
+   9:16 frame in the middle, and a cover-cropped copy on either side blended
+   into the mesh with soft light. All three share one srcset so the browser
+   fetches the picture once. */
+const widths = [480, 720, 1080];
+const sizes = "(min-width: 64rem) 48rem, calc(100vw - 3rem)";
+const middleClass =
+  "block h-full w-auto max-w-full shrink-0 object-contain [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent),linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)] [mask-composite:intersect]";
+const sideClass =
+  "block h-full min-w-0 flex-1 object-cover mix-blend-soft-light blur-[3px] scale-105";
+/* Each side fades out toward the middle, into the glow behind the frame. */
+const leftMask = "[mask-image:linear-gradient(to_right,black_55%,transparent)]";
+const rightMask = "[mask-image:linear-gradient(to_left,black_55%,transparent)]";
 ---
 
 <div
   class:list={[
-    "mesh-gradient object-contain relative aspect-[1200/630] w-full overflow-hidden",
+    "mesh-gradient relative isolate flex aspect-[1200/630] w-full justify-center overflow-hidden",
     className,
   ]}
   style={mesh.style}
 >
   {
     image ? (
-      <Image
-        src={image}
-        alt={alt}
-        widths={[480, 720, 1080]}
-        sizes="(min-width: 64rem) 48rem, calc(100vw - 3rem)"
-        loading={loading}
-        fetchpriority={fetchpriority}
-        class:list={["block m-auto size-full object-contain scale-150 [mask-image:radial-gradient(ellipse,black_40%,transparent_75%)]", imgClass]}
-      />
+      <>
+        <Image
+          src={image}
+          alt=""
+          aria-hidden="true"
+          widths={widths}
+          sizes={sizes}
+          loading={loading}
+          class="pointer-events-none absolute inset-y-0 left-1/2 h-full w-auto -translate-x-1/2 scale-x-125 object-cover opacity-80 blur-2xl"
+        />
+        <Image
+          src={image}
+          alt=""
+          aria-hidden="true"
+          widths={widths}
+          sizes={sizes}
+          loading={loading}
+          class:list={[sideClass, leftMask]}
+        />
+        <Image
+          src={image}
+          alt={alt}
+          widths={widths}
+          sizes={sizes}
+          loading={loading}
+          fetchpriority={fetchpriority}
+          class:list={[middleClass, imgClass]}
+        />
+        <Image
+          src={image}
+          alt=""
+          aria-hidden="true"
+          widths={widths}
+          sizes={sizes}
+          loading={loading}
+          class:list={[sideClass, rightMask]}
+        />
+      </>
     ) : fallbackUrl ? (
       <img
         src={fallbackUrl}
@@ -71,7 +114,7 @@ const alt = explicitAlt ?? title ?? post?.data.title ?? "";
         loading={loading}
         fetchpriority={fetchpriority}
         decoding="async"
-        class:list={["block m-auto size-full object-contain scale-150 [mask-image:radial-gradient(ellipse,black_40%,transparent_75%)]", imgClass]}
+        class:list={["block mx-auto h-full w-auto max-w-full object-contain [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent),linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)] [mask-composite:intersect]", imgClass]}
       />
     ) : null
   }
