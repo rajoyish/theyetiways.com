@@ -3,10 +3,12 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import type { Post } from "../lib/posts";
 import {
+  isLandscapeVideo,
   postPortraitThumb,
   postThumb,
   postThumbFallback,
   videoPortraitThumb,
+  videoThumb,
 } from "../lib/thumbs";
 import { getMeshGradient } from "../lib/mesh";
 import { youTubeThumb } from "../lib/youtube";
@@ -38,6 +40,14 @@ const {
 const videoId = post?.data.youtube ?? propId ?? "";
 const mesh = getMeshGradient(videoId);
 
+/* A regular 16:9 upload has no blurred sides to hide: its thumbnail is the
+   picture the uploader chose, shown whole and blended into the mesh. A Short
+   keeps the three-panel layout below. */
+const landscape = Boolean(videoId) && isLandscapeVideo(videoId);
+const wideImage = landscape
+  ? (explicitImage ?? (post ? postThumb(post) : videoThumb(videoId)))
+  : undefined;
+
 const portraitImage = explicitImage ?? (post ? postPortraitThumb(post) : (videoId ? videoPortraitThumb(videoId) : undefined));
 const fallbackImage = post?.data.cover ?? (post ? postThumb(post) : undefined);
 const image = portraitImage ?? fallbackImage;
@@ -55,6 +65,13 @@ const middleClass =
   "block h-full w-auto max-w-full shrink-0 object-contain [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent),linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)] [mask-composite:intersect]";
 const sideClass =
   "block h-full min-w-0 flex-1 object-cover mix-blend-soft-light blur-[3px] scale-105";
+/* 16:9: the full frame, its edges feathered so the mesh shows through and the
+   picture melts into the gradient instead of ending at a hard border. */
+const wideClass =
+  "absolute inset-0 block size-full object-cover [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent),linear-gradient(to_bottom,transparent,black_9%,black_91%,transparent)] [mask-composite:intersect]";
+/* The mesh again, over the picture in soft light, so its colours and the
+   gradient's read as one surface. */
+const tintClass = "pointer-events-none absolute inset-0 mix-blend-soft-light opacity-35";
 /* Each side fades out toward the middle, into the glow behind the frame. */
 const leftMask = "[mask-image:linear-gradient(to_right,black_55%,transparent)]";
 const rightMask = "[mask-image:linear-gradient(to_left,black_55%,transparent)]";
@@ -68,7 +85,31 @@ const rightMask = "[mask-image:linear-gradient(to_left,black_55%,transparent)]";
   style={mesh.style}
 >
   {
-    image ? (
+    landscape ? (
+      <>
+        {wideImage ? (
+          <Image
+            src={wideImage}
+            alt={alt}
+            widths={[640, 960, 1200]}
+            sizes={sizes}
+            loading={loading}
+            fetchpriority={fetchpriority}
+            class:list={[wideClass, imgClass]}
+          />
+        ) : (
+          <img
+            src={fallbackUrl}
+            alt={alt}
+            loading={loading}
+            fetchpriority={fetchpriority}
+            decoding="async"
+            class:list={[wideClass, imgClass]}
+          />
+        )}
+        <span aria-hidden="true" class={tintClass} style={mesh.style} />
+      </>
+    ) : image ? (
       <>
         <Image
           src={image}

@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "A estrela que nunca fechou o olho"
 description: "Uma estrelinha prateada apareceu sobre a crista e se recusou a ir dormir. Eu a vi iluminar o caminho de um velho viajante, e aí eu também me recusei a dormir."
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"

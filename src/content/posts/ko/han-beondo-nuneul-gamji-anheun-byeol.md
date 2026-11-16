@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "한 번도 눈을 감지 않은 별"
 description: "능선 위에 작은 은빛 별이 떠서는 잘 생각을 안 했다. 그 별이 늙은 나그네를 집까지 비추는 걸 보고, 나도 자지 않기로 했다."
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"

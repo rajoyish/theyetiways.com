@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "L'étoile qui ne fermait jamais l'œil"
 description: "Une petite étoile d'argent est sortie au-dessus de la crête et a refusé d'aller se coucher. Je l'ai vue ramener un vieux voyageur chez lui, alors j'ai refusé aussi."
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"
@@ -62,7 +62,7 @@ n'ait plus besoin d'elle. Puis elle a laissé le soleil prendre la relève.
 Le soir suivant, Papa Yeti est venu au rebord lui aussi, et on est restés là
 tous les trois pendant qu'elle revenait à l'heure, l'air de rien.
 
-## La manière Yeti
+## La voie du Yéti
 
 **Pas besoin d'être grand pour être le chemin du retour de quelqu'un. Il
 suffit de rester allumé.**

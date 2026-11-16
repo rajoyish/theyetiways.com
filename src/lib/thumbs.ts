@@ -7,8 +7,9 @@ import { youTubeThumb } from "./youtube";
 /**
  * Story pictures, built by `scripts/thumbs.mjs` into `src/assets/thumbs/`
  * before every dev run and build. The top level holds one 1200x630 (1.91:1)
- * landscape crop per video, the shape every picture box on the site uses;
- * `portrait/` holds the whole 9:16 frame for the OG card. The folder is
+ * landscape picture per video, the shape every picture box on the site uses;
+ * `portrait/` holds the OG card's picture: the whole 9:16 frame of a Short, or
+ * the middle of a 16:9 video. The folder is
  * gitignored, so it is read through a glob rather than imported by name: a
  * missing file is `undefined`, not a build error, and callers fall back to
  * YouTube's own thumbnail.
@@ -37,7 +38,36 @@ const portraitById = new Map(
   ]),
 );
 
-/** The built portrait (9:16 Shorts frame) for a video id. */
+export type VideoFormat = "short" | "landscape";
+
+let formats: Record<string, VideoFormat> | undefined;
+
+/**
+ * Whether a video was uploaded as a Short or as a regular 16:9 video, as
+ * recorded by `detectFormat` in `scripts/thumbs.mjs`. A video the script has
+ * not reached yet counts as a Short, the layout every story had before.
+ */
+export function videoFormat(id: string): VideoFormat {
+  if (!formats) {
+    const file = path.join(process.cwd(), "src/assets/thumbs/formats.json");
+    try {
+      formats = JSON.parse(fs.readFileSync(file, "utf8"));
+    } catch {
+      formats = {};
+    }
+  }
+  return formats?.[id] ?? "short";
+}
+
+/** True for a regular 16:9 upload, whose thumbnail is shown whole. */
+export function isLandscapeVideo(id: string): boolean {
+  return videoFormat(id) === "landscape";
+}
+
+/**
+ * The built portrait for a video id: the 9:16 frame of a Short, or the
+ * middle of a 16:9 video at the OG card's picture-column shape.
+ */
 export function videoPortraitThumb(id: string): ImageMetadata | undefined {
   return portraitById.get(id);
 }
@@ -63,7 +93,7 @@ export function postThumbFallback(post: Post): string {
 }
 
 /**
- * On-disk path of the built 9:16 frame, for the OG card, which reads bytes
+ * On-disk path of the built portrait picture, for the OG card, which reads bytes
  * rather than serving an `<img>`. `process.cwd()` is the project root during
  * `astro build`.
  */

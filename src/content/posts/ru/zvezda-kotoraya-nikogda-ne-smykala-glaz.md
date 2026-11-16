@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "Звезда, которая никогда не смыкала глаз"
 description: "Над хребтом зажглась маленькая серебряная звезда и наотрез отказалась ложиться спать. Я видел, как она довела старого путника до дома, и тоже отказался спать."
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"

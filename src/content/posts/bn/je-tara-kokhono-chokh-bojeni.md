@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "যে তারা কখনো চোখ বোজেনি"
 description: "শৈলশিরার ওপরে একটা ছোট্ট রুপোলি তারা উঠল, আর কিছুতেই ঘুমোতে গেল না। ওকে এক বুড়ো পথিককে বাড়ি অবধি আলো দেখাতে দেখলাম, তারপর আমিও আর ঘুমোতে গেলাম না।"
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"

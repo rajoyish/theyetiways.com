@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "Der Stern, der nie ein Auge zumachte"
 description: "Ein kleiner Silberstern ging über dem Grat auf und wollte nicht ins Bett. Ich sah ihn einen alten Wanderer heimleuchten, und dann wollte ich auch nicht ins Bett."
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"

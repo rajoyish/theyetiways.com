@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "一度も目を閉じなかった星"
 description: "尾根の上に小さな銀の星が出て、寝ようとしなかった。年とった旅人を家まで照らすのを見て、ぼくも寝ないことにした。"
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"

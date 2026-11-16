@@ -1,6 +1,6 @@
 ---
 name: yeti-story
-description: Write a new The Yeti Ways blog story from a YouTube Shorts link plus a storyboard table, then publish it in all thirteen locales the site serves. Trigger when the user provides a YouTube video/short URL and a storyboard (shot list) and asks for a story, post, or blog entry, when the user asks to translate an existing story, or runs /yeti-story.
+description: Ask permission, pull remote updates, then write a new The Yeti Ways blog story from a YouTube link plus a storyboard and publish it in all thirteen locales. Trigger when the user provides a YouTube video/short URL and a storyboard (shot list) and asks for a story, post, or blog entry, when the user asks to translate an existing story, or runs /yeti-story.
 ---
 
 # Yeti Story Writer
@@ -18,6 +18,50 @@ The job has two phases and is not done after the first one.
 Every story in `src/content/posts/` exists in all thirteen locales. A story
 published in English alone leaves twelve locales with a language picker that drops the reader
 onto a different page. Do phase 2 unless the user says English only.
+
+## Before every run: permission, pull, duplicate check
+
+Complete this prerequisite before phase 1 or a translation-only run. Do not
+fetch the video, run Git commands, or write story files until permission is
+granted.
+
+1. **Explain and ask permission.** Tell the user this skill checks the remote
+   and pulls updates before writing, preserves local work, and checks whether
+   the video already has a story. Ask for approval to proceed. Name and link
+   this `SKILL.md`, quoting its requirement: "Do not fetch the video, run Git
+   commands, or write story files until permission is granted." For example:
+   "May I check and pull the remote updates, preserve your local changes,
+   check for an existing story, then write and translate this story?" Wait for
+   an affirmative answer. Invoking `/yeti-story` or supplying a storyboard is
+   not itself approval for this prerequisite. Approval covers this run,
+   including its resumed turns; ask again for a new story run, not each step.
+2. **Inspect and preserve local work.** Check `rtk git status --short --branch`
+   and identify the current branch's configured upstream. If there is no
+   upstream or an unfinished merge or rebase, explain the issue and resolve
+   the intended branch with the user before continuing. Preserve staged,
+   unstaged, and untracked work before pulling. If a temporary stash is needed,
+   include untracked files, give it a task-specific name, and record its object
+   ID so only this run's stash is restored. Never discard local work or commit
+   it just to make a pull possible.
+3. **Check the remote and pull first.** Fetch the upstream remote and inspect
+   incoming commits, then run `rtk git pull --ff-only`. Do this even if the
+   previous run pulled recently or cached status says the branch is current.
+   A failed fetch or pull does not satisfy this step. If the remote is
+   unreachable or history has diverged, stop before writing, report the
+   problem, and ask how to resolve it. Do not force, reset, or rewrite history.
+   Restore this run's saved local work, preserving its staged state, and resolve
+   any restoration conflicts before continuing. Retain the backup until its
+   contents are accounted for. Report the pull result to the user.
+4. **Check the updated content for this video.** Normalize the supplied URL to
+   its video ID using `extractYouTubeId` in `src/lib/youtube.ts`, and compare
+   that ID against existing posts in all locales, including restored local
+   drafts. Match by video ID, not URL spelling, title, or slug. For translation
+   requests, inspect the existing story's `translationKey` group instead. If
+   the story already exists, tell the user and ask whether to update it or fill
+   missing translations, unless that action is already explicit. Keep published
+   slugs and `translationKey` values. If local and remote versions duplicate a
+   video, preserve both and resolve which to use before editing. Create a new
+   story only when no existing story matches.
 
 ## Inputs
 
@@ -280,6 +324,8 @@ and passes cleanly.
 
 ## Anti-patterns
 
+- **Writing before permission and a successful pull.** Run the prerequisite
+  above first. A stale checkout can hide an already-published story.
 - **Stopping after English.** The story is half published. See phase 2.
 - **Em dashes.** See the punctuation rule above.
 - **Clipped names.** `Papa`, `Mama`, `Babu`, `his father`, `her mother`.
