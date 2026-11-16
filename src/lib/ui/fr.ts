@@ -2,11 +2,11 @@ import type { UiStrings } from "./en";
 
 export const fr = {
   meta: {
-    tagline: "Des leçons de vie chaleureuses, par une famille de yétis.",
+    tagline: "De grandes aventures. De petits gestes de bonté.",
     motto:
-      "Nous sommes peut-être des yétis, mais nos manières sont chaleureuses. ❄️❤️ Grands cœurs. Fourrure épaisse. Bonnes ondes.",
+      "Une étoile perdue, une glissade qui dérape, un baiser qui tourne à la dispute. Papa, Maman et Babu Yeti ont une histoire pour chaque journée.",
     description:
-      "The Yeti Ways est un blog familial écrit à trois voix par Papa, Maman et Babu Yeti : des histoires chaleureuses et honnêtes sur la famille, le couple, la parentalité et le fait de grandir, chacune née d'une vidéo de nos chaînes.",
+      "Les histoires et vidéos de Papa, Maman et Babu Yeti mêlent aventures en montagne et vie de famille, avec de la bonté, du courage et quelques bêtises.",
   },
 
   nav: {
@@ -50,17 +50,17 @@ export const fr = {
   home: {
     latestStories: "Dernières histoires",
     meetTheFamilyIntro:
-      "Chaque histoire ici a plusieurs narrateurs : les grands, et l'enfant qui a vécu la même journée à une autre hauteur. Même cheminée, empreintes différentes dans la neige.",
+      "Papa se précipite à la rescousse. Maman remarque qui a besoin de tendresse. Babu pose des questions et teste les limites. Parfois, ce sont les grands qui ont le plus à apprendre.",
     findYourTrail: "Trouvez votre sentier",
-    findYourTrailIntro: "Parcourez selon ce que vous traversez en ce moment.",
+    findYourTrailIntro: "Commencez par un câlin en famille, une bêtise ou une leçon apprise à ses dépens. Choisissez un thème et laissez les Yetis vous guider.",
   },
 
   stories: {
     title: "Histoires",
     intro:
-      "Des notes chaleureuses et honnêtes sur la famille, le couple, la parentalité et le fait de grandir, chacune née d'une vidéo de nos chaînes.",
+      "Les histoires et vidéos de Papa, Maman et Babu Yeti mêlent aventures en montagne et vie de famille, avec de la bonté, du courage et quelques bêtises.",
     description:
-      "Toutes les histoires de The Yeti Ways : des notes chaleureuses et honnêtes sur la famille, le couple, la parentalité et le fait de grandir, chacune née d'une vidéo.",
+      "Les histoires et vidéos de Papa, Maman et Babu Yeti mêlent aventures en montagne et vie de famille, avec de la bonté, du courage et quelques bêtises.",
     pageSuffix: "(page {current} sur {total})",
   },
 
@@ -91,15 +91,15 @@ export const fr = {
     },
     blurbs: {
       Family:
-        "Le quotidien de la vie commune : les corvées, les routines et les petits rituels qui tiennent une grotte debout.",
+        "L'entraide en montagne, les danses dans la tanière et les câlins quand la journée tourne mal.",
       Relationships:
-        "Rester au chaud avec ceux qu'on aime, même quand le vent se lève.",
+        "Des baisers ensommeillés, des couvertures volées et les petits gestes qui réchauffent l'amour.",
       Parenting:
-        "Ce que nous apprenons en élevant Babu — le plus souvent à la dure, et franchement.",
+        "Des danses pour remonter le moral, des couchers mouvementés et des parents qui apprennent avec Babu.",
       "Growing Up":
-        "Babu et les nouvelles écoles, les nouveaux amis, et la question de savoir qui il est.",
+        "Du football dans la neige, des aventures glissantes et le courage de réessayer.",
       "Life Lessons":
-        "Les grands sujets — le changement, le courage, la patience — tels qu'ils se présentent vraiment.",
+        "Des sauvetages en forêt, des rencontres magiques et le choix de la bonté quand elle compte.",
     },
   },
 
@@ -149,11 +149,11 @@ export const fr = {
   },
 
   cta: {
-    heading: "Suivez les yétis",
-    text: "Les nouvelles histoires arrivent d'abord sur nos chaînes. Passez dire bonjour — on vous garde une place au chaud près du feu.",
+    heading: "Regardez les histoires prendre vie",
+    text: "Découvrez les vidéos à l'origine des histoires et suivez Papa, Maman et Babu Yeti sur nos chaînes.",
     aboutHeading: "Venez avec nous",
     aboutText:
-      "Nous publions les nouvelles histoires d'abord sur nos chaînes. Suivez-nous, et prenez une couverture.",
+      "Découvrez les vidéos à l'origine des histoires et suivez Papa, Maman et Babu Yeti sur nos chaînes.",
   },
 
   notFound: {

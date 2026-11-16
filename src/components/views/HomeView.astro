@@ -8,9 +8,11 @@ import { CATEGORIES, SITE } from "../../lib/site";
 import { getPublishedPosts, getFeaturedPost, getFamily } from "../../lib/posts";
 import {
   categoryLabel,
+  categoryBlurb,
   categoryPath,
   getLangFromUrl,
   localizePath,
+  storyCount,
   useTranslations,
 } from "../../lib/i18n";
 
@@ -24,6 +26,12 @@ const family = await getFamily();
 
 /** The three family accents, cycled across the category cards. */
 const ACCENTS = ["#2a84d3", "#f06baa", "#6bcdb2"];
+const trails = CATEGORIES.map((category, i) => ({
+  category,
+  count: posts.filter((post) => post.data.category === category).length,
+  accent: ACCENTS[i % ACCENTS.length],
+})).filter((trail) => trail.count > 0);
+const numberFormat = new Intl.NumberFormat(lang);
 ---
 
 <BaseLayout title={SITE.name} description={t.meta.description}>
@@ -56,19 +64,23 @@ const ACCENTS = ["#2a84d3", "#f06baa", "#6bcdb2"];
     </div>
   </section>
 
-  <section class="bg-surface-dark text-on-dark">
+  <section id="trails" class="bg-surface-dark text-on-dark" aria-labelledby="trails-heading">
     <div class="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-      <h2 class="text-display-sm text-on-dark">{t.home.findYourTrail}</h2>
+      <h2 id="trails-heading" class="text-display-sm text-on-dark">{t.home.findYourTrail}</h2>
       <p class="mt-3 max-w-2xl text-on-dark-soft">{t.home.findYourTrailIntro}</p>
       <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {
-          CATEGORIES.map((category, i) => (
+          trails.map(({ category, count, accent }) => (
             <a
               href={categoryPath(category, lang)}
-              class="accent-edge group flex items-center justify-between rounded-lg bg-surface-dark-elevated px-6 py-5 ps-7 text-on-dark transition-colors hover:bg-surface-dark-soft"
-              style={`--accent-edge-color:${ACCENTS[i % 3]}`}
+              class="trail-card group"
+              style={`--trail-accent:${accent}`}
             >
-              <span class="font-serif text-xl">{categoryLabel(category, lang)}</span>
+              <span class="trail-copy">
+                <span class="font-serif text-xl">{categoryLabel(category, lang)}</span>
+                <span class="trail-description">{categoryBlurb(category, lang)}</span>
+                <span class="trail-count">{numberFormat.format(count)} {storyCount(count, lang)}</span>
+              </span>
               <svg class="transition-transform group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
@@ -83,3 +95,46 @@ const ACCENTS = ["#2a84d3", "#f06baa", "#6bcdb2"];
     <CtaBand />
   </div>
 </BaseLayout>
+
+<style>
+  #trails {
+    scroll-margin-block-start: 6rem;
+  }
+
+  .trail-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-block-start: 1px solid var(--trail-accent);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-dark-elevated);
+    color: var(--color-on-dark);
+    transition: background-color 0.15s ease;
+  }
+
+  .trail-card:hover {
+    background: var(--color-surface-dark-soft);
+  }
+
+  .trail-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+  }
+
+  .trail-description {
+    color: var(--color-on-dark-soft);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .trail-count {
+    margin-block-start: auto;
+    padding-block-start: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-on-dark-soft);
+  }
+</style>

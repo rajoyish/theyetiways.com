@@ -11,11 +11,11 @@
 
 export const en = {
   meta: {
-    tagline: "Warm life lessons from a family of Yetis.",
+    tagline: "Big adventures. Small acts of kindness.",
     motto:
-      "We might be Yetis, but our ways are warm. ❄️❤️ Big hearts. Thick fur. Good vibes.",
+      "A lost star, a runaway snow slide, a kiss that starts an argument. Papa, Mama, and Babu Yeti have a story for every kind of day.",
     description:
-      "The Yeti Ways is a family blog co-authored by Papa, Mama, and Babu Yeti — warm, honest stories about family, relationships, parenting, and growing up, each one built around a video from our channels.",
+      "Stories and videos about Papa, Mama, and Babu Yeti, where mountain adventures and everyday family life meet kindness, courage, and a little mischief.",
   },
 
   nav: {
@@ -61,17 +61,17 @@ export const en = {
   home: {
     latestStories: "Latest stories",
     meetTheFamilyIntro:
-      "Every story here has more than one teller — the grown-ups and the kid who lived the same day from a different height. Same fireplace, different footprints in the snow.",
+      "Papa leaps into rescues. Mama notices who needs a little care. Babu asks questions and tests the limits. Sometimes the grown-ups have the most to learn.",
     findYourTrail: "Find your trail",
-    findYourTrailIntro: "Browse by what you're navigating right now.",
+    findYourTrailIntro: "Start with a family hug, a little mischief, or a lesson learned the hard way. Pick a theme and see where the Yetis take you.",
   },
 
   stories: {
     title: "Stories",
     intro:
-      "Warm, honest notes on family, relationships, parenting, and growing up — each one built around a video from our channels.",
+      "Stories and videos about Papa, Mama, and Babu Yeti, where mountain adventures and everyday family life meet kindness, courage, and a little mischief.",
     description:
-      "Every story from The Yeti Ways — warm, honest notes on family, relationships, parenting, and growing up, each one built around a video.",
+      "Stories and videos about Papa, Mama, and Babu Yeti, where mountain adventures and everyday family life meet kindness, courage, and a little mischief.",
     /** e.g. "(page 2 of 3)" — appended to the title on pages 2 and up. */
     pageSuffix: "(page {current} of {total})",
   },
@@ -103,15 +103,15 @@ export const en = {
     },
     blurbs: {
       Family:
-        "The everyday of living together — chores, routines, and the small rituals that hold a cave together.",
+        "Teamwork on the mountain, dancing in the den, and hugs when the day goes wrong.",
       Relationships:
-        "Staying warm with the people you love, even when the wind picks up.",
+        "Sleepy kisses, stolen blankets, and the small gestures that keep love warm.",
       Parenting:
-        "What we're learning as we raise Babu — usually the hard, honest way.",
+        "Cheer-up dances, bedtime mishaps, and parents learning alongside Babu.",
       "Growing Up":
-        "Babu on new schools, new friends, and figuring out who he is.",
+        "Snow football, slippery adventures, and finding the courage to try again.",
       "Life Lessons":
-        "The bigger stuff — change, courage, patience — as it actually shows up.",
+        "Forest rescues, magical encounters, and choosing kindness when it counts.",
     },
   },
 
@@ -161,11 +161,11 @@ export const en = {
   },
 
   cta: {
-    heading: "Follow the Yetis",
-    text: "New stories land on our channels first. Come say hello — we save you a warm seat by the fire.",
+    heading: "Watch the stories unfold",
+    text: "Watch the videos behind the stories, and follow Papa, Mama, and Babu Yeti on our channels.",
     aboutHeading: "Come along",
     aboutText:
-      "We post new stories on our channels first. Follow along and bring a blanket.",
+      "Watch the videos behind the stories, and follow Papa, Mama, and Babu Yeti on our channels.",
   },
 
   notFound: {

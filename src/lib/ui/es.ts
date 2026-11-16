@@ -2,11 +2,11 @@ import type { UiStrings } from "./en";
 
 export const es = {
   meta: {
-    tagline: "Lecciones de vida cálidas de una familia de yetis.",
+    tagline: "Grandes aventuras. Pequeños gestos de bondad.",
     motto:
-      "Puede que seamos yetis, pero nuestras maneras son cálidas. ❄️❤️ Corazones grandes. Pelaje espeso. Buen rollo.",
+      "Una estrella perdida, un trineo desbocado, un beso que acaba en discusión. Papá, Mamá y Babu Yeti tienen una historia para cada día.",
     description:
-      "The Yeti Ways es un blog familiar escrito a seis manos por Papá, Mamá y Babu Yeti: historias cálidas y honestas sobre familia, relaciones, crianza y crecer, cada una nacida de un vídeo de nuestros canales.",
+      "Historias y vídeos de Papá, Mamá y Babu Yeti: aventuras en la montaña y vida en familia con bondad, valentía y alguna que otra travesura.",
   },
 
   nav: {
@@ -50,17 +50,17 @@ export const es = {
   home: {
     latestStories: "Últimas historias",
     meetTheFamilyIntro:
-      "Cada historia de aquí tiene más de un narrador: los mayores y el crío que vivió el mismo día desde otra altura. La misma chimenea, distintas huellas en la nieve.",
+      "Papá se lanza al rescate. Mamá se fija en quién necesita cariño. Babu hace preguntas y pone los límites a prueba. A veces, quienes más tienen que aprender son los mayores.",
     findYourTrail: "Encuentra tu sendero",
-    findYourTrailIntro: "Busca según lo que te toque atravesar ahora mismo.",
+    findYourTrailIntro: "Empieza con un abrazo en familia, una travesura o una lección aprendida a las malas. Elige un tema y descubre adónde te llevan los Yetis.",
   },
 
   stories: {
     title: "Historias",
     intro:
-      "Apuntes cálidos y honestos sobre familia, relaciones, crianza y crecer, cada uno nacido de un vídeo de nuestros canales.",
+      "Historias y vídeos de Papá, Mamá y Babu Yeti: aventuras en la montaña y vida en familia con bondad, valentía y alguna que otra travesura.",
     description:
-      "Todas las historias de The Yeti Ways: apuntes cálidos y honestos sobre familia, relaciones, crianza y crecer, cada uno nacido de un vídeo.",
+      "Historias y vídeos de Papá, Mamá y Babu Yeti: aventuras en la montaña y vida en familia con bondad, valentía y alguna que otra travesura.",
     pageSuffix: "(página {current} de {total})",
   },
 
@@ -91,15 +91,15 @@ export const es = {
     },
     blurbs: {
       Family:
-        "El día a día de vivir juntos: las tareas, las rutinas y los pequeños rituales que sostienen una cueva.",
+        "Trabajo en equipo en la montaña, bailes en la cueva y abrazos cuando el día se tuerce.",
       Relationships:
-        "Seguir dándose calor con la gente que quieres, incluso cuando arrecia el viento.",
+        "Besos de medio sueño, mantas robadas y pequeños gestos que abrigan el amor.",
       Parenting:
-        "Lo que vamos aprendiendo mientras criamos a Babu, casi siempre por las bravas.",
+        "Bailes para levantar el ánimo, líos a la hora de dormir y padres que aprenden junto a Babu.",
       "Growing Up":
-        "Babu y los colegios nuevos, los amigos nuevos y el lío de averiguar quién es.",
+        "Fútbol en la nieve, aventuras resbaladizas y el valor de volver a intentarlo.",
       "Life Lessons":
-        "Lo gordo (el cambio, el valor, la paciencia) tal y como aparece de verdad.",
+        "Rescates en el bosque, encuentros mágicos y la decisión de ser amable cuando importa.",
     },
   },
 
@@ -149,11 +149,11 @@ export const es = {
   },
 
   cta: {
-    heading: "Sigue a los yetis",
-    text: "Las historias nuevas aterrizan antes en nuestros canales. Pásate a saludar: te guardamos un sitio calentito junto al fuego.",
+    heading: "Mira cómo cobran vida las historias",
+    text: "Mira los vídeos que inspiran las historias y sigue a Papá, Mamá y Babu Yeti en nuestros canales.",
     aboutHeading: "Vente con nosotros",
     aboutText:
-      "Publicamos las historias nuevas antes en nuestros canales. Síguenos y tráete una manta.",
+      "Mira los vídeos que inspiran las historias y sigue a Papá, Mamá y Babu Yeti en nuestros canales.",
   },
 
   notFound: {
