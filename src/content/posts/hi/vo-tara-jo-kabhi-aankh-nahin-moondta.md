@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "वो तारा जो कभी आँख नहीं मूँदता"
 description: "चोटी के ऊपर एक छोटा चाँदी-सा तारा निकला और उसने सोने से साफ़ मना कर दिया। मैंने उसे एक बूढ़े मुसाफ़िर को घर तक रोशनी देते देखा, फिर मैंने भी सोने से मना कर दिया।"
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"

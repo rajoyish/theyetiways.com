@@ -71,7 +71,7 @@ est ressorti des lianes, les oreilles basses, affamé et tout silencieux. Je lui
 ai donné ma plus grosse mangue. Il a dit merci. Puis il a dit pardon, ce que je
 n'attendais pas, et je crois que c'était le plus dur.
 
-## La manière Yeti
+## La voie du Yéti
 
 **Les mangues sont plus sucrées quand on les partage, même avec celui qui ne
 voulait pas partager.**

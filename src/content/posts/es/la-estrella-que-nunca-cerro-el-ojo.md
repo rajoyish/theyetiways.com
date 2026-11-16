@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "La estrella que nunca cerró el ojo"
 description: "Una estrellita plateada salió sobre la cresta y se negó a irse a dormir. La vi alumbrar el camino de un viejo viajero, y entonces yo también me negué a dormir."
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"

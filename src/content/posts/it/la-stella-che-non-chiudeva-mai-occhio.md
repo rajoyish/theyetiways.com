@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "La stella che non chiudeva mai occhio"
 description: "Una stellina d'argento è spuntata sopra la cresta e non voleva saperne di andare a letto. L'ho vista riportare a casa un vecchio viandante, e allora non ci sono andato nemmeno io."
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"

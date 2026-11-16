@@ -3,7 +3,7 @@ translationKey: "the-star-that-never-shut-its-eye"
 youtube: "https://www.youtube.com/watch?v=pxxXfdgCrUk"
 title: "从来不闭眼的星星"
 description: "山脊上亮起一颗小银星，怎么也不肯睡。我看着它把一位老旅人照回了家，于是我也不肯睡了。"
-pubDate: "2026-11-13T17:09:00+05:45"
+pubDate: "2026-11-12T19:15:00+05:45"
 authors:
   - babu-yeti
 category: "Growing Up"
