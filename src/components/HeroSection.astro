@@ -4,7 +4,6 @@ import AuthorBadge from "./AuthorBadge.astro";
 import FormattedDate from "./FormattedDate.astro";
 import HeroMeshImage from "./HeroMeshImage.astro";
 import { postPath, resolveAuthors, type Post } from "../lib/posts";
-import { SITE } from "../lib/site";
 import {
   categoryLabel,
   categoryPath,
@@ -25,11 +24,7 @@ const href = postPath(post);
 
 <section class="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:py-24 lg:grid-cols-2 lg:items-center">
   <div>
-    <p class="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-muted">
-      <span class="inline-block size-1.5 rounded-full bg-primary"></span>
-      {SITE.name}
-    </p>
-    <h1 class="mt-5 text-display-lg text-ink sm:text-display-xl">
+    <h1 class="text-display-lg text-ink sm:text-display-xl">
       {t.meta.tagline}
     </h1>
     <p class="mt-6 max-w-xl text-lg text-body-strong">{t.meta.motto}</p>
@@ -37,8 +32,8 @@ const href = postPath(post);
       <a href={localizePath("/blog", lang)} class="btn btn-primary">
         {t.common.readStories}
       </a>
-      <a href={localizePath("/authors", lang)} class="btn btn-secondary">
-        {t.common.meetTheFamily}
+      <a href="#trails" class="btn btn-secondary">
+        {t.home.findYourTrail}
       </a>
     </div>
   </div>

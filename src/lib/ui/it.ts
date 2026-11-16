@@ -2,11 +2,11 @@ import type { UiStrings } from "./en";
 
 export const it = {
   meta: {
-    tagline: "Lezioni di vita calde, da una famiglia di yeti.",
+    tagline: "Grandi avventure. Piccoli gesti di gentilezza.",
     motto:
-      "Saremo anche yeti, ma i nostri modi sono caldi. ❄️❤️ Cuori grandi. Pelo folto. Buone vibrazioni.",
+      "Una stella perduta, una scivolata sulla neve fuori controllo, un bacio che scatena un litigio. Papà, Mamma e Babu Yeti hanno una storia per ogni giornata.",
     description:
-      "The Yeti Ways è un blog di famiglia scritto a sei mani da Papà, Mamma e Babu Yeti: storie calde e sincere su famiglia, relazioni, genitorialità e crescita, ognuna nata da un video dei nostri canali.",
+      "Storie e video di Papà, Mamma e Babu Yeti, tra avventure in montagna e vita in famiglia, con gentilezza, coraggio e qualche marachella.",
   },
 
   nav: {
@@ -50,17 +50,17 @@ export const it = {
   home: {
     latestStories: "Ultime storie",
     meetTheFamilyIntro:
-      "Ogni storia qui ha più di un narratore: i grandi e il bambino che ha vissuto la stessa giornata da un'altra altezza. Stesso camino, impronte diverse nella neve.",
+      "Papà si lancia nei salvataggi. Mamma nota chi ha bisogno di affetto. Babu fa domande e mette alla prova i limiti. A volte sono i grandi ad avere più da imparare.",
     findYourTrail: "Trova il tuo sentiero",
-    findYourTrailIntro: "Sfoglia in base a quello che stai attraversando adesso.",
+    findYourTrailIntro: "Comincia con un abbraccio in famiglia, una marachella o una lezione imparata a proprie spese. Scegli un tema e scopri dove ti portano gli Yeti.",
   },
 
   stories: {
     title: "Storie",
     intro:
-      "Appunti caldi e sinceri su famiglia, relazioni, genitorialità e crescita, ognuno nato da un video dei nostri canali.",
+      "Storie e video di Papà, Mamma e Babu Yeti, tra avventure in montagna e vita in famiglia, con gentilezza, coraggio e qualche marachella.",
     description:
-      "Tutte le storie di The Yeti Ways: appunti caldi e sinceri su famiglia, relazioni, genitorialità e crescita, ognuno nato da un video.",
+      "Storie e video di Papà, Mamma e Babu Yeti, tra avventure in montagna e vita in famiglia, con gentilezza, coraggio e qualche marachella.",
     pageSuffix: "(pagina {current} di {total})",
   },
 
@@ -91,15 +91,15 @@ export const it = {
     },
     blurbs: {
       Family:
-        "La quotidianità del vivere insieme: le faccende, le abitudini e i piccoli riti che tengono in piedi una caverna.",
+        "Gioco di squadra in montagna, balli nella tana e abbracci quando la giornata va storta.",
       Relationships:
-        "Restare al caldo con le persone che ami, anche quando il vento rinforza.",
+        "Baci assonnati, coperte rubate e piccoli gesti che tengono caldo l'amore.",
       Parenting:
-        "Quello che impariamo crescendo Babu, di solito nel modo più duro e più onesto.",
+        "Balli per tirare su il morale, imprevisti della buonanotte e genitori che imparano insieme a Babu.",
       "Growing Up":
-        "Babu racconta scuole nuove, amici nuovi e la fatica di capire chi è.",
+        "Calcio sulla neve, avventure scivolose e il coraggio di riprovare.",
       "Life Lessons":
-        "Le cose grandi — il cambiamento, il coraggio, la pazienza — così come si presentano davvero.",
+        "Salvataggi nel bosco, incontri magici e la scelta della gentilezza quando conta.",
     },
   },
 
@@ -149,11 +149,11 @@ export const it = {
   },
 
   cta: {
-    heading: "Segui gli yeti",
-    text: "Le storie nuove arrivano prima sui nostri canali. Passa a salutare: ti teniamo un posto caldo vicino al fuoco.",
+    heading: "Guarda le storie prendere vita",
+    text: "Guarda i video da cui nascono le storie e segui Papà, Mamma e Babu Yeti sui nostri canali.",
     aboutHeading: "Vieni con noi",
     aboutText:
-      "Pubblichiamo le storie nuove prima sui nostri canali. Seguici, e porta una coperta.",
+      "Guarda i video da cui nascono le storie e segui Papà, Mamma e Babu Yeti sui nostri canali.",
   },
 
   notFound: {
